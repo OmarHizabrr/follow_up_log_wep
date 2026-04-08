@@ -5,7 +5,8 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { signInWithPopup, onAuthStateChanged } from 'firebase/auth';
-import { auth, googleProvider } from '@/lib/firebase';
+import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { auth, db, googleProvider } from '@/lib/firebase';
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -29,17 +30,39 @@ export default function LoginPage() {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       if (result.user) {
-        console.log('✅ تم تسجيل الدخول بنجاح:', result.user.uid);
+        console.log('✅ تم تسجيل الدخول بجوجل:', result.user.uid);
         
-        // Save basic session to mimic Flutter's StorageService.Api.setMap
-        const sessionData = {
-          uid: result.user.uid,
-          email: result.user.email,
-          displayName: result.user.displayName,
-          photoURL: result.user.photoURL,
-        };
+        const userRef = doc(db, 'users', result.user.uid);
+        const docSnap = await getDoc(userRef);
+        
+        let sessionData: any = {};
+
+        if (docSnap.exists()) {
+          // If user exists, fetch existing data to preserve roles/types and update ONLY lastLoginAt
+          const data = docSnap.data();
+          sessionData = {
+            uid: result.user.uid,
+            ...data
+          };
+          // Update only the login timestamp without touching other data
+          await updateDoc(userRef, { lastLoginAt: serverTimestamp() });
+        } else {
+          // Register completely new user
+          sessionData = {
+            uid: result.user.uid,
+            email: result.user.email,
+            displayName: result.user.displayName,
+            photoURL: result.user.photoURL,
+            type: 'user',
+            role: 'user',
+            isActive: true,
+            createdAt: serverTimestamp(),
+            lastLoginAt: serverTimestamp(),
+          };
+          await setDoc(userRef, sessionData);
+        }
+        
         localStorage.setItem('userData', JSON.stringify(sessionData));
-        
         router.push('/');
       }
     } catch (error: any) {

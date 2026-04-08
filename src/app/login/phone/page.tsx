@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/navigation';
-import { collection, query, where, getDocs, limit } from 'firebase/firestore';
+import { collection, query, where, getDocs, limit, doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
 export default function PhoneLoginPage() {
@@ -46,6 +46,9 @@ export default function PhoneLoginPage() {
 
       // Check success!
       console.log('✅ تم تسجيل الدخول بنجاح:', userDoc.id);
+      
+      // Update the login field only (lastLoginAt)
+      await updateDoc(doc(db, 'users', userDoc.id), { lastLoginAt: serverTimestamp() });
       
       // Store local session (matching flutter behaviour)
       const sessionData = {
