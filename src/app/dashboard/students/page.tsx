@@ -21,6 +21,7 @@ import {
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { auth, db, storage } from '@/lib/firebase';
 import Link from 'next/link';
+import DashboardLayout from '@/components/DashboardLayout';
 
 interface Student {
   id: string;

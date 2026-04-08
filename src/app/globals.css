@@ -1,6 +1,5 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
-
+@import "tailwindcss";
 :root {
   --primary: #064E3B;
   --primary-light: #10B981;
@@ -24,11 +23,17 @@ body {
   background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
   color: var(--text-main);
   min-height: 100vh;
+  direction: rtl;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.auth-page-wrapper {
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  direction: rtl;
-  overflow: hidden;
+  padding: 1rem;
 }
 
 /* Background floating shapes */

@@ -16,6 +16,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import Link from 'next/link';
+import DashboardLayout from '@/components/DashboardLayout';
 
 interface Student {
   id: string;
@@ -201,8 +202,8 @@ export default function AttendancePage() {
   if (!user && typeof window !== 'undefined') return null;
 
   return (
-    <div className="min-h-screen bg-[#0F172A] text-white p-4 md:p-8 font-['Outfit']" dir="rtl">
-      <div className="max-w-6xl mx-auto">
+    <DashboardLayout>
+      <div className="max-w-6xl mx-auto font-['Outfit']">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
@@ -221,7 +222,7 @@ export default function AttendancePage() {
               type="date" 
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
-              className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 outline-none focus:border-[#10B981] transition-all"
+              className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 outline-none focus:border-[#10B981] transition-all text-white"
             />
             <button 
               onClick={handleSaveBatch}
@@ -273,7 +274,7 @@ export default function AttendancePage() {
                 <div key={student.id} className="bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6 hover:bg-white/[0.07] transition-all">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#10B981]/20 to-[#3B82F6]/20 flex items-center justify-center border border-white/10 text-[#10B981] font-bold text-xl overflow-hidden">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#10B981]/20 to-[#3B82F6]/20 flex items-center justify-center border border-white/10 text-[#10B981] font-bold text-xl overflow-hidden shrink-0">
                         {student.photoURL ? (
                           <img src={student.photoURL} alt={student.displayName} className="w-full h-full object-cover" />
                         ) : (
@@ -347,18 +348,18 @@ export default function AttendancePage() {
                 value={tempNote}
                 onChange={(e) => setTempNote(e.target.value)}
                 placeholder="اكتب ملاحظاتك هنا..."
-                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 h-32 outline-none focus:border-[#10B981] transition-all resize-none mb-6"
+                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 h-32 outline-none focus:border-[#10B981] transition-all resize-none mb-6 text-white"
               />
               <div className="flex gap-3">
                 <button 
                   onClick={saveNote}
-                  className="flex-1 bg-[#10B981] py-3 rounded-2xl font-bold hover:bg-[#059669] transition-all"
+                  className="flex-1 bg-[#10B981] py-3 rounded-2xl font-bold hover:bg-[#059669] transition-all text-white"
                 >
                   حفظ
                 </button>
                 <button 
                   onClick={() => setActiveNoteStudent(null)}
-                  className="flex-1 bg-white/5 py-3 rounded-2xl font-bold hover:bg-white/10 transition-all border border-white/10"
+                  className="flex-1 bg-white/5 py-3 rounded-2xl font-bold hover:bg-white/10 transition-all border border-white/10 text-white"
                 >
                   إلغاء
                 </button>
@@ -367,10 +368,9 @@ export default function AttendancePage() {
           </div>
         )}
       </div>
-    </div>
+    </DashboardLayout>
   );
 }
-
 function StatusChip({ label, status, active, color, onClick }: { 
   label: string, 
   status: string, 
