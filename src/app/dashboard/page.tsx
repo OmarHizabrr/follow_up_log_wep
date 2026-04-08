@@ -154,22 +154,25 @@ export default function DashboardPage() {
               </div>
               <span className="font-medium">إضافة طالب</span>
             </button>
-            <button className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#3B82F6]/50 hover:bg-[#3B82F6]/5 transition-all group">
-              <div className="w-12 h-12 bg-[#3B82F6]/10 text-[#3B82F6] rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <Link href="/dashboard/students" className="bg-white/5 backdrop-blur-xl p-6 rounded-2xl border border-white/10 hover:border-[#10B981]/50 transition-all group">
+              <div className="w-12 h-12 bg-[#10B981]/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg className="w-6 h-6 text-[#10B981]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
               </div>
-              <span className="font-medium">تحضير يومي</span>
-            </button>
-            <button className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#F59E0B]/50 hover:bg-[#F59E0B]/5 transition-all group">
-              <div className="w-12 h-12 bg-[#F59E0B]/10 text-[#F59E0B] rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 17v-2a4 4 0 10-8 0v2a2 2 0 002 2h4a2 2 0 002-2zm3-9a9 9 0 1118 0 9 9 0 01-18 0z" />
+              <h3 className="text-lg font-bold mb-1">إدارة الطلاب</h3>
+              <p className="text-slate-400 text-sm">عرض، إضافة، وتعديل بيانات الطلاب</p>
+            </Link>
+
+            <div className="bg-white/5 backdrop-blur-xl p-6 rounded-2xl border border-white/10 hover:border-[#10B981]/50 transition-all group">
+              <div className="w-12 h-12 bg-[#10B981]/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg className="w-6 h-6 text-[#10B981]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               </div>
-              <span className="font-medium">تقارير الحلقات</span>
-            </button>
+              <h3 className="text-lg font-bold mb-1">تحضير الحلقات</h3>
+              <p className="text-slate-400 text-sm">تسجيل حضور الطلاب ومتابعة الحفظ</p>
+            </div>
             <button className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#8B5CF6]/50 hover:bg-[#8B5CF6]/5 transition-all group">
               <div className="w-12 h-12 bg-[#8B5CF6]/10 text-[#8B5CF6] rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -8,12 +8,23 @@ import { signInWithPopup, onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db, googleProvider } from '@/lib/firebase';
 
+interface UserSession {
+  uid: string;
+  email?: string | null;
+  displayName?: string | null;
+  photoURL?: string | null;
+  type?: string;
+  role?: string;
+  isActive?: boolean;
+  createdAt?: any;
+  lastLoginAt?: any;
+}
+
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    // Check if user is already logged in
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         router.push('/');
@@ -35,19 +46,16 @@ export default function LoginPage() {
         const userRef = doc(db, 'users', result.user.uid);
         const docSnap = await getDoc(userRef);
         
-        let sessionData: any = {};
+        let sessionData: UserSession;
 
         if (docSnap.exists()) {
-          // If user exists, fetch existing data to preserve roles/types and update ONLY lastLoginAt
           const data = docSnap.data();
           sessionData = {
             uid: result.user.uid,
             ...data
-          };
-          // Update only the login timestamp without touching other data
+          } as UserSession;
           await updateDoc(userRef, { lastLoginAt: serverTimestamp() });
         } else {
-          // Register completely new user
           sessionData = {
             uid: result.user.uid,
             email: result.user.email,

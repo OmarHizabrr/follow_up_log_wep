@@ -116,6 +116,7 @@ body {
   margin-bottom: 0.5rem;
   background: linear-gradient(to left, var(--primary-light), #34d399);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);
 }
