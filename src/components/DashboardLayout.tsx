@@ -60,10 +60,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   ];
 
   return (
-    <div className="flex h-screen bg-[#f3f4f6] dark:bg-[#111827] text-gray-900 dark:text-gray-100 font-['Tajawal']" dir="rtl">
+    <div className="flex h-screen w-full overflow-hidden bg-[#f3f4f6] dark:bg-[#111827] text-gray-900 dark:text-gray-100 font-['Tajawal']" dir="rtl">
       
       {/* Sidebar - Desktop */}
-      <aside className="hidden lg:flex flex-col w-72 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 h-full z-20 shadow-sm transition-colors duration-200">
+      <aside className="hidden lg:flex flex-col w-72 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 h-full z-20 shadow-lg ring-1 ring-black/5 shrink-0 transition-colors duration-200">
         
         {/* Logo Area */}
         <div className="h-[72px] flex items-center px-6 border-b border-gray-200 dark:border-gray-700 shrink-0">
