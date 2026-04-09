@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import Head from 'next/head';
 import { useRouter } from 'next/navigation';
 import { collection, query, where, getDocs, limit, doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import Link from 'next/link';
 
 export default function PhoneLoginPage() {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -18,142 +18,100 @@ export default function PhoneLoginPage() {
     if (!phoneNumber) return setErrorMsg('الرجاء إدخال رقم الجوال');
     if (!password) return setErrorMsg('الرجاء إدخال كلمة المرور');
     
-    // Format if necessary
-    const normalizedPhone = phoneNumber.trim();
-
     setIsLoading(true);
     try {
-      // Fetch user from Firestore
       const usersRef = collection(db, 'users');
-      const q = query(usersRef, where('phoneNumber', '==', normalizedPhone), limit(1));
+      const q = query(usersRef, where('phoneNumber', '==', phoneNumber.trim()), limit(1));
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
-        throw new Error('لم يتم العثور على مستخدم مرتبط بهذا الرقم. يجب التسجيل عبر جوجل أولاً.');
+        throw new Error('لم يتم العثور على مستخدم مرتبط بهذا الرقم.');
       }
 
       const userDoc = querySnapshot.docs[0];
       const data = userDoc.data();
-      const storedPassword = data.password;
-
-      if (!storedPassword) {
-        throw new Error('لم يتم تعيين كلمة مرور لهذا الحساب بعد.');
-      }
-
-      if (storedPassword !== password.trim()) {
-        throw new Error('كلمة المرور غير صحيحة.');
-      }
-
-      // Check success!
-      console.log('✅ تم تسجيل الدخول بنجاح:', userDoc.id);
       
-      // Update the login field only (lastLoginAt)
+      if (!data.password || data.password !== password.trim()) {
+        throw new Error('بيانات الدخول غير صحيحة.');
+      }
+
       await updateDoc(doc(db, 'users', userDoc.id), { lastLoginAt: serverTimestamp() });
       
-      // Store local session (matching flutter behaviour)
-      const sessionData = {
-        uid: userDoc.id,
-        ...data
-      };
+      const sessionData = { uid: userDoc.id, ...data };
       localStorage.setItem('userData', JSON.stringify(sessionData));
       
-      router.push('/');
+      router.push('/dashboard');
     } catch (error: any) {
-      console.error('❌ خطأ في تسجيل الدخول:', error);
-      setErrorMsg(error.message || 'فشل في تسجيل الدخول. أعد المحاولة.');
+      setErrorMsg(error.message || 'فشل في تسجيل الدخول.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const goBack = () => {
-    router.back();
-  };
-
-  const closeAlert = () => setErrorMsg('');
-
   return (
-    <>
-      <Head>
-        <title>التسجيل برقم الهاتف | منصة المتابعة</title>
-      </Head>
-
-      {/* Alert Modal */}
-      {errorMsg && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, 
-          backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1000,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          backdropFilter: 'blur(5px)'
-        }}>
-          <div style={{
-            background: 'var(--bg-gradient-start)', padding: '2rem', borderRadius: '16px',
-            border: '1px solid var(--accent)', maxWidth: '400px', width: '90%',
-            textAlign: 'center', boxShadow: '0 10px 25px rgba(0,0,0,0.5)'
-          }}>
-            <svg style={{margin: '0 auto 1rem', width: '48px', height: '48px', color: 'var(--accent)'}} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
-            </svg>
-            <h3 style={{marginBottom: '1rem', color: '#fff', fontSize: '1.25rem'}}>تنبيه</h3>
-            <p style={{color: 'var(--text-muted)', marginBottom: '1.5rem', lineHeight: 1.5}}>{errorMsg}</p>
-            <button onClick={closeAlert} className="btn-secondary" style={{padding: '0.75rem 2rem'}}>حسناً</button>
-          </div>
-        </div>
-      )}
-
-      <div className="bg-shape shape-1"></div>
-      <div className="bg-shape shape-2"></div>
+    <div className="auth-page-wrapper relative overflow-hidden bg-bg-main font-['Tajawal'] antialiased">
+      {/* Background Dynamics */}
+      <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] bg-primary/10 blur-[120px] rounded-full"></div>
       
-      <main className="welcome-container" style={{ paddingTop: '2rem' }}>
-        
-        {/* Back Button */}
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-start', marginBottom: '1rem' }}>
-          <button onClick={goBack} style={{ background: 'none', border: 'none', color: 'var(--text-main)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: 'rotate(180deg)', marginLeft: '8px' }}>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-            رجوع
+      <div className="welcome-container glass-panel p-10 md:p-16 rounded-[3rem] border-white/5 animate-snappy relative z-10 shadow-2xl">
+        <div className="flex justify-start w-full mb-8">
+           <button onClick={() => router.back()} className="flex items-center gap-2 text-slate-500 hover:text-white transition-all font-bold text-sm group">
+              <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 12H5m7-7l-7 7 7 7" /></svg>
+              العودة للخلف
+           </button>
+        </div>
+
+        <div className="logo-container mb-8">
+          <img src="/images/logo/logo.png" alt="Logo" className="w-full h-full object-contain p-2" />
+        </div>
+
+        <h1 className="text-3xl md:text-4xl font-black text-gradient tracking-tight mb-4">الدخول بالهاتف</h1>
+        <p className="text-slate-500 font-bold mb-10 text-lg">يرجى إدخال بيانات الدخول الخاصة بك</p>
+
+        <div className="space-y-6 w-full text-right">
+          <div className="space-y-2">
+            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mr-2">رقم الهاتف</label>
+            <input 
+              type="tel" 
+              placeholder="+966 50 000 0000" 
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              className="w-full elite-input font-bold text-center tracking-widest"
+              dir="ltr"
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mr-2">كلمة المرور</label>
+            <input 
+              type="password" 
+              placeholder="••••••••" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full elite-input font-bold text-center tracking-widest"
+              dir="ltr"
+            />
+          </div>
+          
+          <button 
+            onClick={handlePhoneLogin} 
+            disabled={isLoading || !phoneNumber || !password}
+            className="w-full primary-gradient py-5 rounded-2xl font-black text-white text-sm tracking-[0.2em] shadow-xl shadow-primary-glow hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 mt-4"
+          >
+            {isLoading ? 'جاري التحقق...' : 'تسجيل الدخول'}
           </button>
         </div>
 
-        <div className="logo-container" style={{ width: '100px', height: '100px', marginBottom: '1.5rem' }}>
-          <img src="/images/logo/logo.png" alt="شعار منصة المتابعة" />
-        </div>
+        {errorMsg && (
+          <div className="mt-8 p-4 bg-rose-500/10 border border-rose-500/20 rounded-xl text-rose-500 text-sm font-bold animate-snappy">
+            {errorMsg}
+          </div>
+        )}
+      </div>
 
-        <h1 className="title" style={{ fontSize: '2rem' }}>الدخول برقم الجوال</h1>
-        <p className="subtitle" style={{ marginBottom: '2rem' }}>
-          يرجى إدخال رقم هاتفك وكلمة المرور المسجلة مسبقاً
-        </p>
-
-        <input 
-          type="tel" 
-          placeholder="رقم الهاتف (مثال: +9665xxxxxxxxx)" 
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-          className="input-field"
-          dir="ltr"
-        />
-        
-        <input 
-          type="password" 
-          placeholder="كلمة المرور" 
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="input-field"
-          dir="ltr"
-        />
-        
-        <button 
-          onClick={handlePhoneLogin} 
-          disabled={isLoading || !phoneNumber || !password}
-          className="btn-primary"
-        >
-          {isLoading ? 'جاري تسجيل الدخول...' : 'تسجيل الدخول'}
-        </button>
-      </main>
-    </>
+      <footer className="absolute bottom-6 left-0 right-0 text-center">
+         <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.4em]">Integrated Secure Login System</p>
+      </footer>
+    </div>
   );
 }
