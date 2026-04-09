@@ -58,7 +58,7 @@ body {
 }
 
 .enterprise-input {
-  background-color: transparent;
+  background-color: var(--bg-main);
   border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   padding: 0.625rem 1rem;

@@ -98,55 +98,63 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
            
            <div className="enterprise-card p-5 cursor-pointer hover:shadow-md transition-shadow">
-              <div className="flex items-center justify-between mb-4">
-                 <div className="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center">
-                    <Users className="w-5 h-5" />
+              <div className="flex justify-between items-start">
+                 <div>
+                    <h3 className="text-gray-500 dark:text-gray-400 text-sm font-semibold mb-1">إجمالي الطلاب</h3>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
+                       {isLoading ? '...' : counts.students}
+                    </p>
                  </div>
-                 <div className="flex items-center gap-1 text-green-600 text-sm font-semibold">
-                    <span>+12%</span>
-                    <TrendingUp className="w-4 h-4" />
+                 <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                    <Users className="w-6 h-6" />
                  </div>
               </div>
-              <h3 className="text-gray-500 dark:text-gray-400 text-sm font-semibold">إجمالي الطلاب</h3>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
-                 {isLoading ? '...' : counts.students}
-              </p>
+              <div className="flex items-center gap-1 text-green-600 text-xs font-semibold mt-4">
+                 <TrendingUp className="w-3.5 h-3.5" />
+                 <span>+12% نمو النشاط</span>
+              </div>
            </div>
 
            <div className="enterprise-card p-5 cursor-pointer hover:shadow-md transition-shadow">
-              <div className="flex items-center justify-between mb-4">
-                 <div className="w-10 h-10 rounded-lg bg-emerald-50 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-                    <GraduationCap className="w-5 h-5" />
+              <div className="flex justify-between items-start">
+                 <div>
+                    <h3 className="text-gray-500 dark:text-gray-400 text-sm font-semibold mb-1">المعلمون</h3>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
+                       {isLoading ? '...' : counts.teachers}
+                    </p>
+                 </div>
+                 <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                    <GraduationCap className="w-6 h-6" />
                  </div>
               </div>
-              <h3 className="text-gray-500 dark:text-gray-400 text-sm font-semibold">المعلمون</h3>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
-                 {isLoading ? '...' : counts.teachers}
-              </p>
            </div>
 
            <div className="enterprise-card p-5 cursor-pointer hover:shadow-md transition-shadow">
-              <div className="flex items-center justify-between mb-4">
-                 <div className="w-10 h-10 rounded-lg bg-purple-50 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 flex items-center justify-center">
-                    <MapPin className="w-5 h-5" />
+              <div className="flex justify-between items-start">
+                 <div>
+                    <h3 className="text-gray-500 dark:text-gray-400 text-sm font-semibold mb-1">الحلقات النشطة</h3>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
+                       {isLoading ? '...' : counts.circles}
+                    </p>
+                 </div>
+                 <div className="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0">
+                    <MapPin className="w-6 h-6" />
                  </div>
               </div>
-              <h3 className="text-gray-500 dark:text-gray-400 text-sm font-semibold">الحلقات النشطة</h3>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
-                 {isLoading ? '...' : counts.circles}
-              </p>
            </div>
 
            <div className="enterprise-card p-5 cursor-pointer hover:shadow-md transition-shadow">
-              <div className="flex items-center justify-between mb-4">
-                 <div className="w-10 h-10 rounded-lg bg-orange-50 dark:bg-orange-900/40 text-orange-600 dark:text-orange-400 flex items-center justify-center">
-                    <Eye className="w-5 h-5" />
+              <div className="flex justify-between items-start">
+                 <div>
+                    <h3 className="text-gray-500 dark:text-gray-400 text-sm font-semibold mb-1">الزيارات المسجلة</h3>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
+                       {isLoading ? '...' : counts.visits}
+                    </p>
+                 </div>
+                 <div className="w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-900/40 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0">
+                    <Eye className="w-6 h-6" />
                  </div>
               </div>
-              <h3 className="text-gray-500 dark:text-gray-400 text-sm font-semibold">الزيارات المسجلة</h3>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
-                 {isLoading ? '...' : counts.visits}
-              </p>
            </div>
 
         </div>

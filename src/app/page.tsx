@@ -36,10 +36,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col items-center justify-center p-6 font-['Tajawal'] antialiased">
-      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-8 text-center text-gray-900 dark:text-gray-100">
+      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-8 text-center text-gray-900 dark:text-gray-100">
         
-        <div className="mx-auto w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center p-2 mb-6">
-          <img src="/images/logo/logo.png" alt="Logo" className="w-full h-full object-contain filter brightness-0 invert" />
+        <div className="mx-auto w-20 h-20 bg-white rounded-2xl flex items-center justify-center p-3 mb-6 shadow-sm border border-gray-100 dark:border-gray-700">
+          <img src="/images/logo/logo.png" alt="Logo" className="w-full h-full object-contain" />
         </div>
 
         {user ? (

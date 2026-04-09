@@ -75,13 +75,13 @@ export default function LoginPage() {
         </div>
 
         {/* Login Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-8 text-center text-gray-900 dark:text-gray-100">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-8 text-center text-gray-900 dark:text-gray-100 relative overflow-hidden">
           
-          <div className="mx-auto w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center p-1.5 mb-5">
-            <img src="/images/logo/logo.png" alt="Logo" className="w-full h-full object-contain filter brightness-0 invert" />
+          <div className="mx-auto w-20 h-20 bg-white rounded-2xl flex items-center justify-center p-3 mb-6 shadow-sm border border-gray-100 dark:border-gray-700 z-10 relative">
+            <img src="/images/logo/logo.png" alt="Logo" className="w-full h-full object-contain" />
           </div>
 
-          <h1 className="text-xl font-bold mb-1">تسجيل الدخول</h1>
+          <h1 className="text-2xl font-bold mb-2">تسجيل الدخول</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">
             قم بالدخول للوصول إلى لوحة التحكم الخاصة بك
           </p>
