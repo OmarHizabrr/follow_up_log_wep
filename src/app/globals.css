@@ -78,10 +78,11 @@ body {
   background-color: var(--primary);
   color: white;
   border-radius: 0.5rem;
-  padding: 0.625rem 1.25rem;
+  padding: 0.625rem 1.5rem;
   font-weight: 700;
   font-size: 0.875rem;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -90,10 +91,12 @@ body {
 
 .enterprise-button:hover {
   background-color: var(--primary-hover);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
 }
 
 .enterprise-button:active {
-  transform: scale(0.98);
+  transform: translateY(0);
 }
 
 .enterprise-button-secondary {
@@ -101,9 +104,10 @@ body {
   color: var(--text-main);
   border: 1px solid var(--border-color);
   border-radius: 0.5rem;
-  padding: 0.625rem 1.25rem;
+  padding: 0.625rem 1.5rem;
   font-weight: 700;
   font-size: 0.875rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
@@ -113,6 +117,7 @@ body {
 
 .enterprise-button-secondary:hover {
   background-color: var(--bg-main);
+  border-color: var(--text-muted);
 }
 
 /* Custom Scrollbar Flat */

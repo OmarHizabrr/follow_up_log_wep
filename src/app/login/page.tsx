@@ -96,13 +96,13 @@ export default function LoginPage() {
             <button 
               onClick={signInWithGoogle} 
               disabled={isLoading}
-              className="w-full relative flex items-center justify-center gap-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 font-bold py-3 px-4 rounded-lg transition-colors disabled:opacity-50"
+              className="enterprise-button-secondary w-full py-3.5 font-bold hover:shadow-md disabled:opacity-50"
             >
               {isLoading ? (
-                <div className="w-5 h-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin"></div>
+                <div className="w-5 h-5 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
               ) : (
                  <>
-                   <Mail className="w-5 h-5 text-blue-600" />
+                   <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                    تسجيل الدخول بحساب Google
                  </>
               )}
@@ -110,7 +110,7 @@ export default function LoginPage() {
 
             <button 
               onClick={() => router.push('/login/phone')}
-              className="w-full flex items-center justify-center gap-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 font-bold py-3 px-4 rounded-lg transition-colors"
+              className="enterprise-button-secondary w-full py-3.5 font-bold hover:shadow-md"
             >
               <Phone className="w-5 h-5 text-gray-500" />
               تسجيل الدخول برقم الهاتف

@@ -194,12 +194,12 @@ export default function RecitationPage() {
                             تقييم الأداء (من 5)
                          </label>
                          <div className="flex gap-3">
-                            {[1, 2, 3, 4, 5].map(v => (
+                             {[1, 2, 3, 4, 5].map(v => (
                               <button 
                                 key={v} 
                                 type="button" 
                                 onClick={() => setFormData({...formData, rating: v})} 
-                                className={`flex-1 py-3 border rounded-lg text-lg font-bold transition-colors ${formData.rating === v ? 'bg-blue-50 border-blue-600 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-transparent border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
+                                className={`flex-1 py-3 border rounded-lg text-lg font-bold transition-all ${formData.rating === v ? 'bg-blue-600 border-blue-600 text-white shadow-md transform scale-[1.02] dark:border-blue-500' : 'bg-transparent border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:shadow-sm'}`}
                               >
                                  {v}
                               </button>

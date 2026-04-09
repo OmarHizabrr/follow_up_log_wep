@@ -50,12 +50,15 @@ export default function Home() {
               تم تسجيل الدخول بنجاح
             </div>
             
-            <div className="space-y-3 pt-4 border-t border-gray-100 dark:border-gray-700">
-              <Link href="/dashboard" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center transition-colors">
+            <div className="space-y-4 pt-4 border-t border-gray-100 dark:border-gray-700">
+              <Link href="/dashboard" className="enterprise-button w-full py-3.5 text-base shadow-md">
                 الذهاب للوحة التحكم
               </Link>
-              <button onClick={handleLogout} className="w-full bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
-                <LogOut className="w-4 h-4" />
+              <button 
+                onClick={handleLogout} 
+                className="enterprise-button-secondary w-full py-3.5 text-base"
+              >
+                <LogOut className="w-5 h-5" />
                 تسجيل الخروج
               </button>
             </div>
@@ -70,7 +73,7 @@ export default function Home() {
             </div>
             
             <div className="pt-6 border-t border-gray-100 dark:border-gray-700">
-              <Link href="/login" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
+              <Link href="/login" className="enterprise-button w-full py-3.5 text-base shadow-md">
                 <LogIn className="w-5 h-5" />
                 الدخول للنظام
               </Link>
