@@ -60,10 +60,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   ];
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-[#f3f4f6] dark:bg-[#111827] text-gray-900 dark:text-gray-100 font-['Tajawal']" dir="rtl">
+    <div className="min-h-screen bg-[#f3f4f6] dark:bg-[#111827] text-gray-900 dark:text-gray-100 font-['Tajawal']" dir="rtl">
       
-      {/* Sidebar - Desktop */}
-      <aside className="hidden lg:flex flex-col w-72 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 h-full z-20 shadow-lg ring-1 ring-black/5 shrink-0 transition-colors duration-200">
+      {/* Sidebar - Desktop (Fixed on Right) */}
+      <aside className="fixed inset-y-0 right-0 hidden lg:flex flex-col w-72 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 z-50 shadow-lg ring-1 ring-black/5 transition-colors duration-200">
         
         {/* Logo Area */}
         <div className="h-[72px] flex items-center px-6 border-b border-gray-200 dark:border-gray-700 shrink-0">
@@ -99,7 +99,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
 
         {/* User Profile Area */}
-        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="p-4 border-t border-gray-200 dark:border-gray-700 shrink-0">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-gray-700 flex items-center justify-center text-blue-600 dark:text-white font-bold text-sm shrink-0">
               {user?.displayName ? user.displayName[0] : 'U'}
@@ -119,11 +119,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
       </aside>
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 h-full">
+      {/* Main Content Area (Padded on Right to Avoid Sidebar Overlap) */}
+      <div className="lg:pr-72 flex flex-col min-h-screen">
         
         {/* Top Header */}
-        <header className="h-[72px] bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6 lg:px-8 shrink-0 z-10 transition-colors duration-200">
+        <header className="sticky top-0 z-40 h-[72px] bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6 lg:px-8 shrink-0 transition-colors duration-200 shadow-sm">
            
             <div className="flex items-center gap-4 flex-1">
               <button 
@@ -144,7 +144,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               </div>
            </div>
 
-           <div className="flex items-center gap-4">
+           <div className="flex items-center gap-4 shrink-0">
               <button className="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg relative transition-colors">
                  <Bell className="w-5 h-5" />
                  <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 border-2 border-white dark:border-gray-800 rounded-full"></span>
@@ -162,7 +162,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </header>
 
         {/* Page Content Viewport */}
-        <main className="flex-1 overflow-y-auto custom-scrollbar p-4 lg:p-8">
+        <main className="flex-1 p-4 lg:p-8">
            <div className="max-w-[1400px] mx-auto min-h-full">
               {children}
            </div>
