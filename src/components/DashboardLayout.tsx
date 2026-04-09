@@ -125,7 +125,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         {/* Top Header */}
         <header className="h-[72px] bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6 lg:px-8 shrink-0 z-10 transition-colors duration-200">
            
-           <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 flex-1">
               <button 
                 onClick={() => setIsSidebarOpen(true)} 
                 className="lg:hidden p-2 -mr-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
@@ -134,12 +134,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               </button>
               
               {/* Global Search */}
-              <div className="hidden md:flex items-center relative w-[28rem]">
+              <div className="hidden lg:flex items-center relative w-full max-w-md">
                 <Search className="w-5 h-5 absolute right-4 text-gray-400" />
                 <input 
                   type="text" 
-                  placeholder="البحث في النظام..." 
-                  className="w-full bg-gray-100 dark:bg-gray-700/50 border-none rounded-xl py-2.5 pr-11 pl-4 text-sm focus:ring-2 focus:ring-blue-500/50 focus:outline-none dark:text-white transition-shadow"
+                  placeholder="البحث السريع..." 
+                  className="w-full bg-gray-100 dark:bg-gray-900 border-none rounded-xl py-2.5 pr-11 pl-4 text-sm focus:ring-2 focus:ring-blue-500/50 focus:outline-none dark:text-white transition-shadow shadow-inner"
                 />
               </div>
            </div>
