@@ -175,32 +175,32 @@ export default function ReportsPage() {
                  </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-4">
+              <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-3">
                  {loading ? (
-                    Array(5).fill(0).map((_, i) => <div key={i} className="h-16 bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg"></div>)
+                    Array(5).fill(0).map((_, i) => <div key={i} className="h-20 bg-gray-100 dark:bg-gray-800 animate-pulse rounded-xl"></div>)
                  ) : recentActivity.length === 0 ? (
                     <div className="text-center py-20 text-gray-500">لا يوجد نشاط حديث</div>
                  ) : (
                     recentActivity.map(activity => (
                       <div 
                         key={activity.id} 
-                        className="flex items-center justify-between p-3 rounded-lg border border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                        className="flex items-center justify-between p-4 rounded-xl border border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors shadow-sm"
                       >
                          <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300">
-                               <FileText className="w-4 h-4" />
+                            <div className="w-12 h-12 rounded-full bg-blue-50 dark:bg-gray-800 flex items-center justify-center text-blue-600 dark:text-gray-300">
+                               <FileText className="w-5 h-5" />
                             </div>
                             <div>
-                               <p className="font-semibold text-sm text-gray-900 dark:text-gray-100">{activity.student_name}</p>
-                               <div className="flex items-center gap-1.5 mt-0.5">
-                                  <Database className="w-3 h-3 text-gray-400" />
-                                  <span className="text-xs text-gray-500">{activity.halaqa_name}</span>
+                               <p className="font-bold text-sm text-gray-900 dark:text-gray-100">{activity.student_name}</p>
+                               <div className="flex items-center gap-1.5 mt-1">
+                                  <Database className="w-3.5 h-3.5 text-gray-400" />
+                                  <span className="text-xs font-semibold text-gray-500">{activity.halaqa_name}</span>
                                </div>
                             </div>
                          </div>
                          <div className="text-left">
-                            <p className="font-bold text-sm text-gray-900 dark:text-gray-200">{activity.amount}</p>
-                            <span className="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded font-semibold">{getRecitLabel(activity.type)}</span>
+                            <p className="font-bold text-base text-gray-900 dark:text-gray-200">{activity.amount}</p>
+                            <span className="text-[11px] text-blue-600 bg-blue-50 px-2.5 py-1 mt-1 inline-block rounded font-bold uppercase tracking-wider">{getRecitLabel(activity.type)}</span>
                          </div>
                       </div>
                     ))

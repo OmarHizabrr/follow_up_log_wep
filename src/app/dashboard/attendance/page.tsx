@@ -114,39 +114,39 @@ export default function AttendancePage() {
         {/* Global Student Presence List */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
            {isLoading ? (
-             Array(8).fill(0).map((_, i) => <div key={i} className="h-28 bg-gray-100 dark:bg-gray-800 animate-pulse rounded-xl border border-gray-200 dark:border-gray-700"></div>)
+             Array(8).fill(0).map((_, i) => <div key={i} className="h-32 bg-gray-100 dark:bg-gray-800 animate-pulse rounded-xl border border-gray-200 dark:border-gray-700"></div>)
            ) : (
              students.map(student => (
                <div 
                  key={student.id} 
-                 className={`enterprise-card p-4 transition-colors flex flex-col justify-between h-full ${
+                 className={`enterprise-card p-5 transition-colors flex flex-col justify-between h-full ${
                   attendanceData[student.id] === 'present' ? 'ring-2 ring-green-500 bg-green-50 dark:bg-green-900/10' :
                   attendanceData[student.id] === 'absent' ? 'ring-2 ring-red-500 bg-red-50 dark:bg-red-900/10' : ''
                  }`}
                >
-                  <div className="flex items-center gap-3 mb-4">
-                     <div className="w-12 h-12 rounded-full overflow-hidden bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0">
+                  <div className="flex items-center gap-4 mb-5">
+                     <div className="w-14 h-14 rounded-full overflow-hidden bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-lg shrink-0 shadow-sm border border-blue-200 dark:border-blue-800">
                         {student.photoURL ? <img src={student.photoURL} alt="" className="w-full h-full object-cover" /> : student.displayName[0]}
                      </div>
                      <div className="min-w-0">
-                        <h3 className="font-semibold text-sm text-gray-900 dark:text-gray-100 truncate w-full">{student.displayName}</h3>
+                        <h3 className="font-bold text-sm text-gray-900 dark:text-gray-100 truncate w-full">{student.displayName}</h3>
                         <div className="flex items-center gap-1 mt-1 text-xs text-gray-500 dark:text-gray-400">
                            <span>الرقم: {student.number}</span>
                         </div>
                      </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 mt-auto">
+                  <div className="grid grid-cols-2 gap-3 mt-auto">
                      <button 
                        onClick={() => handleStatusChange(student.id, 'present')}
-                       className={`flex items-center justify-center gap-1.5 py-2 rounded-md border text-sm font-semibold transition-colors ${attendanceData[student.id] === 'present' ? 'bg-green-600 text-white border-green-600' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
+                       className={`flex items-center justify-center gap-1.5 py-2.5 rounded-lg border text-sm font-semibold transition-all ${attendanceData[student.id] === 'present' ? 'bg-green-600 text-white border-green-600 shadow-md transform scale-[1.02]' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 hover:shadow-sm'}`}
                      >
                         <CheckCircle2 className="w-4 h-4" />
                         حاضر
                      </button>
                      <button 
                        onClick={() => handleStatusChange(student.id, 'absent')}
-                       className={`flex items-center justify-center gap-1.5 py-2 rounded-md border text-sm font-semibold transition-colors ${attendanceData[student.id] === 'absent' ? 'bg-red-600 text-white border-red-600' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
+                       className={`flex items-center justify-center gap-1.5 py-2.5 rounded-lg border text-sm font-semibold transition-all ${attendanceData[student.id] === 'absent' ? 'bg-red-600 text-white border-red-600 shadow-md transform scale-[1.02]' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 hover:shadow-sm'}`}
                      >
                         <XCircle className="w-4 h-4" />
                         غائب

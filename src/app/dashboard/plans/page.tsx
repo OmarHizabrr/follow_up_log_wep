@@ -192,27 +192,27 @@ export default function PlansPage() {
                      </div>
                    </div>
 
-                   <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                      <div className="flex justify-between items-center bg-gray-50 dark:bg-gray-700/50 p-2 rounded">
-                         <span>المقدار</span>
-                         <span className="font-semibold text-gray-900 dark:text-gray-200">{plan.amount}</span>
+                 <div className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+                      <div className="flex justify-between items-center bg-gray-50 dark:bg-gray-700/50 p-2.5 rounded-lg border border-gray-100 dark:border-gray-600">
+                         <span className="font-semibold text-gray-500">المقدار</span>
+                         <span className="font-bold text-gray-900 dark:text-gray-200">{plan.amount}</span>
                       </div>
-                      <div className="flex justify-between items-center bg-gray-50 dark:bg-gray-700/50 p-2 rounded">
-                         <span>القيمة</span>
-                         <div className="flex items-center gap-1 font-semibold text-gray-900 dark:text-gray-200">
+                      <div className="flex justify-between items-center bg-gray-50 dark:bg-gray-700/50 p-2.5 rounded-lg border border-gray-100 dark:border-gray-600">
+                         <span className="font-semibold text-gray-500">القيمة</span>
+                         <div className="flex items-center gap-1 font-bold text-gray-900 dark:text-gray-200">
                             <span>{plan.value}</span>
-                            <span className="text-xs text-gray-500">{UNIT_LABELS[plan.unit]}</span>
+                            <span className="text-xs font-semibold text-gray-500">{UNIT_LABELS[plan.unit]}</span>
                          </div>
                       </div>
                    </div>
                 </div>
 
-                <div className="flex gap-2 pt-4 mt-4 border-t border-gray-100 dark:border-gray-700">
-                  <button onClick={() => handleOpenModal(plan)} className="flex-1 enterprise-button-secondary py-1.5 text-xs">
-                     <Edit3 className="w-3.5 h-3.5" />
+                <div className="flex gap-2 pt-4 mt-5 border-t border-gray-100 dark:border-gray-700">
+                  <button onClick={() => handleOpenModal(plan)} className="flex-1 enterprise-button-secondary py-2 text-sm font-bold">
+                     <Edit3 className="w-4 h-4" />
                      تعديل
                   </button>
-                  <button onClick={() => handleDelete(plan.id, plan.name)} className="flex items-center justify-center px-3 bg-red-50 text-red-600 hover:bg-red-100 rounded border border-red-100 transition-colors">
+                  <button onClick={() => handleDelete(plan.id, plan.name)} className="flex items-center justify-center px-4 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg border border-red-100 transition-colors">
                      <Trash2 className="w-4 h-4" />
                   </button>
                 </div>

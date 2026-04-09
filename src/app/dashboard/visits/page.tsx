@@ -146,14 +146,14 @@ export default function VisitsPage() {
                 key={ev.id} 
                 className="enterprise-card p-5 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors flex flex-col md:flex-row md:items-center justify-between gap-4"
               >
-                <div className="flex items-center gap-4 min-w-[250px]">
-                   <div className={`w-12 h-12 rounded-lg flex items-center justify-center shrink-0 ${ev.visit_type === 'regulatory' ? 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400' : 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'}`}>
-                      {ev.visit_type === 'regulatory' ? <ShieldCheck className="w-6 h-6" /> : <Activity className="w-6 h-6" />}
+                <div className="flex items-center gap-5 min-w-[250px]">
+                   <div className={`w-14 h-14 rounded-xl flex items-center justify-center shrink-0 border shadow-sm ${ev.visit_type === 'regulatory' ? 'bg-orange-50 border-orange-200 text-orange-600 dark:bg-orange-900/30 dark:border-orange-800 dark:text-orange-400' : 'bg-blue-50 border-blue-200 text-blue-600 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400'}`}>
+                      {ev.visit_type === 'regulatory' ? <ShieldCheck className="w-7 h-7" /> : <Activity className="w-7 h-7" />}
                    </div>
                    <div>
-                      <h3 className="font-semibold text-gray-900 dark:text-white text-base leading-tight">{ev.halaqa_name}</h3>
-                      <div className="flex items-center gap-1.5 mt-1 text-sm text-gray-500">
-                         <User className="w-3.5 h-3.5" />
+                      <h3 className="font-bold text-gray-900 dark:text-white text-base leading-tight">{ev.halaqa_name}</h3>
+                      <div className="flex items-center gap-1.5 mt-1.5 text-sm font-medium text-gray-500">
+                         <User className="w-4 h-4 text-gray-400" />
                          <span>المعلم: {ev.teacher_name}</span>
                       </div>
                    </div>

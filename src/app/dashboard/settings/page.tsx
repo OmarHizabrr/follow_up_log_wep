@@ -52,13 +52,13 @@ export default function SettingsPage() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
           
           {/* Sidebar */}
-          <div className="md:col-span-3 enterprise-card overflow-hidden">
-             <div className="p-2 space-y-1">
+          <div className="md:col-span-3 enterprise-card overflow-hidden py-2">
+             <div className="p-3 space-y-1.5">
                 {settingsTabs.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-colors ${activeTab === tab.id ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50'}`}
+                    className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-bold transition-all duration-200 ${activeTab === tab.id ? 'bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400 shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50'}`}
                   >
                     {tab.icon}
                     {tab.name}
@@ -66,8 +66,8 @@ export default function SettingsPage() {
                 ))}
              </div>
              
-             <div className="p-2 mt-4 border-t border-gray-100 dark:border-gray-700">
-                <button className="w-full flex items-center justify-between px-4 py-3 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg text-sm font-semibold transition-colors">
+             <div className="p-3 mt-4 border-t border-gray-100 dark:border-gray-700">
+                <button className="w-full flex items-center justify-between px-4 py-3.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl text-sm font-bold transition-colors">
                    <span>تسجيل الخروج</span>
                    <LogOut className="w-4 h-4" />
                 </button>

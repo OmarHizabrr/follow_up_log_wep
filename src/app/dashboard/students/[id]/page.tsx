@@ -142,12 +142,12 @@ export default function StudentProfilePage() {
            {activeTab === 'recitation' && (
              <div className="enterprise-card overflow-hidden">
                 <table className="w-full text-right text-sm">
-                   <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700 text-gray-500">
+                   <thead className="bg-[#f8fafc] dark:bg-gray-800/80 border-b border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300">
                       <tr>
-                         <th className="px-6 py-4 font-semibold">التاريخ</th>
-                         <th className="px-6 py-4 font-semibold">المسار</th>
-                         <th className="px-6 py-4 font-semibold">الكمية المسجلة</th>
-                         <th className="px-6 py-4 font-semibold">التقييم الفني</th>
+                         <th className="px-6 py-5 font-bold">التاريخ</th>
+                         <th className="px-6 py-5 font-bold">المسار</th>
+                         <th className="px-6 py-5 font-bold">الكمية المسجلة</th>
+                         <th className="px-6 py-5 font-bold">التقييم الفني</th>
                       </tr>
                    </thead>
                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -171,9 +171,9 @@ export default function StudentProfilePage() {
            {activeTab === 'attendance' && (
              <div className="enterprise-card overflow-hidden">
                 <table className="w-full text-right text-sm">
-                   <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700 text-gray-500">
+                   <thead className="bg-[#f8fafc] dark:bg-gray-800/80 border-b border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300">
                       <tr>
-                         <th className="px-6 py-4 font-semibold">التاريخ</th>
+                         <th className="px-6 py-5 font-bold">التاريخ</th>
                          <th className="px-6 py-4 font-semibold">حالة الحضور</th>
                       </tr>
                    </thead>
@@ -199,11 +199,11 @@ export default function StudentProfilePage() {
            {activeTab === 'tests' && (
              <div className="enterprise-card overflow-hidden">
                 <table className="w-full text-right text-sm">
-                   <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700 text-gray-500">
+                   <thead className="bg-[#f8fafc] dark:bg-gray-800/80 border-b border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300">
                       <tr>
-                         <th className="px-6 py-4 font-semibold">تاريخ الاختبار</th>
-                         <th className="px-6 py-4 font-semibold">اسم الاختبار / المنهج</th>
-                         <th className="px-6 py-4 font-semibold">الدرجة المئوية</th>
+                         <th className="px-6 py-5 font-bold">تاريخ الاختبار</th>
+                         <th className="px-6 py-5 font-bold">اسم الاختبار / المنهج</th>
+                         <th className="px-6 py-5 font-bold">الدرجة المئوية</th>
                       </tr>
                    </thead>
                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
