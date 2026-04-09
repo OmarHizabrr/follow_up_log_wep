@@ -124,24 +124,24 @@ export default function StudentsPage() {
         <div className="enterprise-card overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-right text-sm">
-              <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400">
+              <thead className="bg-[#f8fafc] dark:bg-gray-800/80 border-b border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300">
                 <tr>
-                  <th className="px-6 py-4 font-semibold whitespace-nowrap">الطالب</th>
-                  <th className="px-6 py-4 font-semibold whitespace-nowrap">الرقم التعريفي</th>
-                  <th className="px-6 py-4 font-semibold whitespace-nowrap">المرحلة / الحلقة</th>
-                  <th className="px-6 py-4 font-semibold whitespace-nowrap">الحالة</th>
-                  <th className="px-6 py-4 font-semibold whitespace-nowrap text-left">إجراءات</th>
+                  <th className="px-6 py-5 font-bold whitespace-nowrap">الطالب</th>
+                  <th className="px-6 py-5 font-bold whitespace-nowrap">الرقم التعريفي</th>
+                  <th className="px-6 py-5 font-bold whitespace-nowrap">المرحلة / الحلقة</th>
+                  <th className="px-6 py-5 font-bold whitespace-nowrap">الحالة</th>
+                  <th className="px-6 py-5 font-bold whitespace-nowrap text-left">إجراءات</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                 {isLoading ? (
                   Array(5).fill(0).map((_, i) => (
                     <tr key={i} className="animate-pulse">
-                      <td className="px-6 py-4"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32"></div></td>
-                      <td className="px-6 py-4"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-16"></div></td>
-                      <td className="px-6 py-4"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24"></div></td>
-                      <td className="px-6 py-4"><div className="h-6 bg-gray-200 dark:bg-gray-700 rounded-full w-16"></div></td>
-                      <td className="px-6 py-4"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-12 ml-auto"></div></td>
+                      <td className="px-6 py-5"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32"></div></td>
+                      <td className="px-6 py-5"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-16"></div></td>
+                      <td className="px-6 py-5"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24"></div></td>
+                      <td className="px-6 py-5"><div className="h-6 bg-gray-200 dark:bg-gray-700 rounded-full w-16"></div></td>
+                      <td className="px-6 py-5"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-12 ml-auto"></div></td>
                     </tr>
                   ))
                 ) : filteredStudents.length === 0 ? (
