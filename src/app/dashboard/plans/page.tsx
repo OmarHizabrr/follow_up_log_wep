@@ -14,16 +14,27 @@ import {
   orderBy
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import Link from 'next/link';
 import DashboardLayout from '@/components/DashboardLayout';
+import { 
+  Layers, 
+  Plus, 
+  Edit3, 
+  Trash2, 
+  X, 
+  Save, 
+  Activity,
+  Target,
+  Maximize2
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Plan {
   id: string;
   name: string;
-  type: string; // memorization, revision, etc.
+  type: string;
   amount: string;
   value: number;
-  unit: string; // pages, juz, lines
+  unit: string;
   is_active: number;
 }
 
@@ -120,83 +131,89 @@ export default function PlansPage() {
       setIsModalOpen(false);
       fetchPlans();
     } catch (e) {
-      alert('Error saving plan');
+      alert('خطأ فـي حفظ بيانات الخطة');
     } finally {
       setIsSaving(false);
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm('هل أنت متأكد من حذف هذه الخطة؟')) {
-      await deleteDoc(doc(db, 'plans', id));
-      fetchPlans();
+  const handleDelete = async (id: string, name: string) => {
+    if (confirm(`هل أنت متأكد من حذف الخطة: ${name}؟`)) {
+      try {
+        await deleteDoc(doc(db, 'plans', id));
+        fetchPlans();
+      } catch (e) {
+        console.error(e);
+      }
     }
   };
 
   return (
     <DashboardLayout>
-      <div className="animate-snappy max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div className="space-y-6">
+        
+        {/* Header Section */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
           <div>
-            <div className="flex items-center gap-2 text-slate-500 text-sm font-bold mb-3 uppercase tracking-widest">
-              <Link href="/dashboard" className="hover:text-primary transition-colors">لوحة التحكم</Link>
-              <span>/</span>
-              <span className="text-primary/80">إدارة المناهج والخطط</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-black text-gradient tracking-tight">
-              خطط الحفظ والمراجعة
-            </h1>
-            <p className="text-slate-500 mt-2 font-medium">تحديد المعايير الموحدة للكميات اليومية لكل برنامج</p>
+            <h1 className="text-xl font-bold text-gray-900 dark:text-white">الخطط والمناهج</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">إعداد قوالب الحفظ والمراجعة القياسية لبرامج المتابعة.</p>
           </div>
-
           <button 
             onClick={() => handleOpenModal()}
-            className="primary-gradient px-8 py-3 rounded-2xl font-black text-sm tracking-wide transition-all shadow-lg shadow-primary-glow"
+            className="enterprise-button"
           >
+            <Plus className="w-4 h-4" />
             إضافة خطة جديدة
           </button>
         </div>
 
         {/* Plans Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {isLoading ? (
-            <div className="col-span-full py-20 text-center">
-               <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-               <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">جاري تحميل الخطط...</p>
-            </div>
+            Array(4).fill(0).map((_, i) => <div key={i} className="h-40 bg-gray-100 dark:bg-gray-800 animate-pulse rounded-xl border border-gray-200 dark:border-gray-700"></div>)
           ) : plans.length === 0 ? (
-            <div className="col-span-full glass-panel p-20 text-center rounded-[2rem]">
-               <p className="text-slate-400 font-bold">لا يوجد خطط مضافة حالياً</p>
+            <div className="col-span-full py-16 text-center text-gray-500 text-sm">
+               لا توجد خطط مضافة حالياً.
             </div>
           ) : (
             plans.map(plan => (
-              <div key={plan.id} className="glass-card rounded-[2rem] p-6 group transition-all">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl bg-white/5 border border-white/10`}>
-                    {plan.type === 'memorization' ? '✨' : '🔄'}
-                  </div>
-                  <div>
-                    <h3 className="font-black text-lg">{plan.name}</h3>
-                    <span className="text-[10px] font-black uppercase text-primary tracking-tighter">{TYPE_LABELS[plan.type]}</span>
-                  </div>
+              <div 
+                key={plan.id} 
+                className="enterprise-card p-5 group flex flex-col justify-between"
+              >
+                <div>
+                   <div className="flex items-center gap-3 mb-4">
+                     <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 shrink-0">
+                        <Layers className="w-5 h-5" />
+                     </div>
+                     <div>
+                       <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-0.5">{plan.name}</h3>
+                       <span className="text-xs font-semibold text-gray-500">{TYPE_LABELS[plan.type]}</span>
+                     </div>
+                   </div>
+
+                   <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                      <div className="flex justify-between items-center bg-gray-50 dark:bg-gray-700/50 p-2 rounded">
+                         <span>المقدار</span>
+                         <span className="font-semibold text-gray-900 dark:text-gray-200">{plan.amount}</span>
+                      </div>
+                      <div className="flex justify-between items-center bg-gray-50 dark:bg-gray-700/50 p-2 rounded">
+                         <span>القيمة</span>
+                         <div className="flex items-center gap-1 font-semibold text-gray-900 dark:text-gray-200">
+                            <span>{plan.value}</span>
+                            <span className="text-xs text-gray-500">{UNIT_LABELS[plan.unit]}</span>
+                         </div>
+                      </div>
+                   </div>
                 </div>
 
-                <div className="space-y-3 mb-8 bg-white/5 p-4 rounded-2xl border border-white/5">
-                   <div className="flex justify-between text-xs">
-                      <span className="font-bold text-slate-500">المقدار:</span>
-                      <span className="font-black text-slate-200">{plan.amount}</span>
-                   </div>
-                   <div className="flex justify-between text-xs">
-                      <span className="font-bold text-slate-500">القيمة:</span>
-                      <span className="font-black text-slate-200">{plan.value} {UNIT_LABELS[plan.unit]}</span>
-                   </div>
-                </div>
-
-                <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button onClick={() => handleOpenModal(plan)} className="flex-1 py-3 bg-white/5 hover:bg-primary/20 hover:text-primary rounded-xl text-xs font-bold transition-all">تعديل</button>
-                  <button onClick={() => handleDelete(plan.id)} className="p-3 bg-white/5 hover:bg-rose-500/20 hover:text-rose-500 rounded-xl transition-all">
-                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                <div className="flex gap-2 pt-4 mt-4 border-t border-gray-100 dark:border-gray-700">
+                  <button onClick={() => handleOpenModal(plan)} className="flex-1 enterprise-button-secondary py-1.5 text-xs">
+                     <Edit3 className="w-3.5 h-3.5" />
+                     تعديل
+                  </button>
+                  <button onClick={() => handleDelete(plan.id, plan.name)} className="flex items-center justify-center px-3 bg-red-50 text-red-600 hover:bg-red-100 rounded border border-red-100 transition-colors">
+                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
               </div>
@@ -204,60 +221,97 @@ export default function PlansPage() {
           )}
         </div>
 
-        {/* Modal */}
-        {isModalOpen && (
-          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
-            <div className="fixed inset-0 bg-black/90 backdrop-blur-md animate-fade" onClick={() => setIsModalOpen(false)}></div>
-            <div className="relative glass-panel rounded-[2.5rem] w-full max-w-md p-8 border-white/10 shadow-2xl animate-snappy">
-              <h2 className="text-2xl font-black text-gradient mb-8">{currentPlan ? 'تعديل الخطة' : 'خطة جديدة'}</h2>
+        {/* Modal - Document Creation */}
+        <AnimatePresence>
+          {isModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              <div 
+                className="absolute inset-0 bg-gray-900/40 backdrop-blur-sm" 
+                onClick={() => setIsModalOpen(false)}
+              ></div>
               
-              <form onSubmit={handleSave} className="space-y-6">
-                <div>
-                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-2">اسم الخطة</label>
-                  <input 
-                    required 
-                    className="w-full elite-input font-bold text-sm"
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="relative bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-lg overflow-hidden border border-gray-200 dark:border-gray-700"
+              >
+                <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                   <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                     <Activity className="w-5 h-5 text-gray-400" />
+                     {currentPlan ? 'تعديل المعيار' : 'تسجيل معيار خطة جديد'}
+                   </h2>
+                   <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5 rounded-lg transition-colors">
+                     <X className="w-5 h-5" />
+                   </button>
                 </div>
+                
+                <form onSubmit={handleSave} className="p-6 space-y-5">
+                  <div>
+                    <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                       مسمى المعيار / البرنامج
+                    </label>
+                    <input 
+                       required 
+                       className="enterprise-input"
+                       value={formData.name}
+                       onChange={(e) => setFormData({...formData, name: e.target.value})}
+                       placeholder="مثال: الحفظ المكثف - المستوى الأول"
+                    />
+                  </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-2">النوع</label>
-                    <select className="w-full elite-input font-bold text-sm" value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})}>
-                      {Object.entries(TYPE_LABELS).map(([k, v]) => <option key={k} value={k} className="bg-black">{v}</option>)}
-                    </select>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                         نوع المسار
+                      </label>
+                      <select className="enterprise-input cursor-pointer" value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})}>
+                        {Object.entries(TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                         وحدة القياس
+                      </label>
+                      <select className="enterprise-input cursor-pointer" value={formData.unit} onChange={(e) => setFormData({...formData, unit: e.target.value})}>
+                        {Object.entries(UNIT_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+                      </select>
+                    </div>
                   </div>
-                  <div>
-                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-2">وحدة القياس</label>
-                    <select className="w-full elite-input font-bold text-sm" value={formData.unit} onChange={(e) => setFormData({...formData, unit: e.target.value})}>
-                      {Object.entries(UNIT_LABELS).map(([k, v]) => <option key={k} value={k} className="bg-black">{v}</option>)}
-                    </select>
-                  </div>
-                </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-2">المقدار (نص)</label>
-                    <input className="w-full elite-input font-bold text-sm" value={formData.amount} onChange={(e) => setFormData({...formData, amount: e.target.value})} placeholder="مثال: وجهين" />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 block mb-1">الوصف النصي</label>
+                      <input className="enterprise-input" value={formData.amount} onChange={(e) => setFormData({...formData, amount: e.target.value})} placeholder="مثال: وجهين" />
+                    </div>
+                    <div>
+                      <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 block mb-1">القيمة الرقمية</label>
+                      <input type="number" className="enterprise-input text-left" dir="ltr" value={formData.value} onChange={(e) => setFormData({...formData, value: Number(e.target.value)})} />
+                    </div>
                   </div>
-                  <div>
-                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-2">القيمة الرقمية</label>
-                    <input type="number" className="w-full elite-input font-bold text-sm" value={formData.value} onChange={(e) => setFormData({...formData, value: Number(e.target.value)})} />
-                  </div>
-                </div>
 
-                <div className="flex gap-4 pt-6">
-                  <button type="submit" disabled={isSaving} className="flex-1 primary-gradient py-4 rounded-2xl font-black text-xs uppercase tracking-widest">
-                    {isSaving ? 'انتظر...' : 'حفظ الخطة'}
-                  </button>
-                  <button type="button" onClick={() => setIsModalOpen(false)} className="px-8 glass-card py-4 rounded-2xl font-black text-xs text-slate-400 uppercase tracking-widest">إلغاء</button>
-                </div>
-              </form>
+                  <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-700">
+                     <button 
+                        type="button" 
+                        onClick={() => setIsModalOpen(false)} 
+                        className="enterprise-button-secondary"
+                     >
+                        إلغاء
+                     </button>
+                     <button 
+                        type="submit" 
+                        disabled={isSaving} 
+                        className="enterprise-button min-w-[120px]"
+                     >
+                        {isSaving ? 'لحظات...' : 'حفظ الخطة'}
+                        {!isSaving && <Save className="w-4 h-4 ml-1" />}
+                     </button>
+                  </div>
+                </form>
+              </motion.div>
             </div>
-          </div>
-        )}
+          )}
+        </AnimatePresence>
       </div>
     </DashboardLayout>
   );

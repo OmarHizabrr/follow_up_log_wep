@@ -5,12 +5,15 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
+import { LogIn, LogOut, ShieldCheck } from 'lucide-react';
 
 export default function Home() {
   const [user, setUser] = useState<any>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
+    setIsLoaded(true);
     const storedUser = localStorage.getItem('userData');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
@@ -29,54 +32,56 @@ export default function Home() {
     }
   };
 
+  if (!isLoaded) return null;
+
   return (
-    <div className="auth-page-wrapper relative overflow-hidden bg-bg-main font-['Tajawal'] antialiased">
-      {/* Background Dynamics */}
-      <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-primary/10 blur-[150px] rounded-full"></div>
-      <div className="absolute bottom-[-10%] left-[-5%] w-[40%] h-[40%] bg-blue-500/5 blur-[120px] rounded-full"></div>
-      
-      <main className="welcome-container glass-panel p-12 md:p-20 rounded-[4rem] border-white/5 animate-snappy relative z-10 shadow-2xl">
-        <div className="logo-container mb-10 scale-125">
-          <img src="/images/logo/logo.png" alt="Logo" className="w-full h-full object-contain p-2" />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col items-center justify-center p-6 font-['Tajawal'] antialiased">
+      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-8 text-center text-gray-900 dark:text-gray-100">
+        
+        <div className="mx-auto w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center p-2 mb-6">
+          <img src="/images/logo/logo.png" alt="Logo" className="w-full h-full object-contain filter brightness-0 invert" />
         </div>
 
         {user ? (
-          <div className="space-y-8">
-            <h1 className="text-4xl md:text-5xl font-black text-gradient tracking-tight">أهلاً بك، {user.displayName?.split(' ')[0]}</h1>
-            <p className="text-slate-500 font-bold text-lg">
-              لحسن الحظ، أنت مسجل دخول بالفعل. يمكنك الانتقال مباشرة للوحة التحكم.
-            </p>
+          <div className="space-y-6">
+            <h1 className="text-2xl font-bold">مرحباً، {user.displayName?.split(' ')[0]}</h1>
+            <div className="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+              <ShieldCheck className="w-4 h-4 text-green-500" />
+              تم تسجيل الدخول بنجاح
+            </div>
             
-            <div className="flex flex-col gap-4 w-full">
-              <Link href="/dashboard" className="w-full primary-gradient py-5 rounded-3xl font-black text-white text-center shadow-xl shadow-primary-glow hover:scale-[1.02] active:scale-95 transition-all">
-                لوحة التحكم القوية
+            <div className="space-y-3 pt-4 border-t border-gray-100 dark:border-gray-700">
+              <Link href="/dashboard" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center transition-colors">
+                الذهاب للوحة التحكم
               </Link>
-              
-              <button onClick={handleLogout} className="w-full py-4 rounded-3xl bg-white/5 border border-white/10 text-slate-500 font-black hover:text-white transition-all">
+              <button onClick={handleLogout} className="w-full bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
+                <LogOut className="w-4 h-4" />
                 تسجيل الخروج
               </button>
             </div>
           </div>
         ) : (
-          <div className="space-y-10">
+          <div className="space-y-6">
             <div>
-              <h1 className="text-5xl md:text-6xl font-black text-gradient tracking-tighter mb-6">روضة الحافظين</h1>
-              <p className="text-slate-500 font-bold text-xl leading-relaxed">
-                المنصة الأولى لإدارة ومتابعة الحلقات القرآنية بأسلوب عصري ومبتكر يجمع بين الأصالة والتقنية.
+              <h1 className="text-2xl font-bold mb-2">نظام المتابعة</h1>
+              <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+                المنصة الإدارية الموحدة لمتابعة البيانات وتسجيل الحضور وإدارة الحلقات.
               </p>
             </div>
             
-            <div className="flex flex-col gap-6 w-full max-w-sm mx-auto">
-              <Link href="/login" className="flex items-center justify-center gap-3 w-full primary-gradient py-6 rounded-[2.5rem] font-black text-lg text-white shadow-2xl shadow-primary-glow hover:scale-[1.05] active:scale-95 transition-all">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
-                الدخول للمنصة
+            <div className="pt-6 border-t border-gray-100 dark:border-gray-700">
+              <Link href="/login" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
+                <LogIn className="w-5 h-5" />
+                الدخول للنظام
               </Link>
-              
-              <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.4em]">Integrated Tracking Solutions</p>
             </div>
           </div>
         )}
-      </main>
+      </div>
+
+      <footer className="mt-8 text-xs text-gray-400 dark:text-gray-500">
+        &copy; {new Date().getFullYear()} نظام المتابعة الإداري - الإصدار المؤسسي
+      </footer>
     </div>
   );
 }

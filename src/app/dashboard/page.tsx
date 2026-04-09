@@ -6,13 +6,26 @@ import {
   collection, 
   query, 
   where, 
-  getDocs,
-  getCountFromServer,
-  limit
+  getCountFromServer
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import Link from 'next/link';
 import DashboardLayout from '@/components/DashboardLayout';
+import { 
+  Users, 
+  GraduationCap, 
+  MapPin, 
+  TrendingUp, 
+  BookOpen, 
+  CheckSquare, 
+  ClipboardList, 
+  Calendar, 
+  Eye, 
+  Activity,
+  Bell,
+  MoreVertical,
+  ChevronLeft
+} from 'lucide-react';
 
 export default function DashboardPage() {
   const [user, setUser] = useState<any>(null);
@@ -39,7 +52,7 @@ export default function DashboardPage() {
   const loadCounts = async (userData: any) => {
     setIsLoading(true);
     try {
-      const { role, type, uid } = userData;
+      const { role, type } = userData;
       if (role === 'admin' || role === 'mentor' || type === 'mentor') {
         const [s, t, h, v] = await Promise.all([
           getCountFromServer(query(collection(db, 'users'), where('type', '==', 'student'))),
@@ -63,95 +76,146 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout>
-      <div className="animate-snappy space-y-8 pb-10">
+      <div className="space-y-6">
         
-        {/* Bento Grid Header / Hero */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-           
-           {/* Main Welcome - Bento Large */}
-           <div className="lg:col-span-8 glass-panel p-10 md:p-14 rounded-[3rem] border-white/5 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-80 h-80 bg-primary/10 blur-[120px] -mr-40 -mt-40 transition-all duration-1000 group-hover:bg-primary/20"></div>
-              <div className="relative z-10">
-                 <div className="flex items-center gap-3 text-primary font-black text-[10px] uppercase tracking-[0.4em] mb-8">
-                    <span className="w-10 h-[2px] bg-primary shadow-primary-glow"></span>
-                    Unified Platform Ecosystem
-                 </div>
-                 <h1 className="text-4xl md:text-6xl font-black text-gradient tracking-tight leading-[1.1] mb-6">
-                    أهلاً بك، <br/> {user?.displayName?.split(' ')[0] || 'المشرف'} 👋
-                 </h1>
-                 <p className="text-slate-500 font-bold max-w-md text-sm leading-relaxed">
-                    منصة المتابعة الموحدة تمنحك تحكماً كاملاً في المسيرة التعليمية للطلاب وتفاعل الحلقات لحظياً.
-                 </p>
-              </div>
-              
-              <div className="mt-12 flex gap-4 relative z-10">
-                 <Link href="/dashboard/reports" className="px-8 py-3.5 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-105 transition-all">تصدير التقارير</Link>
-                 <Link href="/dashboard/students" className="px-8 py-3.5 bg-white/5 text-white rounded-2xl font-black text-xs uppercase tracking-widest border border-white/5 hover:bg-white/10 transition-all">قاعدة البيانات</Link>
-              </div>
-           </div>
-
-           {/* Quick Stat - Bento Small */}
-           <div className="lg:col-span-4 glass-panel p-10 rounded-[3rem] border-white/5 flex flex-col justify-between relative overflow-hidden group">
-              <div className="absolute bottom-0 right-0 w-32 h-32 bg-emerald-500/5 blur-3xl transition-all group-hover:bg-emerald-500/10"></div>
-              <div>
-                 <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">إجمالي الطلاب</p>
-                 <h3 className="text-6xl font-black font-outfit tracking-tighter text-gradient">{counts.students}</h3>
-              </div>
-              <div className="mt-8">
-                 <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
-                    <div className="h-full bg-emerald-500 w-[75%] shadow-primary-glow"></div>
-                 </div>
-                 <p className="text-[9px] font-black text-primary mt-3 uppercase tracking-widest">Growth Rate: +12% this month</p>
-              </div>
-           </div>
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">أهلاً بك، {user?.displayName?.split(' ')[0] || 'المشرف'}</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">هنا تجد ملخصاً للحالة العامة والأنشطة الأخيرة.</p>
+          </div>
+          <div className="flex items-center gap-3">
+             <Link href="/dashboard/reports" className="enterprise-button">
+                تصدير التقارير
+             </Link>
+             <Link href="/dashboard/students" className="enterprise-button-secondary">
+                إضافة طالب
+             </Link>
+          </div>
         </div>
 
-        {/* Action Center - Bento Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-           <BentoAction href="/dashboard/recitation" icon="📖" label="التسميع" count={counts.students} color="emerald" />
-           <BentoAction href="/dashboard/attendance" icon="✅" label="التحضير" color="blue" />
-           <BentoAction href="/dashboard/tests" icon="📝" label="الاختبارات" color="rose" />
-           <BentoAction href="/dashboard/plans" icon="📅" label="الخطط" color="amber" />
-           <BentoAction href="/dashboard/visits" icon="🔭" label="الزيارات" count={counts.visits} color="purple" />
-           <BentoAction href="/dashboard/students" icon="👥" label="الطلاب" color="primary" />
+        {/* Overview Cards (Metrics) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+           
+           <div className="enterprise-card p-5 cursor-pointer hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between mb-4">
+                 <div className="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                    <Users className="w-5 h-5" />
+                 </div>
+                 <div className="flex items-center gap-1 text-green-600 text-sm font-semibold">
+                    <span>+12%</span>
+                    <TrendingUp className="w-4 h-4" />
+                 </div>
+              </div>
+              <h3 className="text-gray-500 dark:text-gray-400 text-sm font-semibold">إجمالي الطلاب</h3>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
+                 {isLoading ? '...' : counts.students}
+              </p>
+           </div>
+
+           <div className="enterprise-card p-5 cursor-pointer hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between mb-4">
+                 <div className="w-10 h-10 rounded-lg bg-emerald-50 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                    <GraduationCap className="w-5 h-5" />
+                 </div>
+              </div>
+              <h3 className="text-gray-500 dark:text-gray-400 text-sm font-semibold">المعلمون</h3>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
+                 {isLoading ? '...' : counts.teachers}
+              </p>
+           </div>
+
+           <div className="enterprise-card p-5 cursor-pointer hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between mb-4">
+                 <div className="w-10 h-10 rounded-lg bg-purple-50 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+                    <MapPin className="w-5 h-5" />
+                 </div>
+              </div>
+              <h3 className="text-gray-500 dark:text-gray-400 text-sm font-semibold">الحلقات النشطة</h3>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
+                 {isLoading ? '...' : counts.circles}
+              </p>
+           </div>
+
+           <div className="enterprise-card p-5 cursor-pointer hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between mb-4">
+                 <div className="w-10 h-10 rounded-lg bg-orange-50 dark:bg-orange-900/40 text-orange-600 dark:text-orange-400 flex items-center justify-center">
+                    <Eye className="w-5 h-5" />
+                 </div>
+              </div>
+              <h3 className="text-gray-500 dark:text-gray-400 text-sm font-semibold">الزيارات المسجلة</h3>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
+                 {isLoading ? '...' : counts.visits}
+              </p>
+           </div>
+
         </div>
 
-        {/* Bottom Section - Two Large Horizontal Bento Cards */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+        {/* Quick Actions Standard Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+           {quickActions.map((action, idx) => (
+             <Link key={idx} href={action.href} className="enterprise-card p-4 flex flex-col items-center justify-center text-center hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <action.icon className="w-6 h-6 text-gray-500 dark:text-gray-400 mb-2" />
+                <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{action.label}</span>
+             </Link>
+           ))}
+        </div>
+
+        {/* Bottom Section - Lists */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
            
-           {/* Insight Bento */}
-           <div className="glass-panel p-10 rounded-[3rem] border-white/5 relative group min-h-[400px]">
-              <div className="flex justify-between items-center mb-10">
-                 <h2 className="text-2xl font-black tracking-tight">نظرة عامة على الأداء</h2>
-                 <span className="bg-white/5 px-4 py-2 rounded-xl text-[10px] font-black uppercase text-slate-500 border border-white/5">System Insight</span>
+           {/* Performance Overview (Progress Bars) */}
+           <div className="enterprise-card p-6">
+              <div className="flex items-center justify-between mb-6">
+                 <h2 className="text-lg font-bold text-gray-900 dark:text-white">نظرة عامة على الأداء</h2>
+                 <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                    <MoreVertical className="w-5 h-5" />
+                 </button>
               </div>
               
-              <div className="space-y-8">
-                 <InsightMetric label="متوسط الحفظ اليومي" value="84%" progress={84} color="emerald" />
-                 <InsightMetric label="نسبة الحضور الأسبوعية" value="92%" progress={92} color="blue" />
-                 <InsightMetric label="معدل نجاح الاختبارات" value="78%" progress={78} color="rose" />
-                 <InsightMetric label="كفاءة الحلقات" value="89%" progress={89} color="amber" />
+              <div className="space-y-6">
+                 <ProgressRow label="متوسط الحفظ اليومي" value="84%" progress={84} color="bg-emerald-500" />
+                 <ProgressRow label="نسبة الحضور الأسبوعية" value="92%" progress={92} color="bg-blue-500" />
+                 <ProgressRow label="معدل نجاح الاختبارات" value="78%" progress={78} color="bg-purple-500" />
+                 <ProgressRow label="كفاءة الحلقات" value="89%" progress={89} color="bg-orange-500" />
               </div>
            </div>
 
-           {/* Activity Mini Feed / Global Alerts */}
-           <div className="glass-panel p-10 rounded-[3rem] border-white/5 flex flex-col">
-              <div className="flex justify-between items-center mb-10">
-                 <h2 className="text-2xl font-black tracking-tight">تنبيهات المنصة</h2>
-                 <div className="flex gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-primary-glow animate-pulse"></span>
-                    <span className="text-[10px] font-black uppercase text-emerald-500">Live Sync</span>
-                 </div>
+           {/* Recent Activity List */}
+           <div className="enterprise-card p-6 flex flex-col">
+              <div className="flex items-center justify-between mb-6">
+                 <h2 className="text-lg font-bold text-gray-900 dark:text-white">أحدث النشاطات</h2>
+                 <Link href="/dashboard/reports" className="text-sm text-blue-600 hover:underline">
+                    عرض الكل
+                 </Link>
               </div>
 
-              <div className="flex-1 space-y-6">
-                 <AlertRow icon="🔔" text="تم تحديث بيانات 12 طالب من تطبيق الموبايل" time="منذ دقيقتين" />
-                 <AlertRow icon="📊" text="تقرير الأداء الشهري جاهز للمراجعة" time="منذ ساعة" />
-                 <AlertRow icon="⚠️" text="حلقة (عاصم) لم تسجل الحضور اليوم" time="منذ ساعتين" color="rose" />
-                 <AlertRow icon="🏆" text="3 طلاب حققوا المركز الأول في الاختبارات" time="منذ 4 ساعات" />
+              <div className="flex-1 space-y-4">
+                 <ActivityRow 
+                   icon={<Bell className="w-4 h-4 text-blue-600" />} 
+                   bg="bg-blue-50 dark:bg-blue-900/20"
+                   text="تم تحديث بيانات 12 طالب" 
+                   time="منذ دقيقتين" 
+                 />
+                 <ActivityRow 
+                   icon={<Activity className="w-4 h-4 text-emerald-600" />} 
+                   bg="bg-emerald-50 dark:bg-emerald-900/20"
+                   text="تقرير الأداء الأسبوعي متوفر للتحميل" 
+                   time="منذ ساعة" 
+                 />
+                 <ActivityRow 
+                   icon={<CheckSquare className="w-4 h-4 text-rose-600" />} 
+                   bg="bg-rose-50 dark:bg-rose-900/20"
+                   text="حلقة (عاصم) لم تسجل الحضور اليوم" 
+                   time="منذ ساعتين" 
+                 />
+                 <ActivityRow 
+                   icon={<GraduationCap className="w-4 h-4 text-purple-600" />} 
+                   bg="bg-purple-50 dark:bg-purple-900/20"
+                   text="3 طلاب اجتازوا اختبار الأجزاء" 
+                   time="منذ 4 ساعات" 
+                 />
               </div>
-
-              <Link href="/dashboard/reports" className="w-full py-4 mt-8 bg-white/5 hover:bg-white/10 text-center rounded-2xl font-black text-xs uppercase tracking-widest text-slate-400 hover:text-white transition-all">عرض كافة النشاطات</Link>
            </div>
 
         </div>
@@ -161,59 +225,42 @@ export default function DashboardPage() {
   );
 }
 
-function BentoAction({ href, icon, label, count, color }: any) {
-  const colors: any = {
-    emerald: 'bg-emerald-500/10 text-emerald-500 ring-emerald-500/20',
-    blue: 'bg-blue-500/10 text-blue-500 ring-blue-500/20',
-    rose: 'bg-rose-500/10 text-rose-500 ring-rose-500/20',
-    amber: 'bg-amber-500/10 text-amber-500 ring-amber-500/20',
-    purple: 'bg-purple-500/10 text-purple-500 ring-purple-500/20',
-    primary: 'bg-primary/10 text-primary ring-primary/20',
-  }
-  return (
-    <Link href={href} className="glass-card p-6 rounded-[2.5rem] border-white/5 flex flex-col items-center justify-center text-center group hover:scale-[1.05] transition-all duration-500">
-       <div className={`w-14 h-14 ${colors[color]} rounded-3xl flex items-center justify-center text-2xl mb-4 ring-1 transition-transform group-hover:rotate-12`}>
-          {icon}
-       </div>
-       <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 transition-colors group-hover:text-white">{label}</span>
-       {count !== undefined && <span className="mt-2 text-xl font-black font-outfit tracking-tighter">{count}</span>}
-    </Link>
-  );
-}
+const quickActions = [
+  { href: '/dashboard/recitation', icon: BookOpen, label: 'التسميع' },
+  { href: '/dashboard/attendance', icon: CheckSquare, label: 'التحضير' },
+  { href: '/dashboard/tests', icon: ClipboardList, label: 'الاختبارات' },
+  { href: '/dashboard/plans', icon: Calendar, label: 'الخطط' },
+  { href: '/dashboard/visits', icon: Eye, label: 'الزيارات' },
+  { href: '/dashboard/students', icon: Users, label: 'الطلاب' },
+];
 
-function InsightMetric({ label, value, progress, color }: any) {
-  const colors: any = {
-    emerald: 'bg-emerald-500',
-    blue: 'bg-blue-500',
-    rose: 'bg-rose-500',
-    amber: 'bg-amber-500'
-  }
+function ProgressRow({ label, value, progress, color }: any) {
   return (
-    <div className="space-y-3">
-       <div className="flex justify-between items-end">
-          <span className="text-[11px] font-black text-slate-500 uppercase tracking-widest">{label}</span>
-          <span className="text-xl font-black font-outfit text-white">{value}</span>
+    <div>
+       <div className="flex justify-between items-center mb-1.5">
+          <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{label}</span>
+          <span className="text-sm font-bold text-gray-900 dark:text-white">{value}</span>
        </div>
-       <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-          <div className={`h-full ${colors[color]} shadow-lg`} style={{ width: `${progress}%` }}></div>
+       <div className="w-full h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div className={`h-full ${color} rounded-full`} style={{ width: `${progress}%` }}></div>
        </div>
     </div>
   );
 }
 
-function AlertRow({ icon, text, time, color }: any) {
+function ActivityRow({ icon, bg, text, time }: any) {
   return (
-    <div className="flex items-center justify-between group cursor-default">
-       <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">{icon}</div>
+    <div className="flex items-center justify-between group cursor-pointer p-2 -mx-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+       <div className="flex items-center gap-3">
+          <div className={`w-8 h-8 rounded-full ${bg} flex items-center justify-center shrink-0`}>
+             {icon}
+          </div>
           <div>
-             <p className={`text-xs font-bold ${color === 'rose' ? 'text-rose-400' : 'text-slate-300'}`}>{text}</p>
-             <p className="text-[10px] font-bold text-slate-600 uppercase tracking-tighter mt-1">{time}</p>
+             <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{text}</p>
+             <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{time}</p>
           </div>
        </div>
-       <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-          <svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" /></svg>
-       </div>
+       <ChevronLeft className="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
     </div>
   );
 }

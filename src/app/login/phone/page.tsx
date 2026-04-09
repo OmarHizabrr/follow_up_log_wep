@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { collection, query, where, getDocs, limit, doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import Link from 'next/link';
+import { Phone, ArrowRight, Lock } from 'lucide-react';
 
 export default function PhoneLoginPage() {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -49,69 +50,78 @@ export default function PhoneLoginPage() {
   };
 
   return (
-    <div className="auth-page-wrapper relative overflow-hidden bg-bg-main font-['Tajawal'] antialiased">
-      {/* Background Dynamics */}
-      <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] bg-primary/10 blur-[120px] rounded-full"></div>
-      
-      <div className="welcome-container glass-panel p-10 md:p-16 rounded-[3rem] border-white/5 animate-snappy relative z-10 shadow-2xl">
-        <div className="flex justify-start w-full mb-8">
-           <button onClick={() => router.back()} className="flex items-center gap-2 text-slate-500 hover:text-white transition-all font-bold text-sm group">
-              <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 12H5m7-7l-7 7 7 7" /></svg>
-              العودة للخلف
-           </button>
-        </div>
-
-        <div className="logo-container mb-8">
-          <img src="/images/logo/logo.png" alt="Logo" className="w-full h-full object-contain p-2" />
-        </div>
-
-        <h1 className="text-3xl md:text-4xl font-black text-gradient tracking-tight mb-4">الدخول بالهاتف</h1>
-        <p className="text-slate-500 font-bold mb-10 text-lg">يرجى إدخال بيانات الدخول الخاصة بك</p>
-
-        <div className="space-y-6 w-full text-right">
-          <div className="space-y-2">
-            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mr-2">رقم الهاتف</label>
-            <input 
-              type="tel" 
-              placeholder="+966 50 000 0000" 
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              className="w-full elite-input font-bold text-center tracking-widest"
-              dir="ltr"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mr-2">كلمة المرور</label>
-            <input 
-              type="password" 
-              placeholder="••••••••" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full elite-input font-bold text-center tracking-widest"
-              dir="ltr"
-            />
-          </div>
-          
-          <button 
-            onClick={handlePhoneLogin} 
-            disabled={isLoading || !phoneNumber || !password}
-            className="w-full primary-gradient py-5 rounded-2xl font-black text-white text-sm tracking-[0.2em] shadow-xl shadow-primary-glow hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 mt-4"
-          >
-            {isLoading ? 'جاري التحقق...' : 'تسجيل الدخول'}
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col items-center justify-center p-6 font-['Tajawal']" dir="rtl">
+      <div className="w-full max-w-md">
+        
+        <div className="mb-6">
+          <button onClick={() => router.back()} className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 dark:hover:text-gray-300 font-medium">
+            <ArrowRight className="w-4 h-4" />
+            العودة للخلف
           </button>
         </div>
 
-        {errorMsg && (
-          <div className="mt-8 p-4 bg-rose-500/10 border border-rose-500/20 rounded-xl text-rose-500 text-sm font-bold animate-snappy">
-            {errorMsg}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-8 text-center text-gray-900 dark:text-gray-100">
+          
+          <div className="mx-auto w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center p-1.5 mb-5">
+            <img src="/images/logo/logo.png" alt="Logo" className="w-full h-full object-contain filter brightness-0 invert" />
           </div>
-        )}
-      </div>
 
-      <footer className="absolute bottom-6 left-0 right-0 text-center">
-         <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.4em]">Integrated Secure Login System</p>
-      </footer>
+          <h1 className="text-xl font-bold mb-1">تسجيل الدخول</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">
+            أدخل رقم الجوال وكلمة المرور للوصول لحسابك
+          </p>
+
+          {errorMsg && (
+            <div className="mb-6 p-4 bg-red-50 text-red-600 border border-red-100 rounded-lg text-sm text-right">
+              {errorMsg}
+            </div>
+          )}
+
+          <div className="space-y-4 text-right">
+            <div className="space-y-1.5">
+              <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 block">
+                رقم الجوال
+              </label>
+              <input 
+                type="tel" 
+                placeholder="05XXXXXXXX" 
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow text-left"
+                dir="ltr"
+              />
+            </div>
+            
+            <div className="space-y-1.5">
+              <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 block">
+                كلمة المرور
+              </label>
+              <input 
+                type="password" 
+                placeholder="••••••••" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow text-left"
+                dir="ltr"
+              />
+            </div>
+
+            <button 
+              onClick={handlePhoneLogin} 
+              disabled={isLoading || !phoneNumber || !password}
+              className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-lg mt-2 transition-colors disabled:opacity-50"
+            >
+              {isLoading ? 'جاري التحقق...' : 'دخول للمنصة'}
+            </button>
+          </div>
+
+          <div className="mt-8 flex items-center justify-center gap-2 text-xs text-gray-500">
+            <Lock className="w-3 h-3" />
+            بياناتك مشفرة ومحمية بالكامل
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 }

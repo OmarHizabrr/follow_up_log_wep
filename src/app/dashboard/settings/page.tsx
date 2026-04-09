@@ -1,43 +1,178 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import DashboardLayout from '@/components/DashboardLayout';
-import Link from 'next/link';
+import { 
+  Settings as SettingsIcon, 
+  User, 
+  Shield, 
+  Database, 
+  Save, 
+  Globe, 
+  Smartphone,
+  LogOut
+} from 'lucide-react';
 
 export default function SettingsPage() {
+  const [activeTab, setActiveTab] = useState('profile');
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSave = () => {
+    setIsSaving(true);
+    setTimeout(() => setIsSaving(false), 1000);
+  };
+
+  const settingsTabs = [
+    { id: 'profile', name: 'الحساب الشخصي', icon: <User className="w-4 h-4" /> },
+    { id: 'security', name: 'الأمان والخصوصية', icon: <Shield className="w-4 h-4" /> },
+    { id: 'system', name: 'إعدادات النظام', icon: <SettingsIcon className="w-4 h-4" /> },
+    { id: 'data', name: 'قاعدة البيانات', icon: <Database className="w-4 h-4" /> },
+  ];
+
   return (
     <DashboardLayout>
-      <div className="animate-snappy">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div className="space-y-6">
+        
+        {/* Header Section */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
           <div>
-            <div className="flex items-center gap-2 text-slate-500 text-sm font-bold mb-3 uppercase tracking-widest">
-              <Link href="/dashboard" className="hover:text-primary transition-colors">لوحة التحكم</Link>
-              <span>/</span>
-              <span className="text-primary/80">تخصيص تجربة المنصة</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-black text-gradient tracking-tight">
-              الإعدادات العامة
-            </h1>
-            <p className="text-slate-500 mt-2 font-medium">إدارة تفضيلات الحساب، التنبيهات، وإعدادات النظام</p>
+            <h1 className="text-xl font-bold text-gray-900 dark:text-white">الإعدادات العامة</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">مركز التحكم والتفضيلات الشخصية والأمان.</p>
           </div>
+          <button 
+            onClick={handleSave}
+            disabled={isSaving}
+            className="enterprise-button min-w-[140px]"
+          >
+            {isSaving ? 'جاري الحفظ...' : 'حفظ التغييرات'}
+            {!isSaving && <Save className="w-4 h-4" />}
+          </button>
         </div>
 
-        <div className="glass-panel rounded-[2rem] p-20 text-center border-dashed border-white/10">
-          <div className="w-24 h-24 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-primary/20">
-            <svg className="w-12 h-12 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-            </svg>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+          
+          {/* Sidebar */}
+          <div className="md:col-span-3 enterprise-card overflow-hidden">
+             <div className="p-2 space-y-1">
+                {settingsTabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-colors ${activeTab === tab.id ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50'}`}
+                  >
+                    {tab.icon}
+                    {tab.name}
+                  </button>
+                ))}
+             </div>
+             
+             <div className="p-2 mt-4 border-t border-gray-100 dark:border-gray-700">
+                <button className="w-full flex items-center justify-between px-4 py-3 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg text-sm font-semibold transition-colors">
+                   <span>تسجيل الخروج</span>
+                   <LogOut className="w-4 h-4" />
+                </button>
+             </div>
           </div>
-          <h2 className="text-2xl font-black text-white mb-4">مركز الإعدادات الموحد</h2>
-          <p className="text-slate-500 max-w-md mx-auto leading-relaxed">
-            ستتمكن قريباً من تخصيص مظهر المنصة، إدارة الموظفين، وضبط صلاحيات الوصول في مكان واحد وبواجهة Elite عصرية.
-          </p>
-          <div className="mt-10">
-             <Link href="/dashboard" className="primary-gradient px-10 py-4 rounded-2xl font-black text-sm tracking-widest hover:scale-105 active:scale-95 transition-all inline-block shadow-xl shadow-primary-glow">
-                العودة للرئيسية
-             </Link>
+
+          {/* Main Content Area */}
+          <div className="md:col-span-9 enterprise-card p-6 min-h-[400px]">
+             
+             {activeTab === 'profile' && (
+               <div className="space-y-6">
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-100 dark:border-gray-700 pb-4">معلومات الحساب الشخصي</h2>
+                  
+                  <div className="flex items-center gap-4 mb-6">
+                     <div className="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center text-3xl font-bold text-gray-400 border border-gray-200 dark:border-gray-700">
+                        👨‍💻
+                     </div>
+                     <div>
+                        <button className="enterprise-button-secondary text-xs py-1.5">تغيير الصورة</button>
+                     </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                     <div className="space-y-1.5">
+                        <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                           <User className="w-4 h-4" /> مسمى العرض الكامل
+                        </label>
+                        <input className="enterprise-input" defaultValue="المشرف العام" />
+                     </div>
+                     <div className="space-y-1.5">
+                        <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                           <Globe className="w-4 h-4" /> البريد الإلكتروني
+                        </label>
+                        <input className="enterprise-input" defaultValue="admin@domain.com" />
+                     </div>
+                     <div className="space-y-1.5 md:col-span-2">
+                        <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                           <Smartphone className="w-4 h-4" /> رقم الهاتف المتصل
+                        </label>
+                        <input className="enterprise-input md:w-1/2 text-left" dir="ltr" defaultValue="05XXXXXXX" />
+                     </div>
+                  </div>
+               </div>
+             )}
+
+             {activeTab === 'security' && (
+               <div className="space-y-6">
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-100 dark:border-gray-700 pb-4">الأمان وكلمات المرور</h2>
+                  
+                  <div className="space-y-4">
+                     <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-xl flex items-center justify-between">
+                        <div>
+                           <h4 className="font-semibold text-gray-900 dark:text-white">كلمة المرور الحالية</h4>
+                           <p className="text-sm text-gray-500 mt-0.5">تم التغيير منذ شهرين</p>
+                        </div>
+                        <button className="enterprise-button-secondary">تغيير</button>
+                     </div>
+                     
+                     <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-xl flex items-center justify-between">
+                        <div>
+                           <h4 className="font-semibold text-gray-900 dark:text-white">المصادقة الثنائية (2FA)</h4>
+                           <p className="text-sm text-gray-500 mt-0.5">إضافة طبقة أمان إضافية مفعَّلة عبر الـ SMS</p>
+                        </div>
+                        <button className="px-3 py-1 bg-green-50 text-green-700 text-xs font-bold rounded">مفعل</button>
+                     </div>
+                  </div>
+               </div>
+             )}
+
+             {activeTab === 'system' && (
+               <div className="space-y-6">
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-100 dark:border-gray-700 pb-4">واجهة وتفضيلات النظام</h2>
+                  
+                  <div className="space-y-4">
+                     <div className="space-y-2">
+                        <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">مظهر النظام (النطاق اللوني)</label>
+                        <select className="enterprise-input w-full md:w-1/2">
+                           <option>الوضع الفاتح (Light Mode)</option>
+                           <option>الوضع الداكن (Dark Mode)</option>
+                           <option>تلقائي حسب الجوال</option>
+                        </select>
+                     </div>
+                  </div>
+               </div>
+             )}
+
+             {activeTab === 'data' && (
+               <div className="space-y-6 text-center py-10">
+                  <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                     <Database className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">استقرار قاعدة البيانات</h3>
+                  <p className="text-sm text-gray-500 max-w-md mx-auto mb-6">
+                     بيانات النظام تعمل بشكل متزامن وحي. يمكنك أخذ نسخة احتياطية محلية للسجلات.
+                  </p>
+                  <button className="enterprise-button-secondary mx-auto">
+                     إنشاء نسخة احتياطية
+                  </button>
+               </div>
+             )}
+
           </div>
+
         </div>
+
       </div>
     </DashboardLayout>
   );

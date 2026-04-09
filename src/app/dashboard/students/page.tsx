@@ -8,17 +8,22 @@ import {
   where, 
   getDocs, 
   doc, 
-  addDoc,
-  updateDoc,
   deleteDoc,
-  serverTimestamp,
   orderBy,
   Timestamp
 } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db, storage } from '@/lib/firebase';
+import { db } from '@/lib/firebase';
 import Link from 'next/link';
 import DashboardLayout from '@/components/DashboardLayout';
+import { 
+  Search, 
+  UserPlus, 
+  Edit3, 
+  Trash2, 
+  ChevronLeft,
+  MoreVertical,
+  UserCircle2
+} from 'lucide-react';
 
 interface Student {
   id: string;
@@ -36,15 +41,8 @@ export default function StudentsPage() {
   const [students, setStudents] = useState<Student[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [circles, setCircles] = useState<any[]>([]);
-  const [isSaving, setIsSaving] = useState(false);
   
-  const [currentStudent, setCurrentStudent] = useState<Student | null>(null);
-  const [formData, setFormData] = useState<any>({
-    displayName: '', educationalStage: 'ابتدائي', halaqaId: '', number: '', isActive: true
-  });
-
   const router = useRouter();
 
   useEffect(() => {
@@ -74,6 +72,17 @@ export default function StudentsPage() {
     }
   };
 
+  const handleDelete = async (id: string, name: string) => {
+    if (confirm(`هل أنت متأكد من حذف الطالب ${name}؟ لا يمكن التراجع عن هذا الإجراء.`)) {
+       try {
+         await deleteDoc(doc(db, 'users', id));
+         setStudents(prev => prev.filter(s => s.id !== id));
+       } catch (error) {
+         console.error("Error deleting student:", error);
+       }
+    }
+  };
+
   const filteredStudents = students.filter(s => 
     s.displayName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     s.number?.toString().includes(searchQuery)
@@ -81,94 +90,142 @@ export default function StudentsPage() {
 
   return (
     <DashboardLayout>
-      <div className="animate-snappy space-y-10">
+      <div className="space-y-6">
         
-        {/* Elite Secondary Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 py-6">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3 text-primary font-black text-[10px] uppercase tracking-[0.4em]">
-              <span className="w-12 h-[2px] bg-primary"></span>
-              Student Information System
-            </div>
-            <h1 className="text-4xl md:text-6xl font-black text-gradient tracking-tight">إدارة شؤون الطلاب</h1>
-            <p className="text-slate-500 font-bold max-w-lg text-sm leading-relaxed">
-               نظام موحد وشامل للتحكم في كافة بيانات الطلاب وملفاتهم التعليمية عبر المنصة.
-            </p>
+        {/* Header Section */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+          <div>
+            <h1 className="text-xl font-bold text-gray-900 dark:text-white">إدارة الطلاب</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">التحكم في سجل المعرفات، الحلقات، والمستويات التعليمية.</p>
           </div>
 
-          <div className="flex items-center gap-3">
-             <div className="relative glass-panel rounded-2xl border-white/5 overflow-hidden group">
+          <div className="flex flex-wrap items-center gap-3">
+             <div className="relative">
+                <Search className="w-5 h-5 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input 
-                  type="text" placeholder="بحث بالاسم أو الرقم..." 
-                  className="bg-transparent px-8 py-3.5 text-sm font-bold outline-none w-48 focus:w-80 transition-all placeholder:text-slate-600"
+                  type="text" 
+                  placeholder="البحث بالاسم أو الرقم..." 
+                  className="enterprise-input pr-10 w-full sm:w-64"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
              </div>
-             <button onClick={() => { setIsModalOpen(true); setCurrentStudent(null); }} className="primary-gradient px-10 py-4 rounded-[1.5rem] font-black text-xs uppercase tracking-widest shadow-xl shadow-primary-glow/20">
+             <button 
+               onClick={() => router.push('/dashboard/students/add')} 
+               className="enterprise-button"
+             >
+                <UserPlus className="w-4 h-4" />
                 طالب جديد
              </button>
           </div>
         </div>
 
-        {/* Student Grid - Bento-ish Compact Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-           {isLoading ? (
-             Array(9).fill(0).map((_, i) => <div key={i} className="h-40 glass-panel animate-pulse rounded-[2.5rem]"></div>)
-           ) : filteredStudents.length === 0 ? (
-             <div className="col-span-full py-40 text-center glass-panel rounded-[3rem] opacity-40 font-black uppercase text-xs tracking-widest">Global student database is empty or no match</div>
-           ) : (
-             filteredStudents.map(student => (
-               <div key={student.id} className="glass-card rounded-[2.5rem] p-8 border-white/5 relative group overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-3xl -mr-16 -mt-16 group-hover:bg-primary/10 transition-colors"></div>
-                  
-                  <div className="flex items-center gap-6 mb-8 relative z-10">
-                     <div className="w-16 h-16 rounded-[1.5rem] bg-white/5 border border-white/10 p-1 group-hover:scale-110 transition-transform duration-500 shadow-xl overflow-hidden">
-                        {student.photoURL ? (
-                           <img src={student.photoURL} alt="" className="w-full h-full object-cover" />
-                        ) : (
-                           <div className="w-full h-full bg-gradient-to-br from-primary/20 to-transparent flex items-center justify-center text-xl font-black text-gradient">
+        {/* Data Table */}
+        <div className="enterprise-card overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-right text-sm">
+              <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400">
+                <tr>
+                  <th className="px-6 py-4 font-semibold whitespace-nowrap">الطالب</th>
+                  <th className="px-6 py-4 font-semibold whitespace-nowrap">الرقم التعريفي</th>
+                  <th className="px-6 py-4 font-semibold whitespace-nowrap">المرحلة / الحلقة</th>
+                  <th className="px-6 py-4 font-semibold whitespace-nowrap">الحالة</th>
+                  <th className="px-6 py-4 font-semibold whitespace-nowrap text-left">إجراءات</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                {isLoading ? (
+                  Array(5).fill(0).map((_, i) => (
+                    <tr key={i} className="animate-pulse">
+                      <td className="px-6 py-4"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32"></div></td>
+                      <td className="px-6 py-4"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-16"></div></td>
+                      <td className="px-6 py-4"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24"></div></td>
+                      <td className="px-6 py-4"><div className="h-6 bg-gray-200 dark:bg-gray-700 rounded-full w-16"></div></td>
+                      <td className="px-6 py-4"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-12 ml-auto"></div></td>
+                    </tr>
+                  ))
+                ) : filteredStudents.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
+                      لا توجد بيانات مطابقة للبحث.
+                    </td>
+                  </tr>
+                ) : (
+                  filteredStudents.map(student => (
+                    <tr key={student.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          {student.photoURL ? (
+                            <img src={student.photoURL} alt="" className="w-8 h-8 rounded-full object-cover shrink-0" />
+                          ) : (
+                            <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0">
                               {student.displayName[0]}
-                           </div>
-                        )}
-                     </div>
-                     <div className="min-w-0">
-                        <h3 className="font-black text-xl truncate group-hover:text-primary transition-colors">{student.displayName}</h3>
-                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Student ID: {student.number}</p>
-                     </div>
-                  </div>
-
-                  <div className="flex items-center gap-3 mb-10">
-                     <span className="px-3 py-1.5 rounded-xl bg-white/5 border border-white/5 text-[9px] font-black uppercase text-slate-400">{student.educationalStage}</span>
-                     <span className={`px-3 py-1.5 rounded-xl bg-white/5 border border-white/5 text-[9px] font-black uppercase ${student.isActive ? 'text-primary' : 'text-rose-500'}`}>
-                        {student.isActive ? 'Active' : 'Archived'}
-                     </span>
-                  </div>
-
-                  <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
-                     <Link href={`/dashboard/students/${student.id}`} className="flex-1 py-3.5 bg-white/5 hover:bg-emerald-500/10 hover:text-emerald-500 border border-white/5 rounded-2xl flex items-center justify-center font-black text-[10px] uppercase tracking-widest transition-all">
-                        الملف الموحد
-                     </Link>
-                     <button className="p-3.5 bg-white/5 hover:bg-primary/20 hover:text-primary border border-white/5 rounded-2xl transition-all">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
-                     </button>
-                     <button onClick={() => handleDelete(student.id)} className="p-3.5 bg-white/5 hover:bg-rose-500/20 hover:text-rose-500 border border-white/5 rounded-2xl transition-all">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                     </button>
-                  </div>
-               </div>
-             ))
-           )}
+                            </div>
+                          )}
+                          <div className="font-semibold text-gray-900 dark:text-white truncate max-w-[200px]">
+                             {student.displayName}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-gray-600 dark:text-gray-300 font-mono text-xs">
+                        #{student.number}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex flex-col">
+                          <span className="text-gray-900 dark:text-gray-100 font-medium">{student.educationalStage}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold ${
+                          student.isActive 
+                            ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
+                            : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+                        }`}>
+                          {student.isActive ? 'نشط' : 'غير نشط'}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-left">
+                        <div className="flex items-center justify-end gap-2">
+                           <Link 
+                             href={`/dashboard/students/${student.id}`}
+                             className="p-1.5 text-gray-500hover:bg-blue-50 hover:text-blue-600 rounded-md transition-colors"
+                             title="عرض الملف"
+                           >
+                             <ChevronLeft className="w-4 h-4" />
+                           </Link>
+                           <button 
+                             className="p-1.5 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                             title="تعديل"
+                           >
+                             <Edit3 className="w-4 h-4" />
+                           </button>
+                           <button 
+                             onClick={() => handleDelete(student.id, student.displayName)}
+                             className="p-1.5 text-gray-500 hover:bg-red-50 hover:text-red-600 rounded-md transition-colors"
+                             title="حذف"
+                           >
+                             <Trash2 className="w-4 h-4" />
+                           </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+          
+          {/* Pagination Area (Mock) */}
+          <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+             <span>يعرض {filteredStudents.length} من السجلات</span>
+             <div className="flex gap-1">
+                <button className="px-3 py-1 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded disabled:opacity-50" disabled>السابق</button>
+                <button className="px-3 py-1 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded disabled:opacity-50" disabled>التالي</button>
+             </div>
+          </div>
         </div>
 
       </div>
     </DashboardLayout>
   );
-}
-
-const handleDelete = async (id: string) => {
-  if (confirm('هل أنت متأكد؟')) {
-     await deleteDoc(doc(db, 'users', id));
-     window.location.reload();
-  }
 }
