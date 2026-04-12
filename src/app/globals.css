@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -8,26 +8,39 @@
   --radius-2xl: 1rem;
 }
 
+/* International Platform Design Tokens */
 :root {
-  /* Google / Blue Corporate Accent */
+  /* Refined Primary Blue - Similar to Premium Global Brands */
   --p-h: 217; --p-s: 91%; --p-l: 60%;
   --primary: hsl(var(--p-h), var(--p-s), var(--p-l));
   --primary-hover: hsl(var(--p-h), var(--p-s), 50%);
+  --primary-glow: hsla(var(--p-h), var(--p-s), var(--p-l), 0.15);
   
-  --bg-main: #f3f4f6; /* gray-100 */
+  /* Neutral Palette - Strict Slate Scale */
+  --bg-main: #f8fafc;
   --bg-card: #ffffff;
-  --text-main: #111827; /* gray-900 */
-  --text-muted: #6b7280; /* gray-500 */
-  --border-color: #e5e7eb; /* gray-200 */
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+
+  /* Elevation Shadows - Refined for International Standard */
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.03), 0 1px 2px -1px rgb(0 0 0 / 0.03);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+  --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+  --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.08);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg-main: #111827; /* gray-900 */
-    --bg-card: #1f2937; /* gray-800 */
-    --text-main: #f9fafb; /* gray-50 */
-    --text-muted: #9ca3af; /* gray-400 */
-    --border-color: #374151; /* gray-700 */
+    --bg-main: #020617;
+    --bg-card: #0f172a;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: #1e293b;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.15);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.2);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.25), 0 4px 6px -4px rgb(0 0 0 / 0.25);
+    --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.35);
   }
 }
 
@@ -39,7 +52,7 @@
 }
 
 body {
-  font-family: 'Tajawal', sans-serif;
+  font-family: 'Cairo', sans-serif;
   background-color: var(--bg-main);
   color: var(--text-main);
   min-height: 100vh;
@@ -48,51 +61,57 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Base Enterprise Classes */
+/* Modern Platform Component System (Legacy compatibility while transitioning) */
 .enterprise-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 0.75rem;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
-  transition: box-shadow 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.enterprise-card:hover {
+  box-shadow: var(--shadow-md);
 }
 
 .enterprise-input {
-  background-color: var(--bg-main);
+  background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 0.5rem;
+  border-radius: 0.625rem;
   padding: 0.75rem 1rem;
   color: var(--text-main);
+  font-size: 0.875rem;
   font-weight: 500;
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
 }
 
 .enterprise-input:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); /* primary shadow */
+  box-shadow: 0 0 0 3px var(--primary-glow);
   outline: none;
 }
 
 .enterprise-button {
   background-color: var(--primary);
   color: white;
-  border-radius: 0.5rem;
-  padding: 0.625rem 1.5rem;
+  border-radius: 0.625rem;
+  padding: 0.75rem 1.5rem;
   font-weight: 700;
   font-size: 0.875rem;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  cursor: pointer;
+  border: none;
 }
 
 .enterprise-button:hover {
   background-color: var(--primary-hover);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--primary-glow);
 }
 
 .enterprise-button:active {
@@ -100,27 +119,27 @@ body {
 }
 
 .enterprise-button-secondary {
-  background-color: var(--bg-card);
+  background-color: var(--bg-main);
   color: var(--text-main);
   border: 1px solid var(--border-color);
-  border-radius: 0.5rem;
-  padding: 0.625rem 1.5rem;
+  border-radius: 0.625rem;
+  padding: 0.75rem 1.5rem;
   font-weight: 700;
   font-size: 0.875rem;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  cursor: pointer;
 }
 
 .enterprise-button-secondary:hover {
-  background-color: var(--bg-main);
+  background-color: var(--bg-card);
   border-color: var(--text-muted);
 }
 
-/* Custom Scrollbar Flat */
+/* Custom Scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -129,18 +148,32 @@ body {
   background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: #cbd5e1;
   border-radius: 10px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  background: #94a3b8;
 }
 
 @media (prefers-color-scheme: dark) {
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #4b5563;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #6b7280;
+    background: #334155;
   }
 }
+
+/* Typography Helpers */
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Utility Classes */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.dark .glass {
+  background: rgba(15, 23, 42, 0.7);
+}
+
