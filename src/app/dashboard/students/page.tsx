@@ -99,13 +99,13 @@ export default function StudentsPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-8 pb-12" dir="rtl">
+      <div className="space-y-4 sm:space-y-6 md:space-y-8 pb-8 sm:pb-12" dir="rtl">
         
         {/* Modern Header Section */}
-        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-8 md:p-10 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
+        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-5 sm:p-8 md:p-10 rounded-xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
           
-          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-12 lg:gap-20 text-right">
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6 sm:gap-10 lg:gap-16 text-right">
             <div className="space-y-4">
               <Badge variant="info" className="px-3 py-1 rounded-lg border-blue-100/50 text-[10px] font-black uppercase tracking-widest">
                 <Users className="w-3.5 h-3.5" />
@@ -121,7 +121,7 @@ export default function StudentsPage() {
             
             <Button 
               onClick={() => router.push('/dashboard/students/add')} 
-              className="h-11 px-6 rounded-xl bg-blue-600 hover:bg-blue-700 font-bold text-sm group gap-2"
+              className="w-full sm:w-auto shrink-0 group gap-2"
             >
               إضافة طالب جديد
               <UserPlus className="w-5 h-5 group-hover:rotate-12 transition-transform" />
@@ -130,7 +130,7 @@ export default function StudentsPage() {
         </div>
 
         {/* Search & Filter Bar */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 lg:gap-6">
            <div className="lg:col-span-4">
                <HalaqaFilter 
                 selectedId={selectedHalaqaId}
@@ -156,16 +156,16 @@ export default function StudentsPage() {
         </div>
 
         {/* Data Table */}
-        <Card className="overflow-hidden border-slate-200/70 dark:border-slate-800 rounded-2xl shadow-sm">
-          <div className="overflow-x-auto custom-scrollbar">
-            <table className="w-full text-right">
+        <Card className="overflow-hidden border-slate-200/70 dark:border-slate-800 shadow-sm">
+          <div className="overflow-x-auto custom-scrollbar -mx-px">
+            <table className="w-full min-w-[720px] text-right">
               <thead>
                 <tr className="bg-slate-50/50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-800">
-                  <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">ملف الطالب</th>
-                  <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">الرقم الأكاديمي</th>
-                  <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">نبض الإنجاز</th>
-                  <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">الحالة الإدارية</th>
-                  <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-left">التفاعل</th>
+                  <th className="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">ملف الطالب</th>
+                  <th className="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">الرقم الأكاديمي</th>
+                  <th className="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">نبض الإنجاز</th>
+                  <th className="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">الحالة الإدارية</th>
+                  <th className="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-left">التفاعل</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50 dark:divide-slate-800/40">
@@ -173,16 +173,16 @@ export default function StudentsPage() {
                   {isLoading ? (
                     Array(5).fill(0).map((_, i) => (
                       <tr key={i}>
-                        <td className="px-6 py-4"><div className="flex items-center gap-4"><Skeleton className="w-12 h-12 rounded-xl" /><div className="space-y-2"><Skeleton className="h-4 w-32 rounded" /><Skeleton className="h-3 w-20 rounded" /></div></div></td>
-                        <td className="px-6 py-4"><Skeleton className="h-9 w-24 rounded-xl" /></td>
-                        <td className="px-6 py-4"><Skeleton className="h-6 w-24 rounded-lg" /></td>
-                        <td className="px-6 py-4"><Skeleton className="h-9 w-28 rounded-xl" /></td>
-                        <td className="px-6 py-4"><Skeleton className="h-9 w-9 rounded-xl mr-auto" /></td>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4"><div className="flex items-center gap-4"><Skeleton className="w-12 h-12 rounded-xl" /><div className="space-y-2"><Skeleton className="h-4 w-32 rounded" /><Skeleton className="h-3 w-20 rounded" /></div></div></td>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4"><Skeleton className="h-9 w-24 rounded-xl" /></td>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4"><Skeleton className="h-6 w-24 rounded-lg" /></td>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4"><Skeleton className="h-9 w-28 rounded-xl" /></td>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4"><Skeleton className="h-9 w-9 rounded-xl mr-auto" /></td>
                       </tr>
                     ))
                   ) : filteredStudents.length === 0 ? (
                     <tr>
-                      <td colSpan={5} className="px-8 py-32 text-center">
+                      <td colSpan={5} className="px-4 sm:px-8 py-20 sm:py-32 text-center">
                         <div className="flex flex-col items-center gap-4 opacity-30">
                            <div className="w-24 h-24 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center">
                               <Database size={48} className="text-slate-200" />
@@ -200,7 +200,7 @@ export default function StudentsPage() {
                         animate={{ opacity: 1 }}
                         className="group hover:bg-slate-50 dark:hover:bg-white/[0.01] transition-colors cursor-pointer border-r-4 border-transparent hover:border-blue-600/40"
                       >
-                        <td className="px-6 py-4" onClick={() => router.push(`/dashboard/students/${student.id}`)}>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4" onClick={() => router.push(`/dashboard/students/${student.id}`)}>
                           <div className="flex items-center gap-5">
                             <div className="relative shrink-0">
                                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center font-black text-xl text-slate-400 group-hover:scale-110 transition-transform duration-500 shadow-inner">
@@ -216,10 +216,10 @@ export default function StudentsPage() {
                             </div>
                           </div>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-3 sm:px-6 py-3 sm:py-4">
                           <span className="text-[13px] font-black text-slate-600 dark:text-slate-400 family-mono border border-slate-100 dark:border-slate-800 px-4 py-2 rounded-2xl bg-slate-50/50 dark:bg-slate-900/40">#{student.number}</span>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-3 sm:px-6 py-3 sm:py-4">
                           <div className="flex flex-col gap-1">
                              <Badge variant="slate" className="px-3 py-1 rounded-lg border-none bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-bold text-[10px] uppercase tracking-widest w-fit">
                                {student.educationalStage || 'غير محدد'}
@@ -230,14 +230,14 @@ export default function StudentsPage() {
                              </div>
                           </div>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-3 sm:px-6 py-3 sm:py-4">
                            <Badge variant={student.isActive ? 'success' : 'slate'} className="px-5 py-2 rounded-2xl font-black text-[10px] uppercase tracking-widest gap-2 bg-white dark:bg-slate-900 border-2">
                               <span className={`w-1.5 h-1.5 rounded-full ${student.isActive ? 'bg-emerald-400 animate-pulse' : 'bg-slate-400'}`}></span>
                               {student.isActive ? 'مفعل' : 'معطل'}
                            </Badge>
                         </td>
-                        <td className="px-6 py-4">
-                           <div className="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <td className="px-3 sm:px-6 py-3 sm:py-4">
+                           <div className="flex items-center justify-end gap-2 sm:gap-3 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                               <Button 
                                 variant="ghost" 
                                 size="icon"

@@ -272,7 +272,7 @@ export default function StudentPlansPanel({ studentId, studentName }: { studentI
                           <p className="text-[9px] font-bold text-slate-400 uppercase mt-0.5">{plan.start_date} → {plan.end_date}</p>
                        </div>
                     </div>
-                    <Button variant="ghost" size="icon" onClick={() => setDeleteTarget(plan)} className="w-8 h-8 rounded-lg text-rose-500 opacity-0 group-hover:opacity-100">
+                    <Button variant="ghost" size="icon" onClick={() => setDeleteTarget(plan)} className="w-8 h-8 rounded-lg text-rose-500 opacity-100 md:opacity-0 md:group-hover:opacity-100">
                        <X size={14} />
                     </Button>
                  </div>

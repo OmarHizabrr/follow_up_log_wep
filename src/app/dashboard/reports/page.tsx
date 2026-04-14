@@ -379,7 +379,7 @@ export default function ReportsPage() {
             </Card>
 
             {/* Detailed Activity Feed */}
-           <Card className="xl:col-span-12 p-6 rounded-2xl border-slate-200/70 dark:border-slate-800 space-y-6">
+           <Card className="xl:col-span-12 p-4 sm:p-6 rounded-xl border-slate-200/70 dark:border-slate-800 space-y-5 sm:space-y-6">
                <div className="flex items-center justify-between">
                   <div className="space-y-2">
                      <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">سجل النشاط الإحصائي التفصيلي</h3>
@@ -389,14 +389,14 @@ export default function ReportsPage() {
                </div>
 
               <div className="overflow-x-auto custom-scrollbar">
-                 <table className="w-full text-right border-collapse">
+                 <table className="w-full min-w-[760px] text-right border-collapse">
                     <thead>
                        <tr className="border-b border-slate-50 dark:border-slate-800 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
-                          <th className="px-4 py-6 text-right">التاريخ</th>
-                          <th className="px-4 py-6 text-right">الطالب</th>
-                          <th className="px-4 py-6 text-right">النوع</th>
-                          <th className="px-4 py-6 text-right">المقدار</th>
-                          <th className="px-4 py-6 text-center">التقييم</th>
+                          <th className="px-3 sm:px-4 py-4 sm:py-6 text-right">التاريخ</th>
+                          <th className="px-3 sm:px-4 py-4 sm:py-6 text-right">الطالب</th>
+                          <th className="px-3 sm:px-4 py-4 sm:py-6 text-right">النوع</th>
+                          <th className="px-3 sm:px-4 py-4 sm:py-6 text-right">المقدار</th>
+                          <th className="px-3 sm:px-4 py-4 sm:py-6 text-center">التقييم</th>
                        </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-50 dark:divide-slate-800/40">
@@ -408,15 +408,15 @@ export default function ReportsPage() {
                          <tr><td colSpan={5} className="py-24 text-center text-slate-300 font-bold family-cairo">لا توجد بيانات مسجلة في هذا النطاق الزمني</td></tr>
                        ) : stats.recitations.slice(0, 10).map((r, i) => (
                          <tr key={i} className="hover:bg-slate-50/50 dark:hover:bg-slate-900/20 transition-all group">
-                            <td className="px-4 py-5 text-[11px] font-black text-slate-400 family-mono tracking-widest">{r.date}</td>
-                            <td className="px-4 py-5 font-bold text-slate-900 dark:text-white text-sm tracking-tight">{r.student_name}</td>
-                            <td className="px-4 py-5">
+                            <td className="px-3 sm:px-4 py-4 sm:py-5 text-[11px] font-black text-slate-400 family-mono tracking-widest">{r.date}</td>
+                            <td className="px-3 sm:px-4 py-4 sm:py-5 font-bold text-slate-900 dark:text-white text-sm tracking-tight">{r.student_name}</td>
+                            <td className="px-3 sm:px-4 py-4 sm:py-5">
                                <Badge variant={r.type === 'memorization' ? 'info' : 'slate'} className="text-[10px] px-2 py-0.5 rounded-lg border-none uppercase font-black tracking-widest">
                                   {r.type === 'memorization' ? 'حفظ' : 'مراجعة'}
                                </Badge>
                             </td>
-                            <td className="px-4 py-5 text-sm font-bold text-slate-600 dark:text-slate-400">{r.amount}</td>
-                            <td className="px-4 py-5 text-center transition-transform group-hover:scale-110">
+                            <td className="px-3 sm:px-4 py-4 sm:py-5 text-sm font-bold text-slate-600 dark:text-slate-400">{r.amount}</td>
+                            <td className="px-3 sm:px-4 py-4 sm:py-5 text-center transition-transform group-hover:scale-110">
                                <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 mx-auto flex items-center justify-center font-black text-xs text-blue-600">
                                   {r.rating || r.grade_enum || '-'}
                                </div>

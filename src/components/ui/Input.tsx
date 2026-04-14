@@ -13,9 +13,9 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, icon: Icon, sizeVariant = 'lg', className = '', ...props }, ref) => {
     const sizes = {
-      sm: 'h-10 text-xs px-4',
-      md: 'h-12 text-sm px-5',
-      lg: 'h-14 text-sm px-5',
+      sm: 'h-9 text-xs px-3.5',
+      md: 'h-10 text-sm px-4',
+      lg: 'h-11 text-sm px-4',
     };
 
     const iconPadding = {
@@ -54,11 +54,11 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             className={`
               w-full bg-white dark:bg-slate-900 
               border border-slate-200 dark:border-slate-700 
-              rounded-xl transition-colors
+              rounded-lg transition-colors
               ${sizes[sizeVariant]}
               ${iconPadding[sizeVariant]}
-              font-semibold
-              focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 focus:outline-none
+              font-medium
+              focus:ring-2 focus:ring-blue-500/15 focus:border-blue-500/80 focus:outline-none
               disabled:opacity-50 disabled:bg-slate-50
               ${error ? 'border-red-500 focus:ring-red-500/5 focus:border-red-500' : ''}
               ${className}

@@ -339,10 +339,10 @@ export default function UsersManagementPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-8 pb-12">
+      <div className="space-y-4 sm:space-y-6 md:space-y-8 pb-8 sm:pb-12">
         
         {/* Header Section */}
-        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-8 md:p-10 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
+        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-5 sm:p-8 md:p-10 rounded-xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
           
           <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
@@ -359,7 +359,7 @@ export default function UsersManagementPage() {
             
             <Button 
               onClick={() => router.push('/dashboard/users/add')}
-              className="h-11 px-6 rounded-xl bg-blue-600 hover:bg-blue-700 text-sm font-bold gap-2"
+              className="w-full sm:w-auto gap-2"
             >
               <UserPlus className="w-5 h-5" />
               إضافة مستخدم جديد
@@ -368,7 +368,7 @@ export default function UsersManagementPage() {
         </div>
 
         {/* Quick Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
            <StatCard title="إجمالي المستخدمين" value={stats.total} icon={Users} color="blue" />
            <StatCard title="الطلاب المقيدين" value={stats.students} icon={GraduationCap} color="emerald" />
            <StatCard title="كادر المعلمين" value={stats.teachers} icon={School} color="amber" />
@@ -376,14 +376,14 @@ export default function UsersManagementPage() {
         </div>
 
         {/* Search and Filters Bar */}
-        <div className="flex flex-col xl:flex-row gap-4 items-center justify-between bg-white dark:bg-[#0f172a] p-4 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
+        <div className="flex flex-col xl:flex-row gap-4 items-center justify-between bg-white dark:bg-[#0f172a] p-4 rounded-xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
            <div className="relative w-full xl:max-w-md group">
               <Search className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
               <input 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="البحث بالاسم، الرقم، أو الجوال..." 
-                className="w-full h-11 pr-12 pl-4 bg-slate-50/50 dark:bg-slate-900/50 border border-slate-200/70 dark:border-slate-800/70 rounded-xl font-semibold text-sm outline-none focus:border-blue-600/20 focus:bg-white dark:focus:bg-slate-900 transition-all"
+                className="w-full h-11 pr-12 pl-4 bg-slate-50/50 dark:bg-slate-900/50 border border-slate-200/70 dark:border-slate-800/70 rounded-lg font-medium text-sm outline-none focus:border-blue-600/20 focus:bg-white dark:focus:bg-slate-900 transition-all"
               />
            </div>
 
@@ -403,7 +403,7 @@ export default function UsersManagementPage() {
               <Button 
                 variant="outline" 
                 onClick={() => setShowFilters(!showFilters)}
-                className={`h-11 px-5 rounded-2xl border-slate-200 dark:border-slate-800 text-xs font-bold gap-2 ${showFilters ? 'bg-blue-50 border-blue-200 text-blue-600' : ''}`}
+                className={`h-10 px-5 border-slate-200 dark:border-slate-800 text-xs font-semibold gap-2 ${showFilters ? 'bg-blue-50 border-blue-200 text-blue-600' : ''}`}
               >
                 <Filter className="w-4 h-4" />
                 تصفية متقدمة
@@ -417,7 +417,7 @@ export default function UsersManagementPage() {
                     setActiveRoleFilter('all');
                     setSearchTerm('');
                   }}
-                  className="h-11 px-4 rounded-2xl text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/10 text-xs font-bold gap-2"
+                  className="h-10 px-4 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/10 text-xs font-semibold gap-2"
                 >
                   <FilterX className="w-4 h-4" />
                   مسح
@@ -427,17 +427,17 @@ export default function UsersManagementPage() {
         </div>
 
         {/* Users Table */}
-        <div className="bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm overflow-hidden text-right" dir="rtl">
+        <div className="bg-white dark:bg-[#0f172a] rounded-xl border border-slate-200/70 dark:border-slate-800 shadow-sm overflow-hidden text-right" dir="rtl">
            <div className="overflow-x-auto custom-scrollbar">
-              <table className="w-full border-collapse">
+              <table className="w-full min-w-[860px] border-collapse">
                  <thead>
                     <tr className="border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 text-right">
-                       <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">المستخدم</th>
-                       <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">النوع / الرقم</th>
-                       <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">الحلقة / التبعية</th>
-                       <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">الجوال</th>
-                       <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">الحالة</th>
-                       <th className="px-6 py-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">خيارات</th>
+                       <th className="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">المستخدم</th>
+                       <th className="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">النوع / الرقم</th>
+                       <th className="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">الحلقة / التبعية</th>
+                       <th className="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">الجوال</th>
+                       <th className="px-3 sm:px-6 py-3 sm:py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">الحالة</th>
+                       <th className="px-3 sm:px-6 py-3 sm:py-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">خيارات</th>
                     </tr>
                  </thead>
                  <tbody className="divide-y divide-slate-50 dark:divide-slate-800/50">
@@ -453,7 +453,7 @@ export default function UsersManagementPage() {
                              key={user.id} 
                              className="group hover:bg-slate-50/50 dark:hover:bg-slate-900/20 transition-colors"
                            >
-                              <td className="px-6 py-4" onClick={() => { setSelectedUser(user); setIsProfileModalOpen(true); }}>
+                              <td className="px-3 sm:px-6 py-3 sm:py-4" onClick={() => { setSelectedUser(user); setIsProfileModalOpen(true); }}>
                                  <div className="flex items-center gap-4">
                                     <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 flex items-center justify-center text-slate-500 font-bold text-lg border-2 border-white dark:border-slate-800 shadow-sm overflow-hidden shrink-0">
                                        {user.photoURL ? (
@@ -471,13 +471,13 @@ export default function UsersManagementPage() {
                                     </div>
                                  </div>
                               </td>
-                              <td className="px-6 py-4">
+                              <td className="px-3 sm:px-6 py-3 sm:py-4">
                                  <div className="flex flex-col gap-1">
                                     {getUserTypeBadge(user.type)}
                                     <span className="text-[10px] font-black text-slate-300"># {user.number || '---'}</span>
                                  </div>
                               </td>
-                              <td className="px-6 py-4">
+                              <td className="px-3 sm:px-6 py-3 sm:py-4">
                                  <div className="flex flex-col gap-2">
                                     <Badge variant="slate" className="px-3 py-1 rounded-lg border-slate-200 dark:border-slate-800 text-[10px] font-bold">
                                        {user.type === 'student' ? (user.halaqaName || '---') : (user.type === 'halaqa' ? 'مركز إداري' : 'كادر تعليمي')}
@@ -490,12 +490,12 @@ export default function UsersManagementPage() {
                                     )}
                                  </div>
                               </td>
-                              <td className="px-6 py-4">
+                              <td className="px-3 sm:px-6 py-3 sm:py-4">
                                  <p className="text-[11px] font-bold text-slate-500 dark:text-slate-400 tracking-wider">
                                     {user.phoneNumber || '--'}
                                  </p>
                               </td>
-                              <td className="px-6 py-4">
+                              <td className="px-3 sm:px-6 py-3 sm:py-4">
                                  {user.status !== 'inactive' ? (
                                    <div className="flex items-center gap-2 text-emerald-500">
                                       <CheckCircle2 size={14} />
@@ -508,7 +508,7 @@ export default function UsersManagementPage() {
                                    </div>
                                  )}
                               </td>
-                              <td className="px-6 py-4">
+                              <td className="px-3 sm:px-6 py-3 sm:py-4">
                                  <div className="flex items-center justify-center gap-2">
                                     <Button onClick={() => router.push(`/dashboard/users/${user.id}/edit`)} variant="ghost" size="icon" className="w-9 h-9 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/20">
                                        <Edit size={16} />
@@ -536,7 +536,7 @@ export default function UsersManagementPage() {
                          ))
                        ) : (
                          <tr>
-                            <td colSpan={6} className="px-8 py-32 text-center">
+                            <td colSpan={6} className="px-4 sm:px-8 py-20 sm:py-32 text-center">
                                <div className="flex flex-col items-center gap-6 max-w-sm mx-auto">
                                   <div className="w-20 h-20 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[2rem] flex items-center justify-center text-slate-300">
                                      <FilterX size={40} />
@@ -559,13 +559,13 @@ export default function UsersManagementPage() {
         {/* PROFILE MODAL (MOBILE PARITY) */}
         <AnimatePresence>
           {isProfileModalOpen && selectedUser && (
-            <div className="fixed inset-0 z-[150] flex items-center justify-center p-6">
+            <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 sm:p-6 pt-[max(1rem,env(safe-area-inset-top,0px))] pb-[max(1rem,env(safe-area-inset-bottom,0px))]">
                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-slate-900/60 backdrop-blur-md" onClick={() => setIsProfileModalOpen(false)} />
                <motion.div 
                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
                  animate={{ opacity: 1, scale: 1, y: 0 }}
                  exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                 className="relative w-full max-w-2xl bg-white dark:bg-[#0f172a] rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800 text-right"
+                 className="relative w-full max-w-2xl bg-white dark:bg-[#0f172a] rounded-2xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-800 text-right max-h-[min(88dvh,calc(100dvh-1.5rem))] flex flex-col"
                  dir="rtl"
                >
                   <div className="relative h-44 bg-gradient-to-br from-blue-600 to-indigo-700">
@@ -590,13 +590,13 @@ export default function UsersManagementPage() {
                      </div>
                   </div>
 
-                  <div className="pt-20 px-10 pb-10 space-y-8 h-[60vh] overflow-y-auto custom-scrollbar">
+                  <div className="pt-20 px-4 sm:px-8 lg:px-10 pb-6 sm:pb-10 space-y-8 overflow-y-auto custom-scrollbar min-h-0 flex-1">
                      <section className="space-y-4">
                         <h3 className="text-[11px] font-black text-blue-500 uppercase tracking-[0.2em] flex items-center gap-2">
                            <BadgeInfo size={16} />
                            المعلومات الأساسية
                         </h3>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                            <InfoItem label="البريد الإلكتروني" value={selectedUser.email} icon={Mail} />
                            <InfoItem label="رقم الجوال" value={selectedUser.phoneNumber} icon={Phone} />
                            <InfoItem label="المرحلة الدراسية" value={selectedUser.educationalStage} icon={GraduationCap} />
@@ -609,7 +609,7 @@ export default function UsersManagementPage() {
                            <Fingerprint size={16} />
                            بيانات الهوية والعمل
                         </h3>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                            <InfoItem label="رقم الهوية" value={selectedUser.identityNumber} icon={Shield} />
                            <InfoItem label="المسمى الوظيفي" value={selectedUser.jobTitle || '---'} icon={Briefcase} />
                            <InfoItem label="الحلقة المسندة" value={selectedUser.halaqaName} icon={Users2} />
@@ -645,7 +645,7 @@ export default function UsersManagementPage() {
           title={isEditMode ? 'تعديل بيانات المستخدم' : 'إضافة عضو جديد للنظام'}
         >
           <form onSubmit={handleSubmit} className="space-y-6 pt-4" dir="rtl">
-             <div className="grid grid-cols-2 gap-4">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">نوع العضوية</label>
                    <SearchableSelect
@@ -703,7 +703,7 @@ export default function UsersManagementPage() {
                     />
                  </div>
 
-             <div className="grid grid-cols-2 gap-4">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">المسمى الوظيفي (للمعلمين)</label>
                    <Input 
@@ -783,11 +783,11 @@ export default function UsersManagementPage() {
                 />
              </div>
 
-             <div className="flex gap-4 pt-6">
+             <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 pt-6">
                 <Button 
                    type="submit" 
                    disabled={isSaving}
-                   className="flex-1 h-14 rounded-2xl bg-blue-600 hover:bg-blue-700 font-black text-base shadow-lg shadow-blue-500/10 transition-all active:scale-[0.98]"
+                   className="flex-1 h-11 sm:h-12 bg-blue-600 hover:bg-blue-700 font-bold text-sm sm:text-base shadow-sm"
                 >
                    {isSaving ? 'جاري الحفظ...' : isEditMode ? 'تحديث البيانات' : 'حفظ ونشر الحساب'}
                 </Button>
@@ -795,7 +795,7 @@ export default function UsersManagementPage() {
                    type="button" 
                    variant="outline"
                    onClick={() => { setIsAddModalOpen(false); resetForm(); }}
-                   className="h-14 px-8 rounded-2xl font-bold text-sm"
+                   className="h-11 sm:h-12 px-6 sm:px-8 font-semibold text-sm"
                 >
                    إلغاء
                 </Button>

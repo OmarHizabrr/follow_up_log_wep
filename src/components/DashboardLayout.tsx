@@ -103,8 +103,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const allowedRoutes = getAllowedRoutes(user);
   const navLinks = allNavLinks.filter((link) => allowedRoutes.includes(link.href));
 
+  const navItemActive =
+    'bg-blue-50 dark:bg-blue-950/35 text-blue-700 dark:text-blue-200 ring-1 ring-inset ring-blue-200/80 dark:ring-blue-800/50 shadow-sm';
+  const navItemInactive =
+    'text-slate-600 dark:text-slate-400 hover:bg-slate-100/90 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white';
+
   return (
-    <div className="web-density min-h-screen bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-slate-100 font-['Cairo'] antialiased selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden" dir="rtl">
+    <div className="web-density min-h-screen min-h-[100dvh] bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-slate-100 font-['Cairo'] antialiased selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden" dir="rtl">
       
       {/* Sidebar - Desktop */}
       <motion.aside 
@@ -152,26 +157,28 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             const Icon = link.icon;
             return (
               <Link key={link.href} href={link.href} className="block">
-                <div className={`group flex items-center rounded-2xl transition-all duration-300 relative ${
-                  isActive 
-                    ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/25' 
-                    : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'
-                } ${isCollapsed ? 'h-14 w-14 justify-center mx-auto' : 'px-4 py-3.5'}`}>
+                <div
+                  className={`group flex items-center rounded-xl transition-colors duration-200 relative ${
+                    isActive ? navItemActive : navItemInactive
+                  } ${isCollapsed ? 'h-12 w-12 justify-center mx-auto' : 'px-3 py-2.5'}`}
+                >
                   
-                  <div className={`flex items-center justify-center shrink-0 transition-all duration-300 ${
-                    isCollapsed ? 'w-full h-full' : 'w-9 h-9 ml-3.5 rounded-2xl'
-                  } ${
-                    isActive 
-                      ? isCollapsed ? '' : 'bg-white/15 text-white scale-110' 
-                      : 'text-slate-400 group-hover:text-blue-500'
-                  }`}>
-                    <Icon className={isCollapsed ? 'w-6 h-6' : 'w-4.5 h-4.5'} />
+                  <div
+                    className={`flex items-center justify-center shrink-0 transition-colors duration-200 ${
+                      isCollapsed ? 'w-full h-full' : 'w-9 h-9 ml-3 rounded-xl'
+                    } ${
+                      isActive
+                        ? 'text-blue-600 dark:text-blue-300'
+                        : 'text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400'
+                    }`}
+                  >
+                    <Icon className={isCollapsed ? 'w-5 h-5' : 'w-[18px] h-[18px]'} />
                   </div>
 
-                  {!isCollapsed && <span className="text-sm font-bold tracking-tight whitespace-nowrap">{link.name}</span>}
+                  {!isCollapsed && <span className="text-sm font-semibold tracking-tight whitespace-nowrap">{link.name}</span>}
                   
                   {isActive && !isCollapsed && (
-                    <motion.div layoutId="active-nav" className="w-1.5 h-1.5 rounded-full bg-white/60 mr-auto"></motion.div>
+                    <div className="w-1 h-4 rounded-full bg-blue-500/70 mr-auto shrink-0" aria-hidden />
                   )}
 
                   {/* Tooltip for collapsed mode */}
@@ -230,15 +237,15 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
       </motion.aside>
 
-      {/* Main Content Area */}
-      <motion.div 
-        animate={{ paddingRight: isCollapsed ? 88 : 264 }}
-        transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
-        className="flex flex-col min-h-screen bg-slate-50 dark:bg-[#020617]"
+      {/* Main: sidebar offset فقط من lg فما فوق — على الموبايل لا يُضاف pr حتى لا يضيق المحتوى */}
+      <div
+        className={`flex flex-col min-h-screen min-h-[100dvh] bg-slate-50 dark:bg-[#020617] transition-[padding-inline-end] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+          isCollapsed ? 'lg:pr-[5.5rem]' : 'lg:pr-[16.5rem]'
+        }`}
       >
         
         {/* Top Header */}
-        <header className="sticky top-0 z-40 h-16 bg-white/95 dark:bg-[#020617]/95 backdrop-blur border-b border-slate-200/70 dark:border-slate-800 flex items-center justify-between px-5 lg:px-8 shrink-0">
+        <header className="sticky top-0 z-40 min-h-14 h-16 bg-white/92 dark:bg-[#020617]/92 backdrop-blur-md supports-[backdrop-filter]:bg-white/80 dark:supports-[backdrop-filter]:bg-[#020617]/80 border-b border-slate-200/60 dark:border-slate-800/80 flex items-center justify-between px-4 sm:px-5 lg:px-8 shrink-0 pt-[env(safe-area-inset-top,0px)] ps-[max(1rem,env(safe-area-inset-left,0px))] pe-[max(1rem,env(safe-area-inset-right,0px))]">
            
             <div className="flex items-center gap-8 flex-1">
               <button 
@@ -274,7 +281,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <div className="flex items-center gap-3">
                 <button className="w-10 h-10 flex items-center justify-center text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl relative transition-all active:scale-95 group">
                    <Bell className="w-5.5 h-5.5" />
-                   <span className="absolute top-3 right-3 w-2.5 h-2.5 bg-blue-500 border-2 border-white dark:border-[#020617] rounded-full shadow-lg shadow-blue-500/40 animate-bounce"></span>
+                   <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-blue-500 border-2 border-white dark:border-[#020617] rounded-full shadow-sm" aria-hidden />
                 </button>
                 
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-300 font-bold text-sm border border-slate-200 dark:border-slate-800 cursor-pointer hover:shadow-md transition-all active:scale-95">
@@ -285,7 +292,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </header>
 
         {/* Page Content Viewport */}
-        <main className="flex-1 p-4 lg:p-6 overflow-y-auto">
+        <main className="flex-1 p-3 sm:p-4 lg:p-6 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] overflow-y-auto overflow-x-hidden">
            <AnimatePresence mode="wait">
              <motion.div 
                key={pathname}
@@ -299,7 +306,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
              </motion.div>
            </AnimatePresence>
         </main>
-      </motion.div>
+      </div>
 
       {/* Mobile Drawer */}
       <AnimatePresence>
@@ -318,10 +325,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 40, stiffness: 450 }}
-              className="relative w-80 h-full bg-white dark:bg-[#0f172a] flex flex-col shadow-2xl"
+              className="relative w-[min(20rem,calc(100vw-2.5rem))] max-w-[90vw] h-full bg-white dark:bg-[#0f172a] flex flex-col shadow-2xl border-e border-slate-200/60 dark:border-slate-800 pt-[env(safe-area-inset-top,0px)]"
             >
                 {/* Mobile Drawer Header */}
-                 <div className="h-24 flex items-center justify-between px-8 border-b border-slate-100 dark:border-slate-800">
+                 <div className="min-h-16 h-20 flex items-center justify-between px-5 sm:px-6 border-b border-slate-100 dark:border-slate-800 shrink-0">
                    <div className="flex items-center gap-3.5">
                       <div className="w-10 h-10 rounded-2xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
                         <img src="/images/logo/logo.png" alt="Logo" className="w-5.5 h-5.5 object-contain filter brightness-0 invert" />
@@ -336,24 +343,26 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                    </button>
                  </div>
 
-                 <div className="flex-1 overflow-y-auto p-6 space-y-2">
+                 <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-1">
                    {navLinks.map((link) => {
                      const isActive = pathname === link.href;
                      const Icon = link.icon;
                      return (
                        <Link key={link.href} href={link.href} onClick={() => setIsSidebarOpen(false)}>
-                         <div className={`flex items-center gap-4 px-5 py-4.5 rounded-2xl transition-all ${
-                           isActive ? 'bg-blue-600 text-white shadow-2xl shadow-blue-500/20' : 'text-slate-600 dark:text-slate-400'
-                         }`}>
-                           <Icon size={20} className={isActive ? 'text-white' : 'text-slate-400'} />
-                           <span className="text-[15px] font-bold tracking-tight">{link.name}</span>
+                         <div
+                           className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
+                             isActive ? navItemActive : `${navItemInactive} active:scale-[0.99]`
+                           }`}
+                         >
+                           <Icon size={20} className={isActive ? 'text-blue-600 dark:text-blue-300' : 'text-slate-400'} />
+                           <span className="text-[15px] font-semibold tracking-tight">{link.name}</span>
                          </div>
                        </Link>
                      );
                    })}
                  </div>
 
-                 <div className="p-6 border-t border-slate-100 dark:border-slate-800">
+                 <div className="p-4 sm:p-5 border-t border-slate-100 dark:border-slate-800 pb-[max(1rem,env(safe-area-inset-bottom,0px))]">
                     <Button 
                       onClick={handleLogout}
                       variant="danger"
