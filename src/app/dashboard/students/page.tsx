@@ -249,6 +249,7 @@ export default function StudentsPage() {
                               <Button 
                                 variant="ghost" 
                                 size="icon"
+                                onClick={() => router.push(`/dashboard/students/${student.id}/edit`)}
                                 className="w-10 h-10 rounded-2xl text-slate-400 hover:text-blue-600 hover:bg-blue-50"
                               >
                                 <Edit3 size={16} />

@@ -307,10 +307,10 @@ export default function TestsPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-10 pb-16">
+      <div className="space-y-8 pb-16">
         
         {/* Header */}
-        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-12 md:p-16 rounded-[2.5rem] border border-slate-200/60 dark:border-slate-800 shadow-sm transition-all group">
+        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-8 md:p-10 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-indigo-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
           <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-12">
             <div className="space-y-4">
@@ -318,7 +318,7 @@ export default function TestsPage() {
                 <Sparkles className="w-3.5 h-3.5" />
                 مركز التقييم السحابي المركزي
               </Badge>
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight family-cairo">
+              <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight family-cairo">
                 إدارة الاختبارات والنتائج
               </h1>
               <p className="text-slate-500 dark:text-slate-400 text-sm font-medium leading-relaxed max-w-2xl">
@@ -336,7 +336,7 @@ export default function TestsPage() {
            
            {/* Sidebar */}
            <div className="xl:col-span-4 xl:sticky xl:top-28 space-y-6">
-              <Card className="p-4 space-y-6 border-slate-200/60 dark:border-slate-800 h-[750px] flex flex-col overflow-hidden">
+              <Card className="p-4 space-y-6 border-slate-200/70 dark:border-slate-800 h-[750px] flex flex-col overflow-hidden rounded-2xl">
                 <div className="space-y-4">
                    <div className="flex items-center justify-between px-1">
                       <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
@@ -453,7 +453,7 @@ export default function TestsPage() {
                  initial={{ opacity: 0, scale: 0.9, y: 50 }}
                  animate={{ opacity: 1, scale: 1, y: 0 }}
                  exit={{ opacity: 0, scale: 0.9, y: 50 }}
-                 className={`relative bg-white dark:bg-[#0f172a] rounded-[2.5rem] shadow-2xl w-full overflow-hidden border border-slate-200/60 dark:border-slate-800 ${isLiveSession ? 'max-w-4xl h-[90vh]' : 'max-w-xl'}`}
+                 className={`relative bg-white dark:bg-[#0f172a] rounded-2xl shadow-lg w-full overflow-hidden border border-slate-200/70 dark:border-slate-800 ${isLiveSession ? 'max-w-4xl h-[90vh]' : 'max-w-xl'}`}
                >
                  {/* Modal Header */}
                  <div className="px-8 py-6 bg-slate-50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center relative z-10">

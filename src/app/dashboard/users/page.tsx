@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
 import { 
   Users, 
@@ -66,6 +67,7 @@ import { UI_TEXT } from '@/lib/ui-text';
 import { SearchableSelect } from '@/components/ui/SearchableSelect';
 
 export default function UsersManagementPage() {
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<any[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
@@ -356,7 +358,7 @@ export default function UsersManagementPage() {
             </div>
             
             <Button 
-              onClick={() => { resetForm(); setIsAddModalOpen(true); getNextNumber('student'); }}
+              onClick={() => router.push('/dashboard/users/add')}
               className="h-14 px-8 rounded-2xl bg-blue-600 hover:bg-blue-700 shadow-xl shadow-blue-500/20 text-sm font-bold gap-3"
             >
               <UserPlus className="w-5 h-5" />
@@ -508,7 +510,7 @@ export default function UsersManagementPage() {
                               </td>
                               <td className="px-8 py-6">
                                  <div className="flex items-center justify-center gap-2">
-                                    <Button onClick={() => handleEdit(user)} variant="ghost" size="icon" className="w-9 h-9 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/20">
+                                    <Button onClick={() => router.push(`/dashboard/users/${user.id}/edit`)} variant="ghost" size="icon" className="w-9 h-9 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/20">
                                        <Edit size={16} />
                                     </Button>
                                     <DropdownMenu>

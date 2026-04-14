@@ -31,8 +31,10 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Input } from '@/components/ui/Input';
 import { SearchableSelect } from '@/components/ui/SearchableSelect';
+import { Modal } from '@/components/ui/Modal';
 import { format, differenceInDays, parseISO } from 'date-fns';
 import { injectMetadata } from '@/lib/firebaseUtils';
+import { UI_TEXT } from '@/lib/ui-text';
 
 interface StudentPlan {
   id: string;
@@ -65,6 +67,9 @@ export default function StudentPlansPanel({ studentId, studentName }: { studentI
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [finishTarget, setFinishTarget] = useState<StudentPlan | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<StudentPlan | null>(null);
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     planId: '',
@@ -178,26 +183,37 @@ export default function StudentPlansPanel({ studentId, studentName }: { studentI
       loadAllData();
     } catch (e) {
       console.error(e);
+      setFeedbackMessage(UI_TEXT.messages.studentPlanAssignError);
     } finally {
       setIsSaving(false);
     }
   };
 
-  const handleFinishPlan = async (planId: string) => {
-    if (confirm('هل أنت متأكد من إنهاء هذه الخطة؟')) {
-       await updateDoc(doc(db, 'users', studentId, 'studentplans', planId), {
-         is_active: 0,
-         end_date: format(new Date(), 'yyyy-MM-dd'),
-         updated_at: serverTimestamp()
-       });
-       loadAllData();
+  const handleFinishPlan = async () => {
+    if (!finishTarget) return;
+    try {
+      await updateDoc(doc(db, 'users', studentId, 'studentplans', finishTarget.id), {
+        is_active: 0,
+        end_date: format(new Date(), 'yyyy-MM-dd'),
+        updated_at: serverTimestamp(),
+      });
+      setFinishTarget(null);
+      loadAllData();
+    } catch (error) {
+      console.error(error);
+      setFeedbackMessage('حدث خطأ أثناء إنهاء الخطة.');
     }
   };
 
-  const deletePlanRecord = async (planId: string) => {
-    if (confirm('هل تريد حذف سجل الخطة نهائياً؟')) {
-       await deleteDoc(doc(db, 'users', studentId, 'studentplans', planId));
-       loadAllData();
+  const deletePlanRecord = async () => {
+    if (!deleteTarget) return;
+    try {
+      await deleteDoc(doc(db, 'users', studentId, 'studentplans', deleteTarget.id));
+      setDeleteTarget(null);
+      loadAllData();
+    } catch (error) {
+      console.error(error);
+      setFeedbackMessage('تعذر حذف سجل الخطة.');
     }
   };
 
@@ -232,7 +248,7 @@ export default function StudentPlansPanel({ studentId, studentName }: { studentI
               <PlanProgressCard 
                 key={plan.id} 
                 plan={plan} 
-                onFinish={() => handleFinishPlan(plan.id)} 
+                onFinish={() => setFinishTarget(plan)} 
               />
             ))}
          </div>
@@ -256,7 +272,7 @@ export default function StudentPlansPanel({ studentId, studentName }: { studentI
                           <p className="text-[9px] font-bold text-slate-400 uppercase mt-0.5">{plan.start_date} → {plan.end_date}</p>
                        </div>
                     </div>
-                    <Button variant="ghost" size="icon" onClick={() => deletePlanRecord(plan.id)} className="w-8 h-8 rounded-lg text-rose-500 opacity-0 group-hover:opacity-100">
+                    <Button variant="ghost" size="icon" onClick={() => setDeleteTarget(plan)} className="w-8 h-8 rounded-lg text-rose-500 opacity-0 group-hover:opacity-100">
                        <X size={14} />
                     </Button>
                  </div>
@@ -330,6 +346,54 @@ export default function StudentPlansPanel({ studentId, studentName }: { studentI
             </div>
           )}
        </AnimatePresence>
+      <Modal
+        isOpen={Boolean(finishTarget)}
+        onClose={() => setFinishTarget(null)}
+        title="إنهاء الخطة التعليمية"
+      >
+        <div className="space-y-6 text-right">
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
+            {finishTarget ? UI_TEXT.messages.studentPlanFinish(finishTarget.plan_name) : ''}
+          </p>
+          <div className="flex items-center justify-end gap-3">
+            <Button variant="ghost" className="h-11 px-6" onClick={() => setFinishTarget(null)}>
+              {UI_TEXT.actions.cancel}
+            </Button>
+            <Button variant="primary" className="h-11 px-6" onClick={handleFinishPlan}>
+              تأكيد الإنهاء
+            </Button>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        isOpen={Boolean(deleteTarget)}
+        onClose={() => setDeleteTarget(null)}
+        title={UI_TEXT.dialogs.deleteTitle}
+      >
+        <div className="space-y-6 text-right">
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
+            سيتم حذف سجل الخطة "{deleteTarget?.plan_name || ''}" نهائيا. لا يمكن التراجع عن هذا الإجراء.
+          </p>
+          <div className="flex items-center justify-end gap-3">
+            <Button variant="ghost" className="h-11 px-6" onClick={() => setDeleteTarget(null)}>
+              {UI_TEXT.actions.cancel}
+            </Button>
+            <Button variant="danger" className="h-11 px-6" onClick={deletePlanRecord}>
+              {UI_TEXT.actions.confirmDelete}
+            </Button>
+          </div>
+        </div>
+      </Modal>
+      <Modal isOpen={Boolean(feedbackMessage)} onClose={() => setFeedbackMessage(null)} title="تنبيه النظام">
+        <div className="space-y-6 text-right">
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-300">{feedbackMessage || ''}</p>
+          <div className="flex justify-end">
+            <Button className="h-10 px-6" onClick={() => setFeedbackMessage(null)}>
+              {UI_TEXT.actions.close}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

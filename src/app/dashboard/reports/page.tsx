@@ -213,15 +213,15 @@ export default function ReportsPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-10 pb-20" dir="rtl">
+      <div className="space-y-8 pb-16" dir="rtl">
         
         {/* Header */}
-        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-10 md:p-14 rounded-[3rem] border border-slate-200/60 dark:border-slate-800 shadow-sm group">
+        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-8 md:p-10 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
            
            <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-12">
               <div className="space-y-4">
-                 <h1 className="text-4xl font-black text-slate-900 dark:text-white family-cairo tracking-tight">التقارير العامة للطلاب</h1>
+                 <h1 className="text-3xl font-black text-slate-900 dark:text-white family-cairo tracking-tight">التقارير العامة للطلاب</h1>
                  <p className="text-slate-500 dark:text-slate-400 text-sm font-medium leading-relaxed max-w-2xl">
                     استعراض شامل لسجلات التسميع، الاختبارات، والحضور لجميع طلاب الحلقات خلال الفترة المحددة.
                  </p>
@@ -245,7 +245,7 @@ export default function ReportsPage() {
         </div>
 
         {/* Global Local Filters */}
-        <div className="bg-white/50 dark:bg-slate-900/40 backdrop-blur-md p-6 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 flex flex-col lg:flex-row items-center gap-6">
+        <div className="bg-white dark:bg-slate-900/40 p-5 rounded-2xl border border-slate-200/70 dark:border-slate-800 flex flex-col lg:flex-row items-center gap-4">
            <div className="w-full lg:w-96">
               <HalaqaFilter 
                 selectedId={selectedHalaqaId}
@@ -303,7 +303,7 @@ export default function ReportsPage() {
         {/* Main Analytics Content */}
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
            {/* Recitation Quality Ticker */}
-           <Card className="xl:col-span-4 p-10 rounded-[3rem] border-slate-200/60 dark:border-slate-800 flex flex-col gap-10">
+           <Card className="xl:col-span-4 p-8 rounded-2xl border-slate-200/70 dark:border-slate-800 flex flex-col gap-8">
               <div className="space-y-2">
                  <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">توزيع جودة الأداء</h3>
                  <p className="text-sm font-bold text-slate-500">تحليل مستويات الإتقان بناءً على التقييم الفني للمدرسين.</p>
@@ -315,7 +315,7 @@ export default function ReportsPage() {
                  <QualityBar label="بحاجة لمتابعة" value={analytics.qualities.weak} total={analytics.achievementCount} color="bg-rose-500" />
               </div>
 
-              <div className="mt-4 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-3xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <div className="mt-2 p-5 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
                  <div className="space-y-1">
                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">كفاءة الحفظ</span>
                     <p className="text-2xl font-black text-slate-900 dark:text-white family-mono">
@@ -330,7 +330,7 @@ export default function ReportsPage() {
            </Card>
 
             {/* Honor Roll (لوحة الشرف) - Strategic Parity */}
-            <Card className="xl:col-span-8 p-10 rounded-[3rem] border-blue-200/40 dark:border-blue-800 bg-gradient-to-br from-white to-blue-50/30 dark:from-[#0f172a] dark:to-blue-900/5 shadow-2xl shadow-blue-500/5 relative overflow-hidden">
+            <Card className="xl:col-span-8 p-8 rounded-2xl border-slate-200/70 dark:border-slate-800 bg-white dark:bg-[#0f172a] shadow-sm relative overflow-hidden">
                <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
                
                <div className="flex items-center justify-between relative z-10 mb-10">
@@ -351,7 +351,7 @@ export default function ReportsPage() {
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: idx * 0.1 }}
-                      className="flex flex-col items-center p-6 bg-white dark:bg-slate-900/60 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-sm group hover:scale-105 transition-all duration-500"
+                    className="flex flex-col items-center p-5 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm"
                     >
                        <div className="relative mb-4">
                           <div className={`w-16 h-16 rounded-2xl flex items-center justify-center font-black text-2xl border-2 transition-all duration-500 ${idx === 0 ? 'bg-amber-50 border-amber-200 text-amber-500' : 'bg-slate-50 border-slate-100 text-slate-400'}`}>
@@ -379,7 +379,7 @@ export default function ReportsPage() {
             </Card>
 
             {/* Detailed Activity Feed */}
-            <Card className="xl:col-span-12 p-10 rounded-[3rem] border-slate-200/60 dark:border-slate-800 space-y-10">
+            <Card className="xl:col-span-12 p-8 rounded-2xl border-slate-200/70 dark:border-slate-800 space-y-8">
                <div className="flex items-center justify-between">
                   <div className="space-y-2">
                      <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">سجل النشاط الإحصائي التفصيلي</h3>

@@ -244,10 +244,10 @@ export default function AttendancePage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-10 pb-16" dir="rtl">
+      <div className="space-y-8 pb-16" dir="rtl">
         
         {/* Header Section */}
-        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-12 md:p-14 rounded-[3.5rem] border border-slate-200/60 dark:border-slate-800 shadow-sm transition-all group">
+        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-8 md:p-10 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
           
           <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-12 lg:gap-20 text-right">
@@ -277,7 +277,7 @@ export default function AttendancePage() {
                <Button 
                 onClick={handleSaveAll} 
                 disabled={isSaving || Object.keys(attendanceData).length === 0} 
-                className="h-16 px-12 rounded-[2rem] bg-emerald-600 hover:bg-emerald-700 shadow-2xl shadow-emerald-500/30 font-black text-lg group gap-4 active:scale-95"
+                className="h-14 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 font-black text-sm group gap-3 active:scale-95"
                >
                  {isSaving ? 'جاري الحفظ...' : 'اعتماد السجل النهائي'}
                  {!isSaving && <Save size={24} className="group-hover:scale-110 transition-transform duration-500" />}
@@ -287,7 +287,7 @@ export default function AttendancePage() {
         </div>
 
         {/* شريط التحكم والفرز */}
-        <div className="flex flex-col xl:flex-row items-center gap-6 bg-white/50 dark:bg-slate-900/40 backdrop-blur-md p-6 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-sm">
+        <div className="flex flex-col xl:flex-row items-center gap-4 bg-white dark:bg-slate-900/40 p-5 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
            <div className="w-full xl:w-96">
               <HalaqaFilter 
                 selectedId={selectedHalaqaId}
@@ -354,7 +354,7 @@ export default function AttendancePage() {
                {/* Presence Grid */}
                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                   {isLoading ? (
-                    Array(8).fill(0).map((_, i) => <Skeleton key={i} className="h-80 rounded-[3rem]" />)
+                    Array(8).fill(0).map((_, i) => <Skeleton key={i} className="h-80 rounded-2xl" />)
                   ) : filteredStudents.length === 0 ? (
                     <EmptyState />
                   ) : (
@@ -362,7 +362,7 @@ export default function AttendancePage() {
                       const selection = attendanceData[student.id]?.status;
                       const yesterdayStatus = yesterdayAttendance[student.id];
                       return (
-                        <Card key={student.id} className={`p-10 rounded-[3rem] transition-all duration-700 border-2 relative overflow-hidden group hover:shadow-2xl hover:translate-y-[-4px] ${
+                        <Card key={student.id} className={`p-8 rounded-2xl transition-all duration-500 border-2 relative overflow-hidden group hover:shadow-md ${
                           selection === 'present' ? 'border-emerald-500/30 bg-emerald-500/[0.02]' :
                           selection === 'absent' ? 'border-rose-500/30 bg-rose-500/[0.02]' :
                           selection === 'late' ? 'border-amber-500/30 bg-amber-500/[0.02]' :
@@ -421,7 +421,7 @@ export default function AttendancePage() {
                initial={{ opacity: 0, scale: 0.98 }}
                animate={{ opacity: 1, scale: 1 }}
                exit={{ opacity: 0, scale: 0.98 }}
-               className="bg-white dark:bg-[#0f172a] rounded-[3.5rem] border border-slate-200/60 dark:border-slate-800 shadow-2xl overflow-hidden"
+               className="bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm overflow-hidden"
             >
                {!selectedHalaqaId ? (
                  <div className="py-40 text-center space-y-4">
@@ -588,7 +588,7 @@ function getCellIcon(status?: string) {
 
 function EmptyState() {
   return (
-    <div className="col-span-full py-40 bg-white dark:bg-[#0f172a] rounded-[3rem] border-2 border-dashed border-slate-100 dark:border-slate-800 flex flex-col items-center justify-center text-center p-10 opacity-60">
+    <div className="col-span-full py-32 bg-white dark:bg-[#0f172a] rounded-2xl border-2 border-dashed border-slate-100 dark:border-slate-800 flex flex-col items-center justify-center text-center p-10 opacity-60">
         <div className="w-24 h-24 bg-slate-50 dark:bg-slate-800 rounded-[2.5rem] flex items-center justify-center mb-8 border border-slate-100">
             <Users size={48} className="text-slate-200" />
         </div>

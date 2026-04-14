@@ -181,10 +181,10 @@ export default function PlansPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-10 pb-16">
+      <div className="space-y-8 pb-16">
         
         {/* Header Section */}
-        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-12 md:p-16 rounded-[2.5rem] border border-slate-200/60 dark:border-slate-800 shadow-sm transition-all group">
+        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-8 md:p-10 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-indigo-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
           
           <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-12 lg:gap-20">
@@ -193,7 +193,7 @@ export default function PlansPage() {
                 <Settings2 className="w-3.5 h-3.5" />
                 هندسة المناهج والمعايير الأكاديمية
               </Badge>
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight family-cairo">إدارة الخطط التعليمية</h1>
+              <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight family-cairo">إدارة الخطط التعليمية</h1>
               <p className="text-slate-500 dark:text-slate-400 text-sm font-medium leading-relaxed max-w-2xl">
                 ضبط معايير الحفظ والمراجعة التي تظهر للمعلمين وتحديد الأوزان النسبية لكل مستوى تعليمي بدقة متناهية.
               </p>
@@ -201,7 +201,7 @@ export default function PlansPage() {
             
             <Button 
               onClick={() => handleOpenModal()}
-              className="px-10 h-16 bg-blue-600 hover:bg-blue-700 rounded-2xl shadow-xl shadow-blue-500/20 group"
+              className="px-8 h-14 bg-blue-600 hover:bg-blue-700 rounded-xl group"
             >
                <Plus className="w-6 h-6 mr-2 group-hover:rotate-90 transition-transform duration-500" />
                <span className="font-bold tracking-widest text-sm">إضافة معيار جديد</span>
@@ -220,7 +220,7 @@ export default function PlansPage() {
         {/* Plans Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {isLoading ? (
-            Array(6).fill(0).map((_, i) => <Skeleton key={i} className="h-64 rounded-[2.5rem]" />)
+            Array(6).fill(0).map((_, i) => <Skeleton key={i} className="h-64 rounded-2xl" />)
           ) : plans.length === 0 ? (
             <Card className="col-span-full py-32 text-center border-slate-200/60 dark:border-slate-800 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-slate-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
@@ -238,7 +238,7 @@ export default function PlansPage() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: idx * 0.05 }}
               >
-                <Card className="p-8 border-slate-200/60 dark:border-slate-800 hover:shadow-2xl transition-all duration-500 group relative overflow-hidden">
+                <Card className="p-8 border-slate-200/70 dark:border-slate-800 hover:shadow-md transition-all duration-300 group relative overflow-hidden rounded-2xl">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-blue-500/10 transition-all duration-500"></div>
                   
                   <div className="flex items-start justify-between relative z-10">
@@ -317,7 +317,7 @@ export default function PlansPage() {
                 initial={{ opacity: 0, scale: 0.9, y: 50 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9, y: 50 }}
-                className="relative bg-white dark:bg-[#0f172a] rounded-[3rem] shadow-2xl w-full max-w-2xl overflow-hidden border border-slate-200/60 dark:border-slate-800"
+                className="relative bg-white dark:bg-[#0f172a] rounded-2xl shadow-lg w-full max-w-2xl overflow-hidden border border-slate-200/70 dark:border-slate-800"
               >
                 <div className="flex items-center justify-between p-10 border-b border-slate-100 dark:border-slate-800">
                     <div className="flex items-center gap-6">

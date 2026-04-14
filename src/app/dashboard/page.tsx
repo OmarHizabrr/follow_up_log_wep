@@ -168,10 +168,10 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-16 pb-24" dir="rtl">
+      <div className="space-y-10 pb-16" dir="rtl">
         
         {/* Modern Platform Hero */}
-        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-10 md:p-16 rounded-[3.5rem] border border-slate-200/60 dark:border-slate-800 shadow-sm transition-all group">
+        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-8 md:p-10 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 group-hover:bg-blue-500/10 transition-colors duration-1000"></div>
           
           <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-24">
@@ -180,7 +180,7 @@ export default function DashboardPage() {
                  
                  نظام المتابعة والمزامنة
               </Badge>
-              <h1 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white leading-[1.2] tracking-tighter family-cairo">
+              <h1 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white leading-[1.2] tracking-tight family-cairo">
                 أهلاً بك، {user?.displayName?.split(' ')[0] || 'المشرف'}<br/>
                 <span className="text-blue-600 dark:text-blue-400">لوحة التحكم والمتابعة</span>
               </h1>
@@ -189,11 +189,11 @@ export default function DashboardPage() {
               </p>
               
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-6">
-                <Button onClick={() => router.push('/dashboard/reports')} className="h-16 px-12 rounded-[2rem] bg-indigo-600 hover:bg-indigo-700 shadow-xl shadow-indigo-500/20 group text-base font-black uppercase tracking-widest">
+                <Button onClick={() => router.push('/dashboard/reports')} className="h-14 px-8 rounded-xl bg-indigo-600 hover:bg-indigo-700 group text-sm font-black uppercase tracking-widest">
                    استعراض التقارير
                    <PieChart className="w-5 h-5 mr-3 group-hover:rotate-12 transition-transform" />
                 </Button>
-                <Button onClick={() => router.push('/dashboard/students')} variant="outline" className="h-16 px-12 rounded-[2rem] group text-base font-black bg-white/50 backdrop-blur-sm border-slate-200 uppercase tracking-widest">
+                <Button onClick={() => router.push('/dashboard/students')} variant="outline" className="h-14 px-8 rounded-xl group text-sm font-black bg-white border-slate-200 uppercase tracking-widest">
                    سجل الطلاب
                    <ArrowLeft className="w-5 h-5 mr-3 group-hover:-translate-x-2 transition-transform" />
                 </Button>
@@ -236,10 +236,10 @@ export default function DashboardPage() {
                  <span className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] hidden md:block"></span>
               </div>
               
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                  {quickActions.map((action, idx) => (
                    <Link key={idx} href={action.href} className="group">
-                     <Card hover className="p-10 text-center flex flex-col items-center gap-6 rounded-[3rem] border border-slate-100 dark:border-slate-800 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)]">
+                     <Card hover className="p-6 text-center flex flex-col items-center gap-4 rounded-2xl border border-slate-100 dark:border-slate-800">
                         <div className={`w-20 h-20 rounded-[2rem] bg-slate-50 dark:bg-slate-900 flex items-center justify-center border border-slate-100 dark:border-slate-800 transition-all duration-500 group-hover:scale-110 group-hover:bg-white dark:group-hover:bg-slate-800 group-hover:shadow-2xl group-hover:shadow-blue-500/10`}>
                            <action.icon size={36} className={action.color} />
                         </div>
@@ -266,7 +266,7 @@ export default function DashboardPage() {
                  </Badge>
               </div>
               
-              <Card className="p-4 space-y-2 border-slate-100 dark:border-slate-800/80 rounded-[3rem] bg-white/60 dark:bg-slate-900/40 backdrop-blur-md">
+              <Card className="p-4 space-y-2 border-slate-100 dark:border-slate-800/80 rounded-2xl bg-white dark:bg-slate-900/40">
                  {isFeedLoading ? (
                    Array(6).fill(0).map((_, i) => <Skeleton key={i} className="h-20 rounded-2xl mb-2" />)
                  ) : activities.length > 0 ? (

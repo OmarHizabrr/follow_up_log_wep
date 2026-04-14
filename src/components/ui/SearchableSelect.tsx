@@ -107,7 +107,7 @@ export function SearchableSelect({
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-controls={listboxId}
-        className="w-full h-12 px-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-bold text-sm text-right flex items-center justify-between disabled:opacity-50"
+        className="w-full h-12 px-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 font-bold text-sm text-right flex items-center justify-between disabled:opacity-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/20"
       >
         <span className={`${selected ? 'text-slate-900 dark:text-white' : 'text-slate-400'}`}>
           {selected?.label || placeholder}
@@ -117,7 +117,7 @@ export function SearchableSelect({
 
       {isOpen && (
         <>
-          <div className="absolute z-50 mt-2 w-full rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0f172a] shadow-2xl overflow-hidden">
+          <div className="absolute z-50 mt-2 w-full rounded-xl border border-slate-200/70 dark:border-slate-800 bg-white dark:bg-[#0f172a] shadow-lg overflow-hidden">
             <div className="p-3 border-b border-slate-100 dark:border-slate-800">
               <div className="relative">
                 <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -130,7 +130,7 @@ export function SearchableSelect({
                     setHighlightedIndex(0);
                   }}
                   placeholder={searchPlaceholder}
-                  className="w-full h-10 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 pr-10 pl-3 text-sm outline-none"
+                  className="w-full h-10 rounded-xl border border-slate-200/70 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 pr-10 pl-3 text-sm outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/30 transition-colors"
                 />
               </div>
             </div>
@@ -145,10 +145,10 @@ export function SearchableSelect({
                     aria-selected={option.value === value}
                     onMouseEnter={() => setHighlightedIndex(index)}
                     onClick={() => selectOption(option.value)}
-                    className={`w-full px-3 py-2.5 rounded-xl flex items-center justify-between text-sm font-bold text-right ${
+                    className={`w-full px-3 py-2.5 rounded-lg flex items-center justify-between text-sm font-bold text-right transition-colors ${
                       highlightedIndex === index
                         ? 'bg-slate-100 dark:bg-slate-800'
-                        : 'hover:bg-slate-50 dark:hover:bg-slate-800'
+                        : 'hover:bg-slate-50 dark:hover:bg-slate-800/80'
                     }`}
                   >
                     <span>{option.label}</span>

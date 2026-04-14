@@ -110,13 +110,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <motion.aside 
         animate={{ width: isCollapsed ? 96 : 288 }}
         transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
-        className="fixed inset-y-0 right-0 hidden lg:flex flex-col bg-white dark:bg-[#0f172a] border-l border-slate-200/60 dark:border-slate-800/60 z-30 shadow-2xl shadow-slate-200/20 dark:shadow-none"
+        className="fixed inset-y-0 right-0 hidden lg:flex flex-col bg-white dark:bg-[#0b1220] border-l border-slate-200/70 dark:border-slate-800 z-30 shadow-sm"
       >
         
         {/* Toggle Button */}
         <button 
           onClick={toggleCollapse}
-          className="absolute -left-3.5 top-10 w-7 h-7 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full flex items-center justify-center text-slate-400 hover:text-blue-500 hover:border-blue-500 shadow-sm z-[60] transition-colors"
+          className="absolute -left-3.5 top-10 w-7 h-7 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full flex items-center justify-center text-slate-400 hover:text-blue-500 hover:border-blue-500 z-[60] transition-colors"
         >
           {isCollapsed ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
         </button>
@@ -124,7 +124,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         {/* Logo Area */}
         <div className={`h-24 flex items-center shrink-0 relative overflow-hidden transition-all duration-300 ${isCollapsed ? 'px-0 justify-center' : 'px-8'}`}>
           <div className="flex items-center gap-4">
-             <div className="w-11 h-11 rounded-2xl bg-blue-600 flex items-center justify-center p-2.5 shadow-xl shadow-blue-500/20 active:scale-95 transition-transform shrink-0">
+             <div className="w-11 h-11 rounded-xl bg-blue-600 flex items-center justify-center p-2.5 transition-transform shrink-0">
                <img src="/images/logo/logo.png" alt="Logo" className="w-full h-full object-contain filter brightness-0 invert" />
              </div>
              {!isCollapsed && (
@@ -191,14 +191,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className={`p-3 rounded-[1.5rem] border ${isCollapsed ? 'border-transparent bg-transparent' : 'border-slate-100 dark:border-slate-800/50 bg-slate-50/50 dark:bg-slate-900/30'}`}>
             <div className={`flex items-center ${isCollapsed ? 'flex-col gap-4' : 'gap-3.5 mb-4'}`}>
               <div className="relative shrink-0">
-                <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 text-white flex items-center justify-center font-black text-sm shadow-lg shadow-indigo-500/20 overflow-hidden">
+                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 text-white flex items-center justify-center font-black text-sm overflow-hidden">
                   {user?.photoURL ? (
                     <img src={user.photoURL} alt={user.displayName} className="w-full h-full object-cover" />
                   ) : (
                     user?.displayName ? user.displayName[0] : 'U'
                   )}
                 </div>
-                {(!isCollapsed || true) && <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full shadow-sm"></div>}
+                <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full shadow-sm"></div>
               </div>
               {!isCollapsed && (
                 <div className="min-w-0 flex-1">
@@ -234,11 +234,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <motion.div 
         animate={{ paddingRight: isCollapsed ? 96 : 288 }}
         transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
-        className="flex flex-col min-h-screen"
+        className="flex flex-col min-h-screen bg-slate-50 dark:bg-[#020617]"
       >
         
         {/* Top Header */}
-        <header className="sticky top-0 z-40 h-[72px] bg-white/70 dark:bg-[#020617]/70 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between px-8 lg:px-16 shrink-0">
+        <header className="sticky top-0 z-40 h-[72px] bg-white/90 dark:bg-[#020617]/90 backdrop-blur border-b border-slate-200/70 dark:border-slate-800 flex items-center justify-between px-8 lg:px-12 shrink-0">
            
             <div className="flex items-center gap-8 flex-1">
               <button 
@@ -254,7 +254,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 <input 
                   type="text" 
                   placeholder="ابحث عن التقارير والطلاب..." 
-                  className="w-full h-11 bg-slate-100/50 dark:bg-slate-900/40 border border-transparent focus:border-blue-500/20 rounded-2xl pr-11 pl-12 text-sm font-medium focus:bg-white dark:focus:bg-slate-900 focus:ring-8 focus:ring-blue-500/5 focus:outline-none dark:text-white transition-all shadow-inner"
+                className="w-full h-11 bg-slate-100/50 dark:bg-slate-900/40 border border-transparent focus:border-blue-500/20 rounded-xl pr-11 pl-12 text-sm font-medium focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:text-white transition-all shadow-inner"
                 />
                 <div className="absolute left-3.5 flex items-center gap-1 px-1.5 py-1 rounded-lg border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-800/80 text-[10px] font-bold text-slate-400 tracking-widest shadow-sm">
                    <Command size={10} />
@@ -285,7 +285,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </header>
 
         {/* Page Content Viewport */}
-        <main className="flex-1 p-8 lg:p-16 overflow-y-auto">
+        <main className="flex-1 p-6 lg:p-10 overflow-y-auto">
            <AnimatePresence mode="wait">
              <motion.div 
                key={pathname}

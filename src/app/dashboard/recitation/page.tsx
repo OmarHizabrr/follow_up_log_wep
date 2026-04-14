@@ -220,10 +220,10 @@ export default function RecitationPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-10 pb-16" dir="rtl">
+      <div className="space-y-8 pb-16" dir="rtl">
         
         {/* Header Section */}
-        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-10 md:p-14 rounded-[3rem] border border-slate-200/60 dark:border-slate-800 shadow-sm transition-all group">
+        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-8 md:p-10 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
           
           <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-12 lg:gap-20">
@@ -251,7 +251,7 @@ export default function RecitationPage() {
            
            {/* Sidebar: Student Selection */}
            <div className="xl:col-span-4 xl:sticky xl:top-28 space-y-6">
-              <Card className="p-6 space-y-6 border-slate-200/60 dark:border-slate-800 h-[780px] flex flex-col overflow-hidden rounded-[2.5rem] shadow-sm">
+              <Card className="p-6 space-y-6 border-slate-200/70 dark:border-slate-800 h-[780px] flex flex-col overflow-hidden rounded-2xl shadow-sm">
                 <div className="space-y-5">
                    <div className="flex items-center justify-between px-1">
                       <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
@@ -316,7 +316,7 @@ export default function RecitationPage() {
                     onSubmit={handleSave} 
                     className="flex flex-col gap-8"
                   >
-                    <Card className="p-10 md:p-14 border-slate-200/60 dark:border-slate-800 min-h-[780px] relative overflow-hidden flex flex-col rounded-[3rem] shadow-sm">
+                    <Card className="p-8 md:p-10 border-slate-200/70 dark:border-slate-800 min-h-[780px] relative overflow-hidden flex flex-col rounded-2xl shadow-sm">
                        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
                        
                        {/* Form Header */}
@@ -424,7 +424,7 @@ export default function RecitationPage() {
                            </div>
 
                            {!formData.isNonHafiz && !formData.isNotReviewed && (
-                              <div className="p-10 bg-slate-50/50 dark:bg-slate-900/30 rounded-[3rem] border border-slate-100 dark:border-slate-800 space-y-10 group/scope relative">
+                              <div className="p-8 bg-slate-50/50 dark:bg-slate-900/30 rounded-2xl border border-slate-100 dark:border-slate-800 space-y-8 group/scope relative">
                                  
                                  {(formData.toSurah === 'البقرة' && formData.toVerse === '286') || (formData.toSurah === 'الناس' && formData.toVerse === '6') ? (
                                    <motion.div 
@@ -523,7 +523,7 @@ export default function RecitationPage() {
                     </Card>
                   </motion.form>
                 ) : (
-                  <Card className="grow flex flex-col items-center justify-center p-20 min-h-[780px] text-center space-y-10 border-slate-200/60 dark:border-slate-800 relative overflow-hidden rounded-[3rem] shadow-sm">
+                  <Card className="grow flex flex-col items-center justify-center p-16 min-h-[780px] text-center space-y-8 border-slate-200/70 dark:border-slate-800 relative overflow-hidden rounded-2xl shadow-sm">
                      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
                      <div className="w-28 h-28 bg-blue-50 dark:bg-blue-900/20 rounded-[2.5rem] flex items-center justify-center text-blue-500 border border-blue-100 dark:border-blue-800 shadow-inner group transition-all duration-700 hover:scale-110">
                         <BookOpen className="w-14 h-14 transition-transform group-hover:rotate-12 duration-700" />

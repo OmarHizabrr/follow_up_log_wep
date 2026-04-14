@@ -209,10 +209,10 @@ export default function VisitsPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-10 pb-16" dir="rtl">
+      <div className="space-y-8 pb-16" dir="rtl">
         
         {/* Header Section */}
-        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-10 md:p-14 rounded-[3.5rem] border border-slate-200/60 dark:border-slate-800 shadow-sm transition-all group">
+        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-8 md:p-10 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
           
           <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-12 text-right">
@@ -229,7 +229,7 @@ export default function VisitsPage() {
             
             <Button 
               onClick={() => setIsModalOpen(true)}
-              className="px-10 h-16 bg-blue-600 hover:bg-blue-700 rounded-3xl shadow-2xl shadow-blue-500/30 text-base font-black gap-3 group"
+              className="px-8 h-14 bg-blue-600 hover:bg-blue-700 rounded-xl text-sm font-black gap-3 group"
             >
               إرسال لجنة تقييم جديدة
               <Plus className="w-6 h-6 group-hover:rotate-90 transition-transform duration-500" />
@@ -238,7 +238,7 @@ export default function VisitsPage() {
         </div>
 
         {/* Global Filter Bar */}
-        <div className="bg-white/50 dark:bg-slate-900/40 backdrop-blur-md p-6 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 flex flex-col xl:flex-row items-center gap-6">
+        <div className="bg-white dark:bg-slate-900/40 p-5 rounded-2xl border border-slate-200/70 dark:border-slate-800 flex flex-col xl:flex-row items-center gap-4">
            <div className="w-full xl:w-96">
               <HalaqaFilter 
                 selectedId={selectedHalaqaId}
@@ -287,9 +287,9 @@ export default function VisitsPage() {
         {/* Visits Feed */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
            {isLoading ? (
-             Array(4).fill(0).map((_, i) => <Skeleton key={i} className="h-80 rounded-[3rem]" />)
+             Array(4).fill(0).map((_, i) => <Skeleton key={i} className="h-80 rounded-2xl" />)
            ) : filteredVisits.length === 0 ? (
-             <Card className="col-span-full py-40 text-center rounded-[3rem] border-slate-200/60 dark:border-slate-800 relative overflow-hidden">
+             <Card className="col-span-full py-32 text-center rounded-2xl border-slate-200/70 dark:border-slate-800 relative overflow-hidden">
                 <Database size={64} className="mx-auto mb-6 text-slate-100" />
                 <h3 className="text-xl font-black text-slate-400 family-cairo">لا توجد سجلات مطابقة في هذا النطاق</h3>
                 <Button variant="ghost" className="mt-4 text-blue-600 font-bold" onClick={() => { setSelectedHalaqaId(null); setSearchQuery(''); }}>إعادة ضبط الفلاتر</Button>
@@ -302,7 +302,7 @@ export default function VisitsPage() {
                  animate={{ opacity: 1, y: 0 }}
                  transition={{ delay: idx * 0.1 }}
                >
-                 <Card className="p-10 border-slate-200/60 dark:border-slate-800 hover:shadow-2xl transition-all duration-700 group relative overflow-hidden rounded-[3rem]">
+                 <Card className="p-8 border-slate-200/70 dark:border-slate-800 hover:shadow-md transition-all duration-300 group relative overflow-hidden rounded-2xl">
                     <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 group-hover:bg-blue-500/10 transition-all duration-700"></div>
                     
                     <div className="flex items-start justify-between relative z-10">
@@ -369,7 +369,7 @@ export default function VisitsPage() {
                 initial={{ opacity: 0, scale: 0.95, y: 30 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 30 }}
-                className="relative bg-white dark:bg-[#0f172a] rounded-[3.5rem] shadow-[0_40px_100px_rgba(0,0,0,0.3)] w-full max-w-5xl max-h-[92vh] overflow-hidden border border-slate-200/60 dark:border-slate-800 flex flex-col"
+                className="relative bg-white dark:bg-[#0f172a] rounded-2xl shadow-lg w-full max-w-5xl max-h-[92vh] overflow-hidden border border-slate-200/70 dark:border-slate-800 flex flex-col"
               >
                 <div className="px-12 py-10 bg-slate-50 dark:bg-slate-900/60 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center relative z-10 shadow-sm">
                    <div className="flex items-center gap-5">

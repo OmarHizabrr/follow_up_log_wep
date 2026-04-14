@@ -194,6 +194,14 @@ export default function StudentProfilePage() {
                     <Download className="w-4 h-4" />
                     تصدير ملف الطالب الموحد
                  </Button>
+                 <Button
+                   variant="outline"
+                   className="h-12 rounded-2xl font-bold text-sm gap-2"
+                   onClick={() => router.push(`/dashboard/students/${id as string}/edit`)}
+                 >
+                   <Briefcase className="w-4 h-4" />
+                   تعديل بيانات الطالب
+                 </Button>
               </div>
            </div>
         </div>

@@ -83,10 +83,10 @@ export default function SettingsPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-10 pb-16">
+      <div className="space-y-8 pb-16">
         
         {/* Header Section */}
-        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-12 md:p-16 rounded-[2.5rem] border border-slate-200/60 dark:border-slate-800 shadow-sm transition-all group">
+        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-8 md:p-10 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-slate-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
           
           <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-12 lg:gap-20">
@@ -95,7 +95,7 @@ export default function SettingsPage() {
                 <SettingsIcon className="w-3.5 h-3.5" />
                 إعدادات المنصة - {isAdmin ? 'مشرف عام' : 'مستخدم'}
               </Badge>
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">إعدادات المنصة</h1>
+              <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight family-cairo">إعدادات المنصة</h1>
               <p className="text-slate-500 dark:text-slate-400 text-sm font-medium leading-relaxed max-w-2xl">
                 إدارة شاملة لخيارات الأمان، تفضيلات العرض المتقدمة، ومزامنة السجلات السحابية الموحدة بين الويب والتطبيق.
               </p>
@@ -113,11 +113,11 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
           
           {/* Sidebar Navigation */}
           <div className="xl:col-span-4 flex flex-col gap-6">
-             <Card className="p-3 border-slate-200/60 dark:border-slate-800 overflow-hidden">
+             <Card className="p-3 rounded-2xl border-slate-200/70 dark:border-slate-800 overflow-hidden">
                 <div className="max-h-[600px] overflow-y-auto custom-scrollbar-hide space-y-1">
                   {settingsTabs.map((tab) => (
                     <button
@@ -137,7 +137,7 @@ export default function SettingsPage() {
                 </div>
              </Card>
              
-             <Card className="p-3 border-rose-100 dark:border-rose-900/20">
+             <Card className="p-3 rounded-2xl border-rose-100 dark:border-rose-900/20">
                 <button 
                   onClick={() => {
                     localStorage.removeItem('userData');
@@ -166,7 +166,7 @@ export default function SettingsPage() {
                   exit={{ opacity: 0, y: -15 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Card className="p-10 md:p-14 border-slate-200/60 dark:border-slate-800 min-h-[600px] relative overflow-hidden">
+                  <Card className="p-8 md:p-10 rounded-2xl border-slate-200/70 dark:border-slate-800 min-h-[600px] relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
                     
                    {activeTab === 'profile' && (
