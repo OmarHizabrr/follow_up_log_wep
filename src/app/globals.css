@@ -177,3 +177,42 @@ body {
   background: rgba(15, 23, 42, 0.7);
 }
 
+/* Global Web Density Tuning (Dashboard scope) */
+.web-density [class*="h-16"] {
+  height: 3rem !important;
+}
+
+.web-density [class*="h-14"] {
+  height: 2.75rem !important;
+}
+
+.web-density [class*="p-16"] {
+  padding: 2.25rem !important;
+}
+
+.web-density [class*="p-14"] {
+  padding: 2rem !important;
+}
+
+.web-density [class*="p-12"] {
+  padding: 1.75rem !important;
+}
+
+.web-density [class*="p-10"] {
+  padding: 1.5rem !important;
+}
+
+.web-density [class*="rounded-\\["] {
+  border-radius: 1rem !important;
+}
+
+.web-density [class*="text-4xl"] {
+  font-size: 2rem !important;
+  line-height: 1.2 !important;
+}
+
+.web-density [class*="text-3xl"] {
+  font-size: 1.625rem !important;
+  line-height: 1.25 !important;
+}
+
