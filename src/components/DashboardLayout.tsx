@@ -23,47 +23,56 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
-  Sparkles,
   RefreshCw,
   Command,
-  PanelLeftClose,
-  PanelRightClose
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
+import { Modal } from '@/components/ui/Modal';
+import { canAccessRoute, getAllowedRoutes, isAdminLike, SessionUser } from '@/lib/access';
+import { UI_TEXT } from '@/lib/ui-text';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
-  const [user, setUser] = useState<any>(null);
+  const [user] = useState<SessionUser | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const stored = window.localStorage.getItem('userData');
+    return stored ? JSON.parse(stored) : null;
+  });
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const saved = window.localStorage.getItem('sidebar_collapsed');
+    return saved ? JSON.parse(saved) : false;
+  });
   const [isSyncing, setIsSyncing] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    // Load state from localStorage
-    const savedCollapsed = localStorage.getItem('sidebar_collapsed');
-    if (savedCollapsed) setIsCollapsed(JSON.parse(savedCollapsed));
-
-    const storedUser = localStorage.getItem('userData');
-    if (!storedUser) {
+    if (!user) {
       router.push('/login');
       return;
     }
-    setUser(JSON.parse(storedUser));
-    
+    if (!canAccessRoute(pathname, user)) {
+      router.push('/dashboard');
+      return;
+    }
+  }, [router, pathname, user]);
+
+  useEffect(() => {
+    if (!user) return;
     const interval = setInterval(() => {
       setIsSyncing(true);
       setTimeout(() => setIsSyncing(false), 2000);
     }, 15000);
-    
+
     return () => clearInterval(interval);
-  }, [router]);
+  }, [user]);
 
   const toggleCollapse = () => {
     const newState = !isCollapsed;
@@ -77,23 +86,22 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     router.push('/login');
   };
 
-  const isAdmin = user?.role === 'admin' || user?.type === 'admin';
+  const isAdmin = isAdminLike(user);
 
-  const navLinks = [
+  const allNavLinks = [
     { name: 'الرئيسية', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'إدارة الطلاب', href: '/dashboard/students', icon: Users, adminOnly: false },
-    { name: 'تحضير الحلقات', href: '/dashboard/attendance', icon: CheckSquare, adminOnly: false },
-    { name: 'متابعة الحفظ', href: '/dashboard/recitation', icon: BookOpen, adminOnly: false },
-    { name: 'الاختبارات', href: '/dashboard/tests', icon: ClipboardList, adminOnly: false },
-    { name: 'المناهج', href: '/dashboard/plans', icon: FileText, adminOnly: true },
-    { name: 'الزيارات الإدارية', href: '/dashboard/visits', icon: Eye, adminOnly: true },
-    { name: 'إدارة المستخدمين', href: '/dashboard/users', icon: Shield, adminOnly: true },
-    { name: 'التقارير', href: '/dashboard/reports', icon: BarChart3, adminOnly: true },
+    { name: 'إدارة الطلاب', href: '/dashboard/students', icon: Users },
+    { name: 'تحضير الحلقات', href: '/dashboard/attendance', icon: CheckSquare },
+    { name: 'متابعة الحفظ', href: '/dashboard/recitation', icon: BookOpen },
+    { name: 'الاختبارات', href: '/dashboard/tests', icon: ClipboardList },
+    { name: 'المناهج', href: '/dashboard/plans', icon: FileText },
+    { name: 'الزيارات الإدارية', href: '/dashboard/visits', icon: Eye },
+    { name: 'إدارة المستخدمين', href: '/dashboard/users', icon: Shield },
+    { name: 'التقارير', href: '/dashboard/reports', icon: BarChart3 },
     { name: 'الإعدادات', href: '/dashboard/settings', icon: Settings },
-  ].filter(link => !link.adminOnly || isAdmin);
-
-  const sidebarWidth = isCollapsed ? 'w-24' : 'w-72';
-  const mainPadding = isCollapsed ? 'lg:pr-24' : 'lg:pr-72';
+  ];
+  const allowedRoutes = getAllowedRoutes(user);
+  const navLinks = allNavLinks.filter((link) => allowedRoutes.includes(link.href));
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-slate-100 font-['Cairo'] antialiased selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden" dir="rtl">
@@ -199,8 +207,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 </div>
               )}
               {isCollapsed && (
-                <button 
-                  onClick={handleLogout}
+                <button
+                  onClick={() => setIsLogoutModalOpen(true)}
                   className="w-11 h-11 flex items-center justify-center rounded-2xl bg-red-50 dark:bg-red-900/10 text-red-500 hover:bg-red-100 transition-colors shadow-sm"
                   title="تسجيل الخروج"
                 >
@@ -210,7 +218,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             </div>
             {!isCollapsed && (
               <Button 
-                onClick={handleLogout} 
+                onClick={() => setIsLogoutModalOpen(true)}
                 variant="danger"
                 className="w-full h-11 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] gap-2.5 opacity-90 hover:opacity-100 shadow-md shadow-red-500/5"
               >
@@ -359,6 +367,36 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         )}
       </AnimatePresence>
+      <Modal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        title={UI_TEXT.dialogs.logoutTitle}
+      >
+        <div className="space-y-6 text-right">
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
+            هل أنت متأكد من أنك تريد تسجيل الخروج من المنصة؟
+          </p>
+          <div className="flex items-center justify-end gap-3">
+            <Button
+              variant="ghost"
+              className="h-11 px-6"
+              onClick={() => setIsLogoutModalOpen(false)}
+            >
+              {UI_TEXT.actions.cancel}
+            </Button>
+            <Button
+              variant="danger"
+              className="h-11 px-6"
+              onClick={async () => {
+                setIsLogoutModalOpen(false);
+                await handleLogout();
+              }}
+            >
+              {UI_TEXT.actions.logout}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

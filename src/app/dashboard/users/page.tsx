@@ -62,6 +62,8 @@ import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
 
 import { Modal } from '@/components/ui/Modal';
+import { UI_TEXT } from '@/lib/ui-text';
+import { SearchableSelect } from '@/components/ui/SearchableSelect';
 
 export default function UsersManagementPage() {
   const [loading, setLoading] = useState(true);
@@ -78,6 +80,8 @@ export default function UsersManagementPage() {
   const [halaqas, setHalaqas] = useState<any[]>([]);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
 
   // Form State
   const [formData, setFormData] = useState<any>({
@@ -212,7 +216,7 @@ export default function UsersManagementPage() {
       fetchUsers();
     } catch (error) {
       console.error("Error saving user:", error);
-      alert('حدث خطأ أثناء الحفظ');
+      setFeedbackMessage(UI_TEXT.messages.userSaveError);
     } finally {
       setIsSaving(false);
     }
@@ -256,12 +260,14 @@ export default function UsersManagementPage() {
     setIsAddModalOpen(true);
   };
 
-  const handleDeleteUser = async (id: string) => {
-    if (confirm('هل أنت متأكد من حذف هذا المستخدم نهائياً؟')) {
-      try {
-        await deleteDoc(doc(db, 'users', id));
-        fetchUsers();
-      } catch (e) { console.error(e); }
+  const handleDeleteUser = async () => {
+    if (!deleteTargetId) return;
+    try {
+      await deleteDoc(doc(db, 'users', deleteTargetId));
+      setDeleteTargetId(null);
+      fetchUsers();
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -516,7 +522,7 @@ export default function UsersManagementPage() {
                                              <Eye size={16} className="text-slate-400" />
                                              عرض الملف الشخصي
                                           </DropdownMenuItem>
-                                          <DropdownMenuItem className="rounded-xl gap-3 text-xs font-semibold py-3 text-rose-500 focus:text-rose-600" onClick={() => handleDeleteUser(user.id)}>
+                                          <DropdownMenuItem className="rounded-xl gap-3 text-xs font-semibold py-3 text-rose-500 focus:text-rose-600" onClick={() => setDeleteTargetId(user.id)}>
                                              <Trash2 size={16} />
                                              حذف الحساب
                                           </DropdownMenuItem>
@@ -640,20 +646,20 @@ export default function UsersManagementPage() {
              <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">نوع العضوية</label>
-                   <select 
+                   <SearchableSelect
                      value={formData.type}
-                     onChange={(e) => {
-                        const newType = e.target.value;
-                        setFormData({...formData, type: newType});
-                        if (!isEditMode) getNextNumber(newType);
+                     onChange={(newType) => {
+                       setFormData({ ...formData, type: newType });
+                       if (!isEditMode) getNextNumber(newType);
                      }}
-                     className="w-full h-12 px-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-bold text-sm outline-none focus:border-blue-500 transition-all"
-                   >
-                      <option value="student">طالب / دارس</option>
-                      <option value="teacher">معلم / مشرف تعليمي</option>
-                      <option value="halaqa">حلقة تحفيظ</option>
-                      <option value="admin">مدير نظام</option>
-                   </select>
+                     options={[
+                       { value: 'student', label: 'طالب / دارس' },
+                       { value: 'teacher', label: 'معلم / مشرف تعليمي' },
+                       { value: 'halaqa', label: 'حلقة تحفيظ' },
+                       { value: 'admin', label: 'مدير نظام' },
+                     ]}
+                     searchPlaceholder="ابحث عن نوع العضوية..."
+                   />
                 </div>
                 <div className="space-y-2">
                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">الرقم المرجعي</label>
@@ -706,15 +712,16 @@ export default function UsersManagementPage() {
                 </div>
                 <div className="space-y-2">
                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">الصلاحية (الدور)</label>
-                   <select 
+                   <SearchableSelect
                      value={formData.role}
-                     onChange={(e) => setFormData({...formData, role: e.target.value})}
-                     className="w-full h-12 px-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-bold text-sm outline-none"
-                   >
-                      <option value="user">مستخدم عادي</option>
-                      <option value="mentor">مشرف (Mentor)</option>
-                      <option value="admin">مدير (Admin)</option>
-                   </select>
+                     onChange={(value) => setFormData({ ...formData, role: value })}
+                     options={[
+                       { value: 'user', label: 'مستخدم عادي' },
+                       { value: 'mentor', label: 'مشرف (Mentor)' },
+                       { value: 'admin', label: 'مدير (Admin)' },
+                     ]}
+                     searchPlaceholder="ابحث عن الدور..."
+                   />
                 </div>
              </div>
 
@@ -722,42 +729,43 @@ export default function UsersManagementPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                    <div className="space-y-2">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">الحلقة التابع لها</label>
-                      <select 
-                        value={formData.halaqaId}
-                        onChange={(e) => {
-                          const h = halaqas.find(x => x.id === e.target.value);
-                          setFormData({...formData, halaqaId: e.target.value, halaqaName: h?.displayName});
+                      <SearchableSelect
+                        value={formData.halaqaId || ''}
+                        onChange={(value) => {
+                          const halaqa = halaqas.find((item) => item.id === value);
+                          setFormData({ ...formData, halaqaId: value, halaqaName: halaqa?.displayName || '' });
                         }}
-                        className="w-full h-12 px-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-bold text-sm outline-none"
-                      >
-                         <option value="">اختر حلقة...</option>
-                         {halaqas.map(h => <option key={h.id} value={h.id}>{h.displayName}</option>)}
-                      </select>
+                        options={halaqas.map((halaqa) => ({ value: halaqa.id, label: halaqa.displayName || 'حلقة' }))}
+                        placeholder="اختر حلقة..."
+                        searchPlaceholder="ابحث عن الحلقة..."
+                      />
                    </div>
                    <div className="space-y-2">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">ولي الأمر (اختياري)</label>
-                      <select 
-                        value={formData.guardianUserId}
-                        onChange={(e) => setFormData({...formData, guardianUserId: e.target.value})}
-                        className="w-full h-12 px-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-bold text-sm outline-none"
-                      >
-                         <option value="">اختر ولي الأمر من النظام...</option>
-                         {users.filter(u => u.type === 'parent').map(p => <option key={p.id} value={p.id}>{p.displayName}</option>)}
-                      </select>
+                      <SearchableSelect
+                        value={formData.guardianUserId || ''}
+                        onChange={(value) => setFormData({ ...formData, guardianUserId: value })}
+                        options={users
+                          .filter((userItem) => userItem.type === 'parent')
+                          .map((parent) => ({ value: parent.id, label: parent.displayName || 'ولي أمر' }))}
+                        placeholder="اختر ولي الأمر من النظام..."
+                        searchPlaceholder="ابحث عن ولي الأمر..."
+                      />
                    </div>
                    <div className="space-y-2">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">المرحلة الدراسية</label>
-                      <select 
+                      <SearchableSelect
                         value={formData.educationalStage}
-                        onChange={(e) => setFormData({...formData, educationalStage: e.target.value})}
-                        className="w-full h-12 px-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-bold text-sm outline-none"
-                      >
-                         <option value="تمهيدي">تمهيدي</option>
-                         <option value="ابتدائي">ابتدائي</option>
-                         <option value="متوسط">متوسط</option>
-                         <option value="ثانوي">ثانوي</option>
-                         <option value="جامعي">جامعي</option>
-                      </select>
+                        onChange={(value) => setFormData({ ...formData, educationalStage: value })}
+                        options={[
+                          { value: 'تمهيدي', label: 'تمهيدي' },
+                          { value: 'ابتدائي', label: 'ابتدائي' },
+                          { value: 'متوسط', label: 'متوسط' },
+                          { value: 'ثانوي', label: 'ثانوي' },
+                          { value: 'جامعي', label: 'جامعي' },
+                        ]}
+                        searchPlaceholder="ابحث عن المرحلة..."
+                      />
                    </div>
                 </div>
              )}
@@ -791,6 +799,39 @@ export default function UsersManagementPage() {
                 </Button>
              </div>
           </form>
+        </Modal>
+        <Modal
+          isOpen={Boolean(deleteTargetId)}
+          onClose={() => setDeleteTargetId(null)}
+          title={UI_TEXT.dialogs.deleteTitle}
+        >
+          <div className="space-y-6 text-right">
+            <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
+              {UI_TEXT.messages.userDeleteConfirm}
+            </p>
+            <div className="flex items-center justify-end gap-3">
+              <Button variant="ghost" className="h-11 px-6" onClick={() => setDeleteTargetId(null)}>
+                {UI_TEXT.actions.cancel}
+              </Button>
+              <Button variant="danger" className="h-11 px-6" onClick={handleDeleteUser}>
+                {UI_TEXT.actions.confirmDelete}
+              </Button>
+            </div>
+          </div>
+        </Modal>
+        <Modal
+          isOpen={Boolean(feedbackMessage)}
+          onClose={() => setFeedbackMessage(null)}
+          title="تنبيه النظام"
+        >
+          <div className="space-y-6 text-right">
+            <p className="text-sm font-medium text-slate-600 dark:text-slate-300">{feedbackMessage || ''}</p>
+            <div className="flex justify-end">
+              <Button className="h-10 px-6" onClick={() => setFeedbackMessage(null)}>
+                {UI_TEXT.actions.close}
+              </Button>
+            </div>
+          </div>
         </Modal>
 
       </div>

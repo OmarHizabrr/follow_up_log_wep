@@ -1,0 +1,35 @@
+export const UI_TEXT = {
+  actions: {
+    cancel: 'إلغاء',
+    save: 'حفظ',
+    close: 'إغلاق',
+    confirmDelete: 'تأكيد الحذف',
+    logout: 'تسجيل الخروج',
+  },
+  dialogs: {
+    deleteTitle: 'تأكيد حذف السجل',
+    logoutTitle: 'تسجيل الخروج',
+  },
+  messages: {
+    deleteStudent: (name: string) =>
+      `سيتم حذف الطالب "${name}" نهائيا من المنصة. لا يمكن التراجع عن هذه العملية.`,
+    attendanceSaved: 'تم اعتماد سجلات الحضور بنجاح.',
+    attendanceSaveError: 'حدث خطأ أثناء حفظ بيانات الحضور.',
+    recitationSaved: 'تم حفظ سجل التسميع وتثبيت الحضور بنجاح.',
+    recitationSaveError: 'حدث خطأ أثناء حفظ سجل التسميع.',
+    testSaveError: 'حدث خطأ أثناء حفظ الاختبار.',
+    settingsSaved: 'تم حفظ التغييرات بنجاح.',
+    plansSaveError: 'حدث خطأ أثناء حفظ بيانات الخطة.',
+    planDelete: (name: string) => `سيتم حذف الخطة "${name}" نهائيا. لا يمكن التراجع عن هذا الإجراء.`,
+    visitsSaved: 'تم حفظ التقييم ومزامنة البيانات بنجاح.',
+    visitsSaveError: 'تعذر حفظ التقييم. تحقق من الاتصال ثم حاول مرة أخرى.',
+    reportExporting: (count: number) => `جاري تجهيز التقرير الموجز لـ ${count} طالب.`,
+    pdfSettingsSaved: 'تم حفظ إعدادات التقارير بنجاح.',
+    pdfSettingsSaveError: 'حدث خطأ أثناء حفظ إعدادات التقارير.',
+    testConfigDelete: 'سيتم حذف هذا البند من إعدادات التقييم. هل تريد المتابعة؟',
+    userSaveError: 'حدث خطأ أثناء حفظ بيانات المستخدم.',
+    userDeleteConfirm: 'سيتم حذف هذا المستخدم نهائيا من المنصة. هل تريد المتابعة؟',
+    studentPlanAssignError: 'حدث خطأ أثناء تعيين الخطة للطالب.',
+    studentPlanFinish: (name: string) => `سيتم إنهاء خطة "${name}" ونقلها إلى السجل. هل تريد المتابعة؟`,
+  },
+} as const;

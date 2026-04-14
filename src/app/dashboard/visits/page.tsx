@@ -46,6 +46,9 @@ import { Card, CardContent } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { Modal } from '@/components/ui/Modal';
+import { UI_TEXT } from '@/lib/ui-text';
+import { SearchableSelect } from '@/components/ui/SearchableSelect';
 
 interface Evaluation {
   id: string;
@@ -72,6 +75,7 @@ export default function VisitsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedHalaqaId, setSelectedHalaqaId] = useState<string | null>(null);
   const [activeRoute, setActiveRoute] = useState<'all' | 'regulatory' | 'supervisory'>('all');
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
   const [formData, setFormData] = useState<any>({
     halaqa_id: '',
@@ -173,10 +177,10 @@ export default function VisitsPage() {
       setIsModalOpen(false);
       resetForm();
       fetchData();
-      alert('تم حفظ التقييم ومزامنة البيانات بنجاح');
+      setFeedbackMessage(UI_TEXT.messages.visitsSaved);
     } catch (e) {
       console.error(e);
-      alert('خطأ في الاتصال بالسحاب');
+      setFeedbackMessage(UI_TEXT.messages.visitsSaveError);
     } finally { setIsSaving(false); }
   };
 
@@ -388,34 +392,38 @@ export default function VisitsPage() {
                       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                          <div className="space-y-2 col-span-1">
                             <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-2 leading-none">فئة التقييم</label>
-                            <select 
-                               className="w-full h-14 px-5 bg-white dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 rounded-2xl font-bold text-sm outline-none focus:border-blue-500/40 shadow-sm transition-all"
-                               value={formData.visit_type}
-                               onChange={(e) => setFormData({...formData, visit_type: e.target.value as any})}
-                            >
-                               <option value="regulatory">إداري / تنظيمي</option>
-                               <option value="supervisory">فني / تعليمي</option>
-                            </select>
+                            <SearchableSelect
+                              value={formData.visit_type}
+                              onChange={(value) => setFormData({ ...formData, visit_type: value })}
+                              options={[
+                                { value: 'regulatory', label: 'إداري / تنظيمي' },
+                                { value: 'supervisory', label: 'فني / تعليمي' },
+                              ]}
+                              searchPlaceholder="ابحث عن الفئة..."
+                              className="h-14"
+                            />
                          </div>
                          <div className="space-y-2 col-span-2">
                             <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-2 leading-none">الحلقة المستهدفة</label>
-                            <select 
-                               required
-                               className="w-full h-14 px-5 bg-white dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 rounded-2xl font-bold text-sm outline-none focus:border-blue-500/40 shadow-sm transition-all"
-                               value={formData.halaqa_id}
-                               onChange={(e) => {
-                                 const h = halaqas.find(x => x.id === e.target.value);
-                                 setFormData({
-                                   ...formData, 
-                                   halaqa_id: e.target.value, 
-                                   halaqa_name: h?.displayName,
-                                   teacher_name: resolveTeacherForHalaqa(e.target.value)
-                                 });
-                               }}
-                            >
-                               <option value="">-- حدد الحلقة للتعرف على المعلم تلقائياً --</option>
-                               {halaqas.map(h => <option key={h.id} value={h.id}>{h.displayName}</option>)}
-                            </select>
+                            <SearchableSelect
+                              value={formData.halaqa_id}
+                              onChange={(value) => {
+                                const halaqa = halaqas.find((item) => item.id === value);
+                                setFormData({
+                                  ...formData,
+                                  halaqa_id: value,
+                                  halaqa_name: halaqa?.displayName || '',
+                                  teacher_name: resolveTeacherForHalaqa(value),
+                                });
+                              }}
+                              options={halaqas.map((halaqa) => ({
+                                value: halaqa.id,
+                                label: halaqa.displayName || 'حلقة',
+                              }))}
+                              placeholder="-- حدد الحلقة للتعرف على المعلم تلقائيا --"
+                              searchPlaceholder="ابحث عن الحلقة..."
+                              className="h-14"
+                            />
                          </div>
                          <div className="space-y-2 col-span-1">
                             <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-2 leading-none">تاريخ الزيارة</label>
@@ -519,6 +527,20 @@ export default function VisitsPage() {
             </div>
           )}
         </AnimatePresence>
+        <Modal
+          isOpen={Boolean(feedbackMessage)}
+          onClose={() => setFeedbackMessage(null)}
+          title="تنبيه النظام"
+        >
+          <div className="space-y-6 text-right">
+            <p className="text-sm font-medium text-slate-600 dark:text-slate-300">{feedbackMessage || ''}</p>
+            <div className="flex justify-end">
+              <Button className="h-10 px-6" onClick={() => setFeedbackMessage(null)}>
+                {UI_TEXT.actions.close}
+              </Button>
+            </div>
+          </div>
+        </Modal>
       </div>
     </DashboardLayout>
   );

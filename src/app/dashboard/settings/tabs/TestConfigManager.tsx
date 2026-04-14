@@ -29,6 +29,7 @@ import { Card, CardContent } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { Modal } from '@/components/ui/Modal';
+import { UI_TEXT } from '@/lib/ui-text';
 
 export default function TestConfigManager() {
   const [activeSubTab, setActiveSubTab] = useState<'branch' | 'mistake'>('branch');
@@ -36,6 +37,7 @@ export default function TestConfigManager() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingConfig, setEditingConfig] = useState<any>(null);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     value: '',
@@ -87,10 +89,11 @@ export default function TestConfigManager() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('هل أنت متأكد من الحذف؟')) return;
+  const handleDelete = async () => {
+    if (!deleteTargetId) return;
     try {
-      await deleteDoc(doc(db, 'assessmentconfig', id));
+      await deleteDoc(doc(db, 'assessmentconfig', deleteTargetId));
+      setDeleteTargetId(null);
       fetchConfigs();
     } catch (error) {
       console.error("Error deleting config:", error);
@@ -168,7 +171,7 @@ export default function TestConfigManager() {
                       </div>
                       <div className="flex items-center gap-2">
                          <Button onClick={() => openEdit(config)} variant="ghost" size="icon" className="w-9 h-9 rounded-xl hover:bg-blue-50 hover:text-blue-600"><Edit size={16} /></Button>
-                         <Button onClick={() => handleDelete(config.id)} variant="ghost" size="icon" className="w-9 h-9 rounded-xl hover:bg-rose-50 hover:text-rose-500"><Trash2 size={16} /></Button>
+                         <Button onClick={() => setDeleteTargetId(config.id)} variant="ghost" size="icon" className="w-9 h-9 rounded-xl hover:bg-rose-50 hover:text-rose-500"><Trash2 size={16} /></Button>
                       </div>
                    </div>
                  ))
@@ -229,6 +232,25 @@ export default function TestConfigManager() {
               <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)} className="h-12 px-8 rounded-xl font-bold">إلغاء</Button>
            </div>
         </form>
+      </Modal>
+      <Modal
+        isOpen={Boolean(deleteTargetId)}
+        onClose={() => setDeleteTargetId(null)}
+        title={UI_TEXT.dialogs.deleteTitle}
+      >
+        <div className="space-y-6 text-right">
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
+            {UI_TEXT.messages.testConfigDelete}
+          </p>
+          <div className="flex items-center justify-end gap-3">
+            <Button variant="ghost" className="h-11 px-6" onClick={() => setDeleteTargetId(null)}>
+              {UI_TEXT.actions.cancel}
+            </Button>
+            <Button variant="danger" className="h-11 px-6" onClick={handleDelete}>
+              {UI_TEXT.actions.confirmDelete}
+            </Button>
+          </div>
+        </div>
       </Modal>
     </div>
   );

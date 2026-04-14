@@ -41,11 +41,15 @@ import { Badge } from '@/components/ui/Badge';
 import { useRouter } from 'next/navigation';
 import TestConfigManager from './tabs/TestConfigManager';
 import PdfSettingsManager from './tabs/PdfSettingsManager';
+import { isAdminLike } from '@/lib/access';
+import { Modal } from '@/components/ui/Modal';
+import { UI_TEXT } from '@/lib/ui-text';
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('profile');
   const [isSaving, setIsSaving] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -55,13 +59,13 @@ export default function SettingsPage() {
     }
   }, []);
 
-  const isAdmin = user?.role === 'admin' || user?.type === 'admin';
+  const isAdmin = isAdminLike(user);
 
   const handleSave = () => {
     setIsSaving(true);
     setTimeout(() => {
       setIsSaving(false);
-      alert('تم حفظ التغييرات بنجاح');
+      setFeedbackMessage(UI_TEXT.messages.settingsSaved);
     }, 1200);
   };
 
@@ -389,6 +393,22 @@ export default function SettingsPage() {
         </div>
 
       </div>
+      <Modal
+        isOpen={Boolean(feedbackMessage)}
+        onClose={() => setFeedbackMessage(null)}
+        title="تنبيه النظام"
+      >
+        <div className="space-y-6 text-right">
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
+            {feedbackMessage || ''}
+          </p>
+          <div className="flex justify-end">
+            <Button className="h-10 px-6" onClick={() => setFeedbackMessage(null)}>
+              {UI_TEXT.actions.close}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </DashboardLayout>
   );
 }

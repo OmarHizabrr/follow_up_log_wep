@@ -40,6 +40,9 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Input } from '@/components/ui/Input';
+import { Modal } from '@/components/ui/Modal';
+import { SearchableSelect } from '@/components/ui/SearchableSelect';
+import { UI_TEXT } from '@/lib/ui-text';
 import { format, subDays, startOfMonth, endOfMonth, isWithinInterval, parseISO } from 'date-fns';
 
 export default function ReportsPage() {
@@ -57,6 +60,7 @@ export default function ReportsPage() {
     tests: [] as any[],
     students: [] as any[]
   });
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -146,7 +150,7 @@ export default function ReportsPage() {
     });
     
     console.log("Exporting Brief Report...", reportData);
-    alert('جاري توليد التقرير الموجز لـ ' + reportData.length + ' طالباً...');
+    setFeedbackMessage(UI_TEXT.messages.reportExporting(reportData.length));
   };
 
   // Logic Selectors (Parity with GeneralReportsPage.dart)
@@ -249,17 +253,19 @@ export default function ReportsPage() {
               />
            </div>
            <div className="w-full lg:w-48">
-              <select 
-                className="w-full h-14 px-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-sm outline-none focus:border-blue-500/40 shadow-sm"
+              <SearchableSelect
                 value={selectedStage}
-                onChange={(e) => setSelectedStage(e.target.value)}
-              >
-                 <option value="all">كل المراحل</option>
-                 <option value="ابتدائي">ابتدائي</option>
-                 <option value="متوسط">متوسط</option>
-                 <option value="ثانوي">ثانوي</option>
-                 <option value="جامعي">جامعي</option>
-              </select>
+                onChange={setSelectedStage}
+                options={[
+                  { value: 'all', label: 'كل المراحل' },
+                  { value: 'ابتدائي', label: 'ابتدائي' },
+                  { value: 'متوسط', label: 'متوسط' },
+                  { value: 'ثانوي', label: 'ثانوي' },
+                  { value: 'جامعي', label: 'جامعي' },
+                ]}
+                searchPlaceholder="ابحث عن المرحلة..."
+                className="h-14"
+              />
            </div>
            <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
               <div className="relative">
@@ -424,6 +430,20 @@ export default function ReportsPage() {
         </div>
 
       </div>
+      <Modal
+        isOpen={Boolean(feedbackMessage)}
+        onClose={() => setFeedbackMessage(null)}
+        title="تنبيه النظام"
+      >
+        <div className="space-y-6 text-right">
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-300">{feedbackMessage || ''}</p>
+          <div className="flex justify-end">
+            <Button className="h-10 px-6" onClick={() => setFeedbackMessage(null)}>
+              {UI_TEXT.actions.close}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </DashboardLayout>
   );
 }

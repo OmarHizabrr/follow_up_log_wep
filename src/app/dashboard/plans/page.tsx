@@ -39,6 +39,10 @@ import { Card, CardContent } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { isAdminLike } from '@/lib/access';
+import { Modal } from '@/components/ui/Modal';
+import { UI_TEXT } from '@/lib/ui-text';
+import { SearchableSelect } from '@/components/ui/SearchableSelect';
 
 interface Plan {
   id: string;
@@ -71,6 +75,8 @@ export default function PlansPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPlan, setCurrentPlan] = useState<Plan | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Plan | null>(null);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -90,7 +96,7 @@ export default function PlansPage() {
     }
 
     const user = JSON.parse(storedUser);
-    const isAdmin = user?.role === 'admin' || user?.type === 'admin';
+    const isAdmin = isAdminLike(user);
 
     if (!isAdmin) {
       router.push('/dashboard');
@@ -156,20 +162,20 @@ export default function PlansPage() {
       setIsModalOpen(false);
       fetchPlans();
     } catch (e) {
-      alert('خطأ فـي حفظ بيانات الخطة');
+      setFeedbackMessage(UI_TEXT.messages.plansSaveError);
     } finally {
       setIsSaving(false);
     }
   };
 
-  const handleDelete = async (id: string, name: string) => {
-    if (confirm(`هل أنت متأكد من حذف الخطة: ${name}؟`)) {
-      try {
-        await deleteDoc(doc(db, 'plans', id));
-        fetchPlans();
-      } catch (e) {
-        console.error(e);
-      }
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    try {
+      await deleteDoc(doc(db, 'plans', deleteTarget.id));
+      setDeleteTarget(null);
+      fetchPlans();
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -283,7 +289,7 @@ export default function PlansPage() {
                      </Button>
                      <Button 
                        variant="ghost"
-                       onClick={() => handleDelete(plan.id, plan.name)} 
+                       onClick={() => setDeleteTarget(plan)}
                        className="h-12 w-12 rounded-2xl text-red-500 hover:text-white hover:bg-red-500 dark:hover:bg-red-600 transition-all border-2 border-transparent hover:border-red-600 shadow-none"
                      >
                         <Trash2 className="w-5 h-5" />
@@ -344,29 +350,21 @@ export default function PlansPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-4">
                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] px-1">تصنيف المسار</label>
-                       <div className="relative">
-                         <Target className="w-5 h-5 absolute right-5 top-1/2 -translate-y-1/2 text-slate-300 z-10" />
-                         <select 
-                           className="w-full h-14 pr-14 pl-6 bg-slate-50/50 dark:bg-slate-900/40 rounded-2xl border-2 border-slate-100 dark:border-slate-800 text-sm font-bold outline-none focus:border-indigo-500/30 transition-all appearance-none cursor-pointer" 
-                           value={formData.type} 
-                           onChange={(e) => setFormData({...formData, type: e.target.value})}
-                         >
-                           {Object.entries(TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-                         </select>
-                       </div>
+                       <SearchableSelect
+                         value={formData.type}
+                         onChange={(value) => setFormData({ ...formData, type: value })}
+                         options={Object.entries(TYPE_LABELS).map(([value, label]) => ({ value, label }))}
+                         searchPlaceholder="ابحث عن التصنيف..."
+                       />
                     </div>
                     <div className="space-y-4">
                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] px-1">وحدة القياس</label>
-                       <div className="relative">
-                         <LayoutGrid className="w-5 h-5 absolute right-5 top-1/2 -translate-y-1/2 text-slate-300 z-10" />
-                         <select 
-                           className="w-full h-14 pr-14 pl-6 bg-slate-50/50 dark:bg-slate-900/40 rounded-2xl border-2 border-slate-100 dark:border-slate-800 text-sm font-bold outline-none focus:border-indigo-500/30 transition-all appearance-none cursor-pointer" 
-                           value={formData.unit} 
-                           onChange={(e) => setFormData({...formData, unit: e.target.value})}
-                         >
-                           {Object.entries(UNIT_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-                         </select>
-                       </div>
+                       <SearchableSelect
+                         value={formData.unit}
+                         onChange={(value) => setFormData({ ...formData, unit: value })}
+                         options={Object.entries(UNIT_LABELS).map(([value, label]) => ({ value, label }))}
+                         searchPlaceholder="ابحث عن الوحدة..."
+                       />
                     </div>
                   </div>
 
@@ -411,6 +409,39 @@ export default function PlansPage() {
             </div>
           )}
         </AnimatePresence>
+        <Modal
+          isOpen={Boolean(deleteTarget)}
+          onClose={() => setDeleteTarget(null)}
+          title={UI_TEXT.dialogs.deleteTitle}
+        >
+          <div className="space-y-6 text-right">
+            <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
+              {deleteTarget ? UI_TEXT.messages.planDelete(deleteTarget.name) : ''}
+            </p>
+            <div className="flex items-center justify-end gap-3">
+              <Button variant="ghost" className="h-11 px-6" onClick={() => setDeleteTarget(null)}>
+                {UI_TEXT.actions.cancel}
+              </Button>
+              <Button variant="danger" className="h-11 px-6" onClick={handleDelete}>
+                {UI_TEXT.actions.confirmDelete}
+              </Button>
+            </div>
+          </div>
+        </Modal>
+        <Modal
+          isOpen={Boolean(feedbackMessage)}
+          onClose={() => setFeedbackMessage(null)}
+          title="تنبيه النظام"
+        >
+          <div className="space-y-6 text-right">
+            <p className="text-sm font-medium text-slate-600 dark:text-slate-300">{feedbackMessage || ''}</p>
+            <div className="flex justify-end">
+              <Button className="h-10 px-6" onClick={() => setFeedbackMessage(null)}>
+                {UI_TEXT.actions.close}
+              </Button>
+            </div>
+          </div>
+        </Modal>
       </div>
     </DashboardLayout>
   );

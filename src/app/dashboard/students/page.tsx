@@ -13,7 +13,6 @@ import {
   Timestamp
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import Link from 'next/link';
 import DashboardLayout from '@/components/DashboardLayout';
 import HalaqaFilter from '@/components/HalaqaFilter';
 import { 
@@ -23,19 +22,18 @@ import {
   Trash2, 
   ChevronLeft,
   Users,
-  Filter,
   Download,
-  Sparkles,
   ChevronRight,
-  Database,
-  MoreHorizontal
+  Database
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
-import { Card, CardContent } from '@/components/ui/Card';
+import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { Modal } from '@/components/ui/Modal';
+import { UI_TEXT } from '@/lib/ui-text';
 
 interface Student {
   id: string;
@@ -49,11 +47,11 @@ interface Student {
 }
 
 export default function StudentsPage() {
-  const [user, setUser] = useState<any>(null);
   const [students, setStudents] = useState<Student[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedHalaqaId, setSelectedHalaqaId] = useState<string | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Student | null>(null);
   
   const router = useRouter();
 
@@ -63,15 +61,13 @@ export default function StudentsPage() {
       router.push('/login');
       return;
     }
-    const parsedUser = JSON.parse(storedUser);
-    setUser(parsedUser);
     fetchData();
   }, [router]);
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      let q = query(collection(db, 'users'), where('type', '==', 'student'), orderBy('createdAt', 'desc'));
+      const q = query(collection(db, 'users'), where('type', '==', 'student'), orderBy('createdAt', 'desc'));
       const snap = await getDocs(q);
       setStudents(snap.docs.map(ds => ({ id: ds.id, ...ds.data() } as Student)));
     } catch (e) {
@@ -81,14 +77,14 @@ export default function StudentsPage() {
     }
   };
 
-  const handleDelete = async (id: string, name: string) => {
-    if (confirm(`هل أنت متأكد من حذف الطالب ${name}؟ لا يمكن التراجع عن هذا الإجراء.`)) {
-       try {
-         await deleteDoc(doc(db, 'users', id));
-         setStudents(prev => prev.filter(s => s.id !== id));
-       } catch (error) {
-         console.error("Error deleting student:", error);
-       }
+  const confirmDeleteStudent = async () => {
+    if (!deleteTarget) return;
+    try {
+      await deleteDoc(doc(db, 'users', deleteTarget.id));
+      setStudents(prev => prev.filter(s => s.id !== deleteTarget.id));
+      setDeleteTarget(null);
+    } catch (error) {
+      console.error('Error deleting student:', error);
     }
   };
 
@@ -141,14 +137,14 @@ export default function StudentsPage() {
                 onSelect={setSelectedHalaqaId}
                />
            </div>
-           <div className="lg:col-span-6 relative group">
-              <Search className="w-5 h-5 absolute right-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-blue-500 transition-colors z-10" />
-              <input 
-                 type="text" 
-                 placeholder="بحث بالاسم، الرقم، أو المستوى..." 
-                 className="w-full h-14 pr-14 pl-6 bg-white dark:bg-[#0f172a] border border-slate-200/60 dark:border-slate-800 rounded-2xl text-sm font-bold outline-none focus:border-blue-600/30 shadow-sm transition-all duration-300"
-                 value={searchQuery}
-                 onChange={(e) => setSearchQuery(e.target.value)}
+           <div className="lg:col-span-6">
+              <Input
+                type="text"
+                placeholder="بحث بالاسم، الرقم، أو المستوى..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                icon={Search}
+                className="h-14 bg-white dark:bg-[#0f172a] border-slate-200/60 dark:border-slate-800 shadow-sm"
               />
            </div>
            <div className="lg:col-span-2">
@@ -197,7 +193,7 @@ export default function StudentsPage() {
                       </td>
                     </tr>
                   ) : (
-                    filteredStudents.map((student, idx) => (
+                    filteredStudents.map((student) => (
                       <motion.tr 
                         key={student.id} 
                         initial={{ opacity: 0 }}
@@ -209,7 +205,7 @@ export default function StudentsPage() {
                             <div className="relative shrink-0">
                                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center font-black text-xl text-slate-400 group-hover:scale-110 transition-transform duration-500 shadow-inner">
                                   {student.photoURL ? (
-                                    <img src={student.photoURL} className="w-full h-full object-cover rounded-2xl" />
+                                    <img src={student.photoURL} alt={student.displayName} className="w-full h-full object-cover rounded-2xl" />
                                   ) : student.displayName[0]}
                                </div>
                                {student.isActive && <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full shadow-sm"></div>}
@@ -257,10 +253,13 @@ export default function StudentsPage() {
                               >
                                 <Edit3 size={16} />
                               </Button>
-                              <Button 
+                              <Button
                                 variant="ghost" 
                                 size="icon"
-                                onClick={(e) => { e.stopPropagation(); handleDelete(student.id, student.displayName); }}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setDeleteTarget(student);
+                                }}
                                 className="w-10 h-10 rounded-2xl text-slate-400 hover:text-red-600 hover:bg-red-50"
                               >
                                 <Trash2 size={16} />
@@ -299,6 +298,25 @@ export default function StudentsPage() {
         </Card>
 
       </div>
+      <Modal
+        isOpen={Boolean(deleteTarget)}
+        onClose={() => setDeleteTarget(null)}
+        title={UI_TEXT.dialogs.deleteTitle}
+      >
+        <div className="space-y-6 text-right">
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
+            {deleteTarget ? UI_TEXT.messages.deleteStudent(deleteTarget.displayName) : ''}
+          </p>
+          <div className="flex items-center justify-end gap-3">
+            <Button variant="ghost" className="h-11 px-6" onClick={() => setDeleteTarget(null)}>
+              {UI_TEXT.actions.cancel}
+            </Button>
+            <Button variant="danger" className="h-11 px-6" onClick={confirmDeleteStudent}>
+              {UI_TEXT.actions.confirmDelete}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </DashboardLayout>
   );
 }

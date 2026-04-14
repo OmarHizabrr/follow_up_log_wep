@@ -42,6 +42,10 @@ import { Card, CardContent } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { isAdminLike, isTeacher } from '@/lib/access';
+import { Modal } from '@/components/ui/Modal';
+import { UI_TEXT } from '@/lib/ui-text';
+import { SearchableSelect } from '@/components/ui/SearchableSelect';
 
 interface Student {
   id: string;
@@ -93,6 +97,7 @@ export default function TestsPage() {
   const [questions, setQuestions] = useState<Record<string, number>[]>([]);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [timerActive, setTimerActive] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -139,7 +144,7 @@ export default function TestsPage() {
     setIsLoading(true);
     try {
       let sQuery;
-      if (currentUser?.role === 'teacher' && currentUser.halaqaId) {
+      if (isTeacher(currentUser) && currentUser.halaqaId) {
         sQuery = query(collection(db, 'users'), where('type', '==', 'student'), where('halaqaId', '==', currentUser.halaqaId));
         setSelectedHalaqa(currentUser.halaqaId);
       } else {
@@ -281,7 +286,7 @@ export default function TestsPage() {
       fetchData(user, selectedDate);
     } catch (e) {
       console.error(e);
-      alert('خطأ في حفظ الاختبار');
+      setFeedbackMessage(UI_TEXT.messages.testSaveError);
     } finally {
       setIsSaving(false);
     }
@@ -338,15 +343,18 @@ export default function TestsPage() {
                          <List className="w-4 h-4" />
                          قائمة الطلاب
                       </h3>
-                      {user?.role === 'admin' && (
-                        <select 
-                          value={selectedHalaqa}
-                          onChange={(e) => setSelectedHalaqa(e.target.value)}
-                          className="bg-transparent text-[10px] font-bold text-indigo-500 outline-none border-none cursor-pointer"
-                        >
-                          <option value="all">جميع الحلقات</option>
-                          {circles.map(c => <option key={c.id} value={c.id}>{c.displayName}</option>)}
-                        </select>
+                      {isAdminLike(user) && (
+                        <div className="w-52">
+                          <SearchableSelect
+                            value={selectedHalaqa}
+                            onChange={setSelectedHalaqa}
+                            options={[
+                              { value: 'all', label: 'جميع الحلقات' },
+                              ...circles.map((circle) => ({ value: circle.id, label: circle.displayName || 'حلقة' })),
+                            ]}
+                            searchPlaceholder="ابحث عن الحلقة..."
+                          />
+                        </div>
                       )}
                    </div>
                    <Input 
@@ -578,6 +586,22 @@ export default function TestsPage() {
             </div>
           )}
         </AnimatePresence>
+        <Modal
+          isOpen={Boolean(feedbackMessage)}
+          onClose={() => setFeedbackMessage(null)}
+          title="تنبيه النظام"
+        >
+          <div className="space-y-6 text-right">
+            <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
+              {feedbackMessage || ''}
+            </p>
+            <div className="flex justify-end">
+              <Button className="h-10 px-6" onClick={() => setFeedbackMessage(null)}>
+                {UI_TEXT.actions.close}
+              </Button>
+            </div>
+          </div>
+        </Modal>
       </div>
     </DashboardLayout>
   );

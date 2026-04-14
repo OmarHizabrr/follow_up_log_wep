@@ -21,11 +21,13 @@ import { db } from '@/lib/firebase';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
-import { Badge } from '@/components/ui/Badge';
+import { Modal } from '@/components/ui/Modal';
+import { UI_TEXT } from '@/lib/ui-text';
 
 export default function PdfSettingsManager() {
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
   const [settings, setSettings] = useState({
     rightHeader: '',
     leftHeader: '',
@@ -59,10 +61,10 @@ export default function PdfSettingsManager() {
         ...settings,
         updatedAt: serverTimestamp()
       });
-      alert('تم حفظ إعدادات التقارير بنجاح');
+      setFeedbackMessage(UI_TEXT.messages.pdfSettingsSaved);
     } catch (error) {
       console.error("Error saving PDF settings:", error);
-      alert('حدث خطأ أثناء الحفظ');
+      setFeedbackMessage(UI_TEXT.messages.pdfSettingsSaveError);
     } finally {
       setIsSaving(false);
     }
@@ -179,6 +181,20 @@ export default function PdfSettingsManager() {
             <Save className="w-5 h-5" />
          </Button>
       </div>
+      <Modal
+        isOpen={Boolean(feedbackMessage)}
+        onClose={() => setFeedbackMessage(null)}
+        title="تنبيه النظام"
+      >
+        <div className="space-y-6 text-right">
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-300">{feedbackMessage || ''}</p>
+          <div className="flex justify-end">
+            <Button className="h-10 px-6" onClick={() => setFeedbackMessage(null)}>
+              {UI_TEXT.actions.close}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

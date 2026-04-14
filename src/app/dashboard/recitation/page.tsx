@@ -38,6 +38,9 @@ import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { Modal } from '@/components/ui/Modal';
+import { SearchableSelect } from '@/components/ui/SearchableSelect';
+import { UI_TEXT } from '@/lib/ui-text';
 import { format } from 'date-fns';
 
 interface Student {
@@ -72,7 +75,7 @@ export default function RecitationPage() {
   const [studentHistory, setStudentHistory] = useState<any[]>([]);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [surahOrder, setSurahOrder] = useState<'asc' | 'desc'>('asc');
-  const [surahSearchTerm, setSurahSearchTerm] = useState('');
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -134,10 +137,10 @@ export default function RecitationPage() {
     return surahOrder === 'asc' ? base : base.reverse();
   }, [surahOrder]);
 
-  const filteredSurahs = useMemo(() => {
-    if (!surahSearchTerm) return sortedSurahs;
-    return sortedSurahs.filter(s => s.name.includes(surahSearchTerm));
-  }, [sortedSurahs, surahSearchTerm]);
+  const surahOptions = useMemo(
+    () => sortedSurahs.map((surah) => ({ value: surah.name, label: surah.name })),
+    [sortedSurahs]
+  );
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -191,7 +194,7 @@ export default function RecitationPage() {
         method: 'auto_from_recitation'
       }));
 
-      alert('تم حفظ السجل وتثبيت الحضور بنجاح');
+      setFeedbackMessage(UI_TEXT.messages.recitationSaved);
       
       fetchStudentHistory(selectedStudent.id);
       setSelectedStudent(null);
@@ -201,7 +204,7 @@ export default function RecitationPage() {
       });
     } catch (e) {
       console.error(e);
-      alert('حدث خطأ أثناء الحفظ');
+      setFeedbackMessage(UI_TEXT.messages.recitationSaveError);
     } finally {
       setIsSaving(false);
     }
@@ -336,16 +339,19 @@ export default function RecitationPage() {
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                               <div className="space-y-4">
                                  <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] px-2">نوع النشاط التعليمي</label>
-                                 <select 
-                                   className="w-full h-14 px-6 bg-slate-50/50 dark:bg-slate-900/40 border-2 border-slate-100 dark:border-slate-800 rounded-2xl text-base font-bold outline-none focus:border-blue-600/40 focus:bg-white dark:focus:bg-slate-900 transition-all duration-500" 
-                                   value={formData.type} 
-                                   onChange={(e) => setFormData({...formData, type: e.target.value})}
-                                 >
-                                    <option value="memorization">حفظ جديد</option>
-                                    <option value="revision">مراجعة صغرى</option>
-                                    <option value="tathbeet">مراجعة كبرى</option>
-                                    <option value="tashih_tilawah">تلاوة وتصحيح</option>
-                                 </select>
+                                  <SearchableSelect
+                                    value={formData.type}
+                                    onChange={(value) => setFormData({ ...formData, type: value })}
+                                    options={[
+                                      { value: 'memorization', label: 'حفظ جديد' },
+                                      { value: 'revision', label: 'مراجعة صغرى' },
+                                      { value: 'tathbeet', label: 'مراجعة كبرى' },
+                                      { value: 'tashih_tilawah', label: 'تلاوة وتصحيح' },
+                                    ]}
+                                    placeholder="اختر نوع النشاط"
+                                    searchPlaceholder="ابحث عن النوع..."
+                                    className="h-14"
+                                  />
                               </div>
 
                               <div className="space-y-4">
@@ -462,9 +468,7 @@ export default function RecitationPage() {
                                          label="بداية المقطع" 
                                          surahValue={formData.fromSurah}
                                          verseValue={formData.fromVerse}
-                                         surahs={filteredSurahs}
-                                         searchTerm={surahSearchTerm}
-                                         onSearchChange={setSurahSearchTerm}
+                                        surahOptions={surahOptions}
                                          onSurahChange={handleFromSurahChange}
                                          onVerseChange={(v: string) => setFormData({...formData, fromVerse: v})}
                                        />
@@ -477,9 +481,7 @@ export default function RecitationPage() {
                                          label="نهاية المقطع" 
                                          surahValue={formData.toSurah}
                                          verseValue={formData.toVerse}
-                                         surahs={filteredSurahs}
-                                         searchTerm={surahSearchTerm}
-                                         onSearchChange={setSurahSearchTerm}
+                                        surahOptions={surahOptions}
                                          onSurahChange={(s: string) => setFormData({...formData, toSurah: s})}
                                          onVerseChange={(v: string) => setFormData({...formData, toVerse: v})}
                                        />
@@ -548,33 +550,39 @@ export default function RecitationPage() {
         </div>
 
       </div>
+      <Modal
+        isOpen={Boolean(feedbackMessage)}
+        onClose={() => setFeedbackMessage(null)}
+        title="تنبيه النظام"
+      >
+        <div className="space-y-6 text-right">
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
+            {feedbackMessage || ''}
+          </p>
+          <div className="flex justify-end">
+            <Button className="h-10 px-6" onClick={() => setFeedbackMessage(null)}>
+              {UI_TEXT.actions.close}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </DashboardLayout>
   );
 }
 
-function SurahField({ label, surahValue, verseValue, surahs, searchTerm, onSearchChange, onSurahChange, onVerseChange }: any) {
+function SurahField({ label, surahValue, verseValue, surahOptions, onSurahChange, onVerseChange }: any) {
   return (
     <div className="space-y-4">
        <span className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] px-2">{label}</span>
        <div className="grid grid-cols-12 gap-4">
-          <div className="col-span-8 flex flex-col gap-2">
-             <div className="relative">
-                <Search className="w-3.5 h-3.5 absolute right-4 top-1/2 -translate-y-1/2 text-slate-300" />
-                <input 
-                  type="text"
-                  placeholder="ابحث عن السورة..."
-                  className="w-full h-10 pr-10 pl-4 bg-slate-50 dark:bg-slate-800 rounded-xl text-[11px] font-bold border-none outline-none focus:ring-1 ring-blue-500/30"
-                  value={searchTerm}
-                  onChange={(e) => onSearchChange(e.target.value)}
-                />
-             </div>
-             <select 
-               className="w-full h-12 px-5 bg-white dark:bg-slate-900 rounded-2xl border-2 border-slate-100 dark:border-slate-800 text-sm font-bold shadow-sm focus:border-blue-500 transition-all outline-none"
+          <div className="col-span-8">
+             <SearchableSelect
                value={surahValue}
-               onChange={(e) => onSurahChange(e.target.value)}
-             >
-               {surahs.map((s: any) => <option key={s.id} value={s.name}>{s.name}</option>)}
-             </select>
+               onChange={onSurahChange}
+               options={surahOptions}
+               placeholder="اختر السورة"
+               searchPlaceholder="ابحث عن السورة..."
+             />
           </div>
           <div className="col-span-4">
              <input 

@@ -46,6 +46,8 @@ import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { Modal } from '@/components/ui/Modal';
+import { UI_TEXT } from '@/lib/ui-text';
 import { subDays, format, eachDayOfInterval, isSameDay } from 'date-fns';
 import { ar } from 'date-fns/locale';
 
@@ -73,6 +75,7 @@ export default function AttendancePage() {
   // Matrix State
   const [matrixData, setMatrixData] = useState<Record<string, Record<string, string>>>({});
   const [matrixLoading, setMatrixLoading] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -209,11 +212,11 @@ export default function AttendancePage() {
 
       await Promise.all(promises);
       setAttendanceData({});
-      alert('تم اعتماد سجلات الحضور بنجاح');
+      setFeedbackMessage(UI_TEXT.messages.attendanceSaved);
       if (viewMode === 'matrix') fetchMatrixData();
     } catch (e) {
       console.error(e);
-      alert('حدث خطأ أثناء حفظ البيانات');
+      setFeedbackMessage(UI_TEXT.messages.attendanceSaveError);
     } finally {
       setIsSaving(false);
     }
@@ -487,6 +490,22 @@ export default function AttendancePage() {
         </AnimatePresence>
 
       </div>
+      <Modal
+        isOpen={Boolean(feedbackMessage)}
+        onClose={() => setFeedbackMessage(null)}
+        title="تنبيه النظام"
+      >
+        <div className="space-y-6 text-right">
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
+            {feedbackMessage || ''}
+          </p>
+          <div className="flex justify-end">
+            <Button className="h-10 px-6" onClick={() => setFeedbackMessage(null)}>
+              {UI_TEXT.actions.close}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </DashboardLayout>
   );
 }

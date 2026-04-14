@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   collection, 
   query, 
@@ -22,7 +22,6 @@ import {
   History, 
   Target, 
   Activity, 
-  MoreVertical,
   X,
   BookOpen
 } from 'lucide-react';
@@ -31,6 +30,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Input } from '@/components/ui/Input';
+import { SearchableSelect } from '@/components/ui/SearchableSelect';
 import { format, differenceInDays, parseISO } from 'date-fns';
 import { injectMetadata } from '@/lib/firebaseUtils';
 
@@ -71,11 +71,7 @@ export default function StudentPlansPanel({ studentId, studentName }: { studentI
     startDate: format(new Date(), 'yyyy-MM-dd')
   });
 
-  useEffect(() => {
-    loadAllData();
-  }, [studentId]);
-
-  const loadAllData = async () => {
+  const loadAllData = useCallback(async () => {
     setIsLoading(true);
     try {
       // 1. Fetch Plan Templates
@@ -138,7 +134,11 @@ export default function StudentPlansPanel({ studentId, studentName }: { studentI
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [studentId]);
+
+  useEffect(() => {
+    loadAllData();
+  }, [loadAllData]);
 
   const handleAssignPlan = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -290,15 +290,17 @@ export default function StudentPlansPanel({ studentId, studentName }: { studentI
                      <form onSubmit={handleAssignPlan} className="space-y-6">
                         <div className="space-y-3">
                            <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] px-1">اختر الخطة القياسية</label>
-                           <select 
-                             required
-                             className="w-full h-14 px-5 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border-2 border-slate-100 dark:border-slate-800 text-sm font-bold outline-none focus:border-blue-500 transition-all"
+                           <SearchableSelect
                              value={formData.planId}
-                             onChange={(e) => setFormData({...formData, planId: e.target.value})}
-                           >
-                              <option value="">اختر من المناهج المعتمدة...</option>
-                              {templates.map(t => <option key={t.id} value={t.id}>{t.name} ({t.amount})</option>)}
-                           </select>
+                             onChange={(value) => setFormData({ ...formData, planId: value })}
+                             options={templates.map((template) => ({
+                               value: template.id,
+                               label: `${template.name} (${template.amount})`,
+                             }))}
+                             placeholder="اختر من المناهج المعتمدة..."
+                             searchPlaceholder="ابحث عن الخطة..."
+                             className="h-14"
+                           />
                         </div>
 
                         <div className="space-y-3">

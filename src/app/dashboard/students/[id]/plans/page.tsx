@@ -41,6 +41,7 @@ import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { format, differenceInDays, parseISO, isAfter, isBefore, addDays, subDays } from 'date-fns';
 import { Modal } from '@/components/ui/Modal';
+import { UI_TEXT } from '@/lib/ui-text';
 
 interface PlanTemplate {
   id: string;
@@ -91,6 +92,8 @@ export default function StudentPlansPage() {
   const [historyPlans, setHistoryPlans] = useState<StudentPlan[]>([]);
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+  const [finishTarget, setFinishTarget] = useState<StudentPlan | null>(null);
 
   // Form State
   const [selectedTemplate, setSelectedTemplate] = useState<PlanTemplate | null>(null);
@@ -189,20 +192,21 @@ export default function StudentPlansPage() {
       fetchData();
     } catch (e) {
       console.error(e);
-      alert('حدث خطأ أثناء تعيين الخطة');
+      setFeedbackMessage(UI_TEXT.messages.studentPlanAssignError);
     } finally {
       setIsSaving(false);
     }
   };
 
-  const handleFinishPlan = async (plan: StudentPlan) => {
-    if (!confirm(`هل أنت متأكد من إنهاء خطة "${plan.plan_name}"؟`)) return;
+  const handleFinishPlan = async () => {
+    if (!finishTarget) return;
     try {
-      await updateDoc(doc(db, 'users', id as string, 'studentplans', plan.id), {
+      await updateDoc(doc(db, 'users', id as string, 'studentplans', finishTarget.id), {
         is_active: 0,
         end_date: format(new Date(), 'yyyy-MM-dd'),
         updated_at: serverTimestamp()
       });
+      setFinishTarget(null);
       fetchData();
     } catch (e) { console.error(e); }
   };
@@ -258,7 +262,7 @@ export default function StudentPlansPage() {
               {activePlans.length === 0 ? (
                 <EmptyPlansState message="لا توجد خطط نشطة حالياً. ابدأ بتعيين مسار للطالب." />
               ) : activePlans.map((plan) => (
-                <ActivePlanCard key={plan.id} plan={plan} onFinish={() => handleFinishPlan(plan)} />
+                <ActivePlanCard key={plan.id} plan={plan} onFinish={() => setFinishTarget(plan)} />
               ))}
            </div>
         </div>
@@ -335,6 +339,39 @@ export default function StudentPlansPage() {
                 </Button>
                 <Button variant="ghost" onClick={() => setIsAssignModalOpen(false)} className="h-14 px-8 rounded-2xl font-bold">إلغاء</Button>
              </div>
+          </div>
+        </Modal>
+        <Modal
+          isOpen={Boolean(finishTarget)}
+          onClose={() => setFinishTarget(null)}
+          title={UI_TEXT.dialogs.deleteTitle}
+        >
+          <div className="space-y-6 text-right">
+            <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
+              {finishTarget ? UI_TEXT.messages.studentPlanFinish(finishTarget.plan_name) : ''}
+            </p>
+            <div className="flex items-center justify-end gap-3">
+              <Button variant="ghost" className="h-11 px-6" onClick={() => setFinishTarget(null)}>
+                {UI_TEXT.actions.cancel}
+              </Button>
+              <Button variant="danger" className="h-11 px-6" onClick={handleFinishPlan}>
+                {UI_TEXT.actions.confirmDelete}
+              </Button>
+            </div>
+          </div>
+        </Modal>
+        <Modal
+          isOpen={Boolean(feedbackMessage)}
+          onClose={() => setFeedbackMessage(null)}
+          title="تنبيه النظام"
+        >
+          <div className="space-y-6 text-right">
+            <p className="text-sm font-medium text-slate-600 dark:text-slate-300">{feedbackMessage || ''}</p>
+            <div className="flex justify-end">
+              <Button className="h-10 px-6" onClick={() => setFeedbackMessage(null)}>
+                {UI_TEXT.actions.close}
+              </Button>
+            </div>
           </div>
         </Modal>
 
