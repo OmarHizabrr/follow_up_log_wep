@@ -127,8 +127,18 @@ export default function RecitationPage() {
     setFormData(prev => ({
       ...prev,
       fromSurah: surahName,
+      fromVerse: '1',
       toSurah: surahName,
       toVerse: surah?.ayahCount.toString() || '1'
+    }));
+  };
+
+  const handleToSurahChange = (surahName: string) => {
+    const surah = quranSurahs.find((s) => s.name === surahName);
+    setFormData((prev) => ({
+      ...prev,
+      toSurah: surahName,
+      toVerse: surah?.ayahCount.toString() || '1',
     }));
   };
 
@@ -468,7 +478,7 @@ export default function RecitationPage() {
                                          label="بداية المقطع" 
                                          surahValue={formData.fromSurah}
                                          verseValue={formData.fromVerse}
-                                        surahOptions={surahOptions}
+                                         surahOptions={surahOptions}
                                          onSurahChange={handleFromSurahChange}
                                          onVerseChange={(v: string) => setFormData({...formData, fromVerse: v})}
                                        />
@@ -481,8 +491,8 @@ export default function RecitationPage() {
                                          label="نهاية المقطع" 
                                          surahValue={formData.toSurah}
                                          verseValue={formData.toVerse}
-                                        surahOptions={surahOptions}
-                                         onSurahChange={(s: string) => setFormData({...formData, toSurah: s})}
+                                         surahOptions={surahOptions}
+                                         onSurahChange={handleToSurahChange}
                                          onVerseChange={(v: string) => setFormData({...formData, toVerse: v})}
                                        />
                                     </div>
@@ -571,6 +581,9 @@ export default function RecitationPage() {
 }
 
 function SurahField({ label, surahValue, verseValue, surahOptions, onSurahChange, onVerseChange }: any) {
+  const selectedSurah = quranSurahs.find((surah) => surah.name === surahValue);
+  const maxAyah = selectedSurah?.ayahCount || 286;
+
   return (
     <div className="space-y-4">
        <span className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] px-2">{label}</span>
@@ -587,13 +600,21 @@ function SurahField({ label, surahValue, verseValue, surahOptions, onSurahChange
           <div className="col-span-4">
              <input 
                type="number" 
-               className="w-full h-24 px-5 bg-white dark:bg-slate-900 rounded-3xl border-2 border-slate-100 dark:border-slate-800 text-2xl font-black shadow-sm focus:border-blue-500 transition-all outline-none text-center family-mono" 
+               className="w-full h-16 px-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 text-xl font-black shadow-sm focus:border-blue-500 transition-all outline-none text-center family-mono" 
                value={verseValue}
-               onChange={(e) => onVerseChange(e.target.value)}
+               onChange={(e) => {
+                 const next = Number(e.target.value || 1);
+                 const bounded = Math.min(Math.max(next, 1), maxAyah);
+                 onVerseChange(bounded.toString());
+               }}
                min="1"
+               max={maxAyah}
              />
           </div>
        </div>
+       <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400 px-2">
+         عدد آيات السورة: {maxAyah}
+       </p>
     </div>
   );
 }

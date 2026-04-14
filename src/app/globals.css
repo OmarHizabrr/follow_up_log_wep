@@ -186,6 +186,10 @@ body {
   height: 2.75rem !important;
 }
 
+.web-density [class*="h-24"] {
+  height: 4rem !important;
+}
+
 .web-density [class*="p-16"] {
   padding: 2.25rem !important;
 }
@@ -206,6 +210,10 @@ body {
   border-radius: 1rem !important;
 }
 
+.web-density [class*="rounded-3xl"] {
+  border-radius: 1rem !important;
+}
+
 .web-density [class*="text-4xl"] {
   font-size: 2rem !important;
   line-height: 1.2 !important;
@@ -214,5 +222,10 @@ body {
 .web-density [class*="text-3xl"] {
   font-size: 1.625rem !important;
   line-height: 1.25 !important;
+}
+
+.web-density [class*="text-2xl"] {
+  font-size: 1.35rem !important;
+  line-height: 1.3 !important;
 }
 

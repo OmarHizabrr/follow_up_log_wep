@@ -244,19 +244,19 @@ export default function AttendancePage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-8 pb-16" dir="rtl">
+      <div className="space-y-6 pb-12" dir="rtl">
         
         {/* Header Section */}
         <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-8 md:p-10 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
           
-          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-12 lg:gap-20 text-right">
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8 text-right">
             <div className="space-y-4">
               <Badge variant="success" className="px-3 py-1 rounded-lg border-emerald-100/50 text-[10px] font-black uppercase tracking-widest">
                 <CheckSquare className="w-3.5 h-3.5" />
                 وحدة التحضير والرقابة المركزية
               </Badge>
-              <h1 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight family-cairo">
+              <h1 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tight family-cairo">
                 إدارة وسجل الحضور اليومي
               </h1>
               <p className="text-slate-500 dark:text-slate-400 text-sm md:text-base font-medium leading-relaxed max-w-2xl">
@@ -269,7 +269,7 @@ export default function AttendancePage() {
                  <Button 
                    onClick={handleMarkAllPresent}
                    variant="outline"
-                   className="h-16 px-8 rounded-2xl border-2 border-emerald-100 text-emerald-600 font-black text-sm active:scale-95"
+                   className="h-11 px-6 rounded-xl border border-emerald-100 text-emerald-600 font-bold text-sm active:scale-95"
                  >
                    تحضير جميع طلاب القائمة
                  </Button>
@@ -301,21 +301,21 @@ export default function AttendancePage() {
                  placeholder="البحث بالاسم أو المعرف الرقمي..." 
                  value={searchQuery}
                  onChange={(e) => setSearchQuery(e.target.value)}
-                 className="w-full h-14 pr-14 pl-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-800 font-bold text-sm outline-none focus:border-emerald-500/20 shadow-sm transition-all"
+                 className="w-full h-11 pr-12 pl-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/70 dark:border-slate-800 font-semibold text-sm outline-none focus:border-emerald-500/20 shadow-sm transition-all"
               />
            </div>
 
-           <div className="flex items-center gap-2 p-1.5 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-800">
+           <div className="flex items-center gap-2 p-1 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-800">
               <button 
                 onClick={() => setViewMode('daily')}
-                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === 'daily' ? 'bg-white dark:bg-slate-700 text-emerald-600 shadow-sm' : 'text-slate-400'}`}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wide transition-all ${viewMode === 'daily' ? 'bg-white dark:bg-slate-700 text-emerald-600 shadow-sm' : 'text-slate-400'}`}
               >
                  <LayoutGrid size={16} />
                  التدوين اليومي
               </button>
               <button 
                 onClick={() => setViewMode('matrix')}
-                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === 'matrix' ? 'bg-white dark:bg-slate-700 text-emerald-600 shadow-sm' : 'text-slate-400'}`}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wide transition-all ${viewMode === 'matrix' ? 'bg-white dark:bg-slate-700 text-emerald-600 shadow-sm' : 'text-slate-400'}`}
               >
                  <History size={16} />
                  مصفوفة المتابعة
@@ -328,7 +328,7 @@ export default function AttendancePage() {
                   type="date" 
                   value={attendanceDate} 
                   onChange={(e) => setAttendanceDate(e.target.value)} 
-                  className="w-full h-14 px-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-800 font-bold text-sm outline-none family-mono"
+                  className="w-full h-11 px-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/70 dark:border-slate-800 font-semibold text-sm outline-none family-mono"
                 />
              </div>
            )}
@@ -341,7 +341,7 @@ export default function AttendancePage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -30 }}
-              className="space-y-10"
+              className="space-y-6"
             >
                {/* Quick Stats Overlay */}
                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -352,7 +352,7 @@ export default function AttendancePage() {
                </div>
 
                {/* Presence Grid */}
-               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {isLoading ? (
                     Array(8).fill(0).map((_, i) => <Skeleton key={i} className="h-80 rounded-2xl" />)
                   ) : filteredStudents.length === 0 ? (
@@ -362,7 +362,7 @@ export default function AttendancePage() {
                       const selection = attendanceData[student.id]?.status;
                       const yesterdayStatus = yesterdayAttendance[student.id];
                       return (
-                        <Card key={student.id} className={`p-8 rounded-2xl transition-all duration-500 border-2 relative overflow-hidden group hover:shadow-md ${
+                        <Card key={student.id} className={`p-6 rounded-2xl transition-all duration-300 border relative overflow-hidden group hover:shadow-md ${
                           selection === 'present' ? 'border-emerald-500/30 bg-emerald-500/[0.02]' :
                           selection === 'absent' ? 'border-rose-500/30 bg-rose-500/[0.02]' :
                           selection === 'late' ? 'border-amber-500/30 bg-amber-500/[0.02]' :

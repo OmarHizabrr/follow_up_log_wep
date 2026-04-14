@@ -209,13 +209,13 @@ export default function VisitsPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-8 pb-16" dir="rtl">
+      <div className="space-y-6 pb-12" dir="rtl">
         
         {/* Header Section */}
         <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-8 md:p-10 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
           
-          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-12 text-right">
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8 text-right">
             <div className="space-y-4">
               <Badge variant="info" className="px-3 py-1 rounded-lg border-blue-100/50 text-[10px] font-black uppercase tracking-widest text-blue-600">
                 <ShieldCheck className="w-4 h-4" />
@@ -251,10 +251,10 @@ export default function VisitsPage() {
                  value={searchQuery}
                  onChange={(e) => setSearchQuery(e.target.value)}
                  placeholder="البحث في الأرشيف (باسم المعلم أو المشرف)..." 
-                 className="w-full h-14 pr-14 pl-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-800 font-bold text-sm outline-none focus:border-blue-500/20 shadow-sm transition-all"
+                 className="w-full h-11 pr-12 pl-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/70 dark:border-slate-800 font-semibold text-sm outline-none focus:border-blue-500/20 shadow-sm transition-all"
               />
            </div>
-           <Card className="h-14 px-8 flex items-center justify-between min-w-[200px] border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl">
+           <Card className="h-11 px-5 flex items-center justify-between min-w-[170px] border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-xl">
               <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">إجمالي السجلات</span>
               <span className="text-xl font-black text-slate-900 dark:text-white family-mono">{filteredVisits.length}</span>
            </Card>
@@ -285,7 +285,7 @@ export default function VisitsPage() {
          </div>
 
         {/* Visits Feed */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
            {isLoading ? (
              Array(4).fill(0).map((_, i) => <Skeleton key={i} className="h-80 rounded-2xl" />)
            ) : filteredVisits.length === 0 ? (
@@ -307,11 +307,11 @@ export default function VisitsPage() {
                     
                     <div className="flex items-start justify-between relative z-10">
                        <div className="flex items-center gap-6">
-                          <div className={`w-20 h-20 rounded-[2rem] flex items-center justify-center border shadow-inner transition-transform group-hover:scale-110 duration-700 ${ev.visit_type === 'regulatory' ? 'bg-amber-50 text-amber-600 border-amber-100 dark:bg-amber-900/20' : 'bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-900/20'}`}>
-                             {ev.visit_type === 'regulatory' ? <CheckSquare size={36} /> : <Activity size={36} />}
+                          <div className={`w-14 h-14 rounded-xl flex items-center justify-center border shadow-inner transition-transform group-hover:scale-110 duration-300 ${ev.visit_type === 'regulatory' ? 'bg-amber-50 text-amber-600 border-amber-100 dark:bg-amber-900/20' : 'bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-900/20'}`}>
+                             {ev.visit_type === 'regulatory' ? <CheckSquare size={24} /> : <Activity size={24} />}
                           </div>
                           <div className="space-y-2">
-                             <h3 className="font-black text-2xl text-slate-900 dark:text-white family-cairo tracking-tight">{ev.halaqa_name}</h3>
+                             <h3 className="font-black text-lg text-slate-900 dark:text-white family-cairo tracking-tight">{ev.halaqa_name}</h3>
                              <div className="flex flex-wrap items-center gap-3">
                                 <Badge variant="slate" className="bg-slate-50 dark:bg-slate-800 border-none px-4 py-1.5 font-bold text-[10px] rounded-xl flex items-center gap-2">
                                    <Calendar size={14} className="text-slate-400" />
@@ -324,15 +324,15 @@ export default function VisitsPage() {
                           </div>
                        </div>
                        
-                       <div className="bg-slate-50 dark:bg-slate-900/60 p-5 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 flex flex-col items-center min-w-[90px] shadow-sm">
-                          <span className={`text-4xl font-black family-mono tracking-tighter ${ev.total_score >= 85 ? 'text-emerald-500' : ev.total_score >= 70 ? 'text-amber-500' : 'text-rose-500'}`}>
+                       <div className="bg-slate-50 dark:bg-slate-900/60 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col items-center min-w-[80px] shadow-sm">
+                          <span className={`text-2xl font-black family-mono tracking-tight ${ev.total_score >= 85 ? 'text-emerald-500' : ev.total_score >= 70 ? 'text-amber-500' : 'text-rose-500'}`}>
                              {ev.total_score}%
                           </span>
                           <p className="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em] mt-2">SCORE</p>
                        </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-8 my-10 py-8 border-y border-slate-50 dark:border-slate-800">
+                    <div className="grid grid-cols-2 gap-6 my-6 py-5 border-y border-slate-50 dark:border-slate-800">
                        <div className="space-y-1">
                           <span className="text-[10px] font-black text-slate-300 block uppercase tracking-widest">المعلم القائم</span>
                           <p className="text-base font-bold text-slate-800 dark:text-slate-200 family-cairo">{ev.teacher_name}</p>
@@ -350,7 +350,7 @@ export default function VisitsPage() {
                           </div>
                           <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">سجل معتمد</span>
                        </div>
-                       <Button variant="ghost" className="h-12 px-6 rounded-2xl gap-3 text-[11px] font-black text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-all uppercase tracking-widest">
+                       <Button variant="ghost" className="h-10 px-4 rounded-xl gap-2 text-[10px] font-bold text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-all uppercase tracking-wide">
                           تحميل التقرير الفني
                           <ChevronLeft size={16} />
                        </Button>

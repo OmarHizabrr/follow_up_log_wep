@@ -339,10 +339,10 @@ export default function UsersManagementPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-10 pb-16">
+      <div className="space-y-8 pb-12">
         
         {/* Header Section */}
-        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-10 md:p-14 rounded-[2.5rem] border border-slate-200/60 dark:border-slate-800 shadow-sm group">
+        <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-8 md:p-10 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
           
           <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
@@ -359,7 +359,7 @@ export default function UsersManagementPage() {
             
             <Button 
               onClick={() => router.push('/dashboard/users/add')}
-              className="h-14 px-8 rounded-2xl bg-blue-600 hover:bg-blue-700 shadow-xl shadow-blue-500/20 text-sm font-bold gap-3"
+              className="h-11 px-6 rounded-xl bg-blue-600 hover:bg-blue-700 text-sm font-bold gap-2"
             >
               <UserPlus className="w-5 h-5" />
               إضافة مستخدم جديد
@@ -376,24 +376,24 @@ export default function UsersManagementPage() {
         </div>
 
         {/* Search and Filters Bar */}
-        <div className="flex flex-col xl:flex-row gap-4 items-center justify-between bg-white dark:bg-[#0f172a] p-5 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+        <div className="flex flex-col xl:flex-row gap-4 items-center justify-between bg-white dark:bg-[#0f172a] p-4 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
            <div className="relative w-full xl:max-w-md group">
               <Search className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
               <input 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="البحث بالاسم، الرقم، أو الجوال..." 
-                className="w-full h-14 pr-14 pl-6 bg-slate-50/50 dark:bg-slate-900/50 border-2 border-slate-100/50 dark:border-slate-800/50 rounded-2xl font-bold text-sm outline-none focus:border-blue-600/20 focus:bg-white dark:focus:bg-slate-900 transition-all shadow-inner"
+                className="w-full h-11 pr-12 pl-4 bg-slate-50/50 dark:bg-slate-900/50 border border-slate-200/70 dark:border-slate-800/70 rounded-xl font-semibold text-sm outline-none focus:border-blue-600/20 focus:bg-white dark:focus:bg-slate-900 transition-all"
               />
            </div>
 
            <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto">
-              <div className="flex bg-slate-100/50 dark:bg-slate-900/50 p-1.5 rounded-2xl border border-slate-200/50 dark:border-slate-800">
+              <div className="flex bg-slate-100/50 dark:bg-slate-900/50 p-1 rounded-xl border border-slate-200/50 dark:border-slate-800">
                 {['all', 'student', 'teacher', 'halaqa', 'parent'].map((type) => (
                   <button
                     key={type}
                     onClick={() => setActiveTypeFilter(type)}
-                    className={`px-5 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${activeTypeFilter === type ? 'bg-white dark:bg-slate-800 text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                    className={`px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-all ${activeTypeFilter === type ? 'bg-white dark:bg-slate-800 text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                   >
                     {type === 'all' ? 'الكل' : type === 'student' ? 'طلاب' : type === 'teacher' ? 'معلمين' : type === 'halaqa' ? 'حلقات' : 'أولياء أمور'}
                   </button>
@@ -427,17 +427,17 @@ export default function UsersManagementPage() {
         </div>
 
         {/* Users Table */}
-        <div className="bg-white dark:bg-[#0f172a] rounded-[2.5rem] border border-slate-200/60 dark:border-slate-800 shadow-sm overflow-hidden text-right" dir="rtl">
+        <div className="bg-white dark:bg-[#0f172a] rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm overflow-hidden text-right" dir="rtl">
            <div className="overflow-x-auto custom-scrollbar">
               <table className="w-full border-collapse">
                  <thead>
                     <tr className="border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 text-right">
-                       <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">المستخدم</th>
-                       <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">النوع / الرقم</th>
-                       <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">الحلقة / التبعية</th>
-                       <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">الجوال</th>
-                       <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">الحالة</th>
-                       <th className="px-8 py-6 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">خيارات</th>
+                       <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">المستخدم</th>
+                       <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">النوع / الرقم</th>
+                       <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">الحلقة / التبعية</th>
+                       <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">الجوال</th>
+                       <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">الحالة</th>
+                       <th className="px-6 py-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">خيارات</th>
                     </tr>
                  </thead>
                  <tbody className="divide-y divide-slate-50 dark:divide-slate-800/50">
@@ -453,7 +453,7 @@ export default function UsersManagementPage() {
                              key={user.id} 
                              className="group hover:bg-slate-50/50 dark:hover:bg-slate-900/20 transition-colors"
                            >
-                              <td className="px-8 py-6" onClick={() => { setSelectedUser(user); setIsProfileModalOpen(true); }}>
+                              <td className="px-6 py-4" onClick={() => { setSelectedUser(user); setIsProfileModalOpen(true); }}>
                                  <div className="flex items-center gap-4">
                                     <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 flex items-center justify-center text-slate-500 font-bold text-lg border-2 border-white dark:border-slate-800 shadow-sm overflow-hidden shrink-0">
                                        {user.photoURL ? (
@@ -471,13 +471,13 @@ export default function UsersManagementPage() {
                                     </div>
                                  </div>
                               </td>
-                              <td className="px-8 py-6">
+                              <td className="px-6 py-4">
                                  <div className="flex flex-col gap-1">
                                     {getUserTypeBadge(user.type)}
                                     <span className="text-[10px] font-black text-slate-300"># {user.number || '---'}</span>
                                  </div>
                               </td>
-                              <td className="px-8 py-6">
+                              <td className="px-6 py-4">
                                  <div className="flex flex-col gap-2">
                                     <Badge variant="slate" className="px-3 py-1 rounded-lg border-slate-200 dark:border-slate-800 text-[10px] font-bold">
                                        {user.type === 'student' ? (user.halaqaName || '---') : (user.type === 'halaqa' ? 'مركز إداري' : 'كادر تعليمي')}
@@ -490,12 +490,12 @@ export default function UsersManagementPage() {
                                     )}
                                  </div>
                               </td>
-                              <td className="px-8 py-6">
+                              <td className="px-6 py-4">
                                  <p className="text-[11px] font-bold text-slate-500 dark:text-slate-400 tracking-wider">
                                     {user.phoneNumber || '--'}
                                  </p>
                               </td>
-                              <td className="px-8 py-6">
+                              <td className="px-6 py-4">
                                  {user.status !== 'inactive' ? (
                                    <div className="flex items-center gap-2 text-emerald-500">
                                       <CheckCircle2 size={14} />
@@ -508,7 +508,7 @@ export default function UsersManagementPage() {
                                    </div>
                                  )}
                               </td>
-                              <td className="px-8 py-6">
+                              <td className="px-6 py-4">
                                  <div className="flex items-center justify-center gap-2">
                                     <Button onClick={() => router.push(`/dashboard/users/${user.id}/edit`)} variant="ghost" size="icon" className="w-9 h-9 rounded-xl hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/20">
                                        <Edit size={16} />

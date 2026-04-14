@@ -307,25 +307,25 @@ export default function TestsPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-8 pb-16">
+      <div className="space-y-6 pb-12">
         
         {/* Header */}
         <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-8 md:p-10 rounded-2xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-indigo-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
-          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-12">
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
             <div className="space-y-4">
               <Badge variant="info" className="px-3 py-1 rounded-lg border-indigo-100/50 text-[10px] font-black uppercase tracking-widest">
                 <Sparkles className="w-3.5 h-3.5" />
                 مركز التقييم السحابي المركزي
               </Badge>
-              <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight family-cairo">
+              <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight family-cairo">
                 إدارة الاختبارات والنتائج
               </h1>
               <p className="text-slate-500 dark:text-slate-400 text-sm font-medium leading-relaxed max-w-2xl">
                  رصد وتوثيق نتائج الاختبارات الدورية والنهائية للطلاب ومتابعة مستوى التحصيل العلمي عبر مؤشرات كفاءة متقدمة.
               </p>
             </div>
-            <div className="flex items-center gap-4 px-6 py-3 bg-white/50 backdrop-blur-md dark:bg-slate-800/40 rounded-2xl border border-slate-200/60 dark:border-slate-800">
+            <div className="flex items-center gap-3 px-4 py-2 bg-white/50 backdrop-blur-md dark:bg-slate-800/40 rounded-xl border border-slate-200/60 dark:border-slate-800">
                <Zap className="w-5 h-5 text-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]" />
                <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">نظام رصد سحابي مرن</span>
             </div>
@@ -336,7 +336,7 @@ export default function TestsPage() {
            
            {/* Sidebar */}
            <div className="xl:col-span-4 xl:sticky xl:top-28 space-y-6">
-              <Card className="p-4 space-y-6 border-slate-200/70 dark:border-slate-800 h-[750px] flex flex-col overflow-hidden rounded-2xl">
+              <Card className="p-4 space-y-4 border-slate-200/70 dark:border-slate-800 h-[720px] flex flex-col overflow-hidden rounded-2xl">
                 <div className="space-y-4">
                    <div className="flex items-center justify-between px-1">
                       <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
@@ -357,12 +357,12 @@ export default function TestsPage() {
                         </div>
                       )}
                    </div>
-                   <Input 
+                    <Input 
                       placeholder="ابحث عن طالب..." 
                       icon={Search}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="h-12 bg-slate-50/50 border-slate-100 dark:border-slate-800"
+                      className="h-11 bg-slate-50/50 border-slate-100 dark:border-slate-800"
                    />
                 </div>
 
@@ -373,14 +373,14 @@ export default function TestsPage() {
                      <button 
                        key={s.id} 
                        onClick={() => handleOpenModal(s)}
-                       className="w-full p-5 rounded-2xl text-right flex items-center justify-between bg-white dark:bg-slate-800/30 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all border-2 border-transparent hover:border-slate-100 dark:hover:border-slate-700"
+                     className="w-full p-4 rounded-xl text-right flex items-center justify-between bg-white dark:bg-slate-800/30 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all border border-transparent hover:border-slate-100 dark:hover:border-slate-700"
                      >
                         <div className="flex items-center gap-4 min-w-0">
                            <div className="w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-base bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400">
                               {s.displayName[0]}
                            </div>
                            <div className="min-w-0">
-                              <p className="text-base font-bold truncate tracking-tight">{s.displayName}</p>
+                          <p className="text-sm font-bold truncate tracking-tight">{s.displayName}</p>
                               <div className="flex items-center gap-2 mt-1">
                                 {recordsMap[s.id]?.length > 0 && (
                                   <Badge variant="info" className="px-1.5 py-0 rounded text-[8px] font-black">{recordsMap[s.id].length} اختبار</Badge>
@@ -397,13 +397,13 @@ export default function TestsPage() {
            </div>
 
            {/* Main Grid */}
-           <div className="xl:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+           <div className="xl:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
               {isLoading ? (
                 Array(4).fill(0).map((_, i) => <Skeleton key={i} className="h-40 rounded-[2rem]" />)
               ) : filteredStudents.map(s => {
                 const records = recordsMap[s.id] || [];
                 return (
-                  <Card key={s.id} className="p-8 border-slate-200/60 dark:border-slate-800 hover:shadow-xl transition-all group overflow-hidden relative">
+                  <Card key={s.id} className="p-6 border-slate-200/70 dark:border-slate-800 hover:shadow-md transition-all group overflow-hidden relative">
                     <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
                     <div className="flex items-center justify-between mb-6">
                        <div className="flex items-center gap-4">
@@ -479,14 +479,14 @@ export default function TestsPage() {
                     </div>
                  </div>
 
-                 <div className="p-8 h-full overflow-y-auto custom-scrollbar pb-32">
+                 <div className="p-6 h-full overflow-y-auto custom-scrollbar pb-28">
                     {isLiveSession ? (
                       <div className="space-y-10">
                          {/* Live Score Display */}
-                         <div className="flex items-center justify-between p-8 bg-indigo-600 rounded-[2.5rem] text-white shadow-xl shadow-indigo-500/20">
+                         <div className="flex items-center justify-between p-5 bg-indigo-600 rounded-2xl text-white shadow-md">
                             <div className="space-y-1">
                                <label className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60">درجة الإتقان الحالية</label>
-                               <div className="text-6xl font-black family-mono leading-none">{calculateLiveScore()}%</div>
+                               <div className="text-4xl font-black family-mono leading-none">{calculateLiveScore()}%</div>
                             </div>
                             <div className="text-right space-y-2">
                                <label className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60">عنوان الفرع</label>
@@ -503,7 +503,7 @@ export default function TestsPage() {
                          {/* Questions Grid */}
                          <div className="space-y-8">
                             {questions.map((q, qIdx) => (
-                               <div key={qIdx} className="p-8 bg-slate-50/50 dark:bg-slate-900/40 rounded-[2.5rem] border border-slate-100/50 dark:border-slate-800 relative">
+                               <div key={qIdx} className="p-5 bg-slate-50/50 dark:bg-slate-900/40 rounded-2xl border border-slate-100/50 dark:border-slate-800 relative">
                                   <div className="absolute -right-3 -top-3 w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center text-[10px] font-black shadow-lg">Q{qIdx+1}</div>
                                   <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
                                      {mistakeTypes.map(m => {
@@ -522,7 +522,7 @@ export default function TestsPage() {
                                   </div>
                                </div>
                             ))}
-                            <Button variant="outline" onClick={addQuestion} className="w-full h-16 rounded-2xl border-dashed border-2 border-slate-200 dark:border-slate-800 text-slate-400 hover:text-indigo-500 hover:bg-indigo-50/50 transition-all">
+                            <Button variant="outline" onClick={addQuestion} className="w-full h-11 rounded-xl border-dashed border border-slate-200 dark:border-slate-800 text-slate-400 hover:text-indigo-500 hover:bg-indigo-50/50 transition-all">
                                <Plus className="mr-2" size={20} />
                                إضافة موقع سؤال جديد
                             </Button>
@@ -557,20 +557,20 @@ export default function TestsPage() {
                         </div>
                         <div className="space-y-4">
                            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] px-1">ملاحظات</label>
-                           <textarea rows={4} className="w-full p-6 bg-slate-50/50 border-2 border-slate-100 rounded-[2rem] text-base font-medium outline-none" value={editingRecord.notes || ''} onChange={(e) => setEditingRecord({...editingRecord, notes: e.target.value})} />
+                           <textarea rows={4} className="w-full p-4 bg-slate-50/50 border border-slate-200 rounded-xl text-sm font-medium outline-none" value={editingRecord.notes || ''} onChange={(e) => setEditingRecord({...editingRecord, notes: e.target.value})} />
                         </div>
                       </div>
                     )}
                  </div>
 
                  {/* Modal Footer */}
-                 <div className="absolute bottom-0 left-0 right-0 p-8 bg-white/90 dark:bg-[#0f172a]/90 backdrop-blur-md border-t border-slate-100 dark:border-slate-800 flex justify-between items-center z-20">
+                 <div className="absolute bottom-0 left-0 right-0 p-5 bg-white/90 dark:bg-[#0f172a]/90 backdrop-blur-md border-t border-slate-100 dark:border-slate-800 flex justify-between items-center z-20">
                     <div className="flex items-center gap-3 px-5 py-2.5 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100">
                        <Calendar className="w-4 h-4 text-slate-400" />
                        <span className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">{selectedDate}</span>
                     </div>
                     <div className="flex gap-4">
-                       <Button variant="ghost" onClick={() => setActiveStudent(null)} className="h-14 px-8 rounded-2xl text-slate-400 font-bold uppercase tracking-widest text-[11px]">إغلاق</Button>
+                       <Button variant="ghost" onClick={() => setActiveStudent(null)} className="h-11 px-6 rounded-xl text-slate-400 font-bold uppercase tracking-wider text-[10px]">إغلاق</Button>
                        <Button 
                           onClick={saveRecord} 
                           disabled={isSaving} 
