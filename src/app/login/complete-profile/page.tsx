@@ -97,61 +97,32 @@ export default function CompleteProfilePage() {
 
   return (
     <div
-      className="min-h-[100svh] min-h-[100dvh] bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-700 dark:from-[#08271f] dark:via-[#0d3a2f] dark:to-[#175443] flex items-center justify-center relative overflow-x-clip font-['Cairo']"
+      className="min-h-[100svh] min-h-[100dvh] bg-[#020b22] text-white font-['Cairo']"
       dir="rtl"
       style={{
-        paddingTop: 'max(1.25rem, env(safe-area-inset-top, 0px))',
-        paddingBottom: 'max(1.25rem, env(safe-area-inset-bottom, 0px))',
-        paddingInlineStart: 'max(0.9rem, env(safe-area-inset-right, 0px))',
-        paddingInlineEnd: 'max(0.9rem, env(safe-area-inset-left, 0px))',
+        paddingTop: 'env(safe-area-inset-top, 0px)',
+        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       }}
     >
-      <div className="absolute top-0 right-0 w-[380px] h-[380px] sm:w-[460px] sm:h-[460px] bg-emerald-300/15 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-[320px] h-[320px] sm:w-[420px] sm:h-[420px] bg-lime-200/10 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2" />
+      <div className="grid min-h-[100svh] min-h-[100dvh] lg:grid-cols-2">
+        <section className="flex items-center justify-center px-4 sm:px-6 py-8 sm:py-10 bg-[#020b22]">
+          <div className="w-full max-w-[430px]">
+            <div className="mb-5 text-center">
+              <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white">أكمل ملفك الشخصي</h1>
+              <p className="mt-2 text-sm text-blue-100/80 font-semibold">
+                أضف بياناتك الأساسية للمتابعة إلى المنصة.
+              </p>
+            </div>
 
-      <div className="w-full max-w-4xl relative z-10">
-        <Card className="overflow-hidden border-emerald-50/70 dark:border-emerald-900/40 shadow-2xl shadow-black/15 bg-white/95 dark:bg-slate-950/90">
-          <div className="h-1.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700" />
-          <CardContent className="p-4 sm:p-6 md:p-8 lg:p-10">
-            <div className="grid lg:grid-cols-[1.05fr_1fr] gap-5 sm:gap-7 md:gap-8 lg:gap-10 items-start">
-              <div className="space-y-4 sm:space-y-6 order-2 lg:order-1">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 text-xs font-bold">
-                  <Sparkles className="w-4 h-4" />
-                  خطوة أخيرة قبل دخول المنصة
-                </div>
-
-                <div className="space-y-2 sm:space-y-3">
-                  <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-tight">
-                    أكمل ملفك الشخصي
-                  </h1>
-                  <p className="text-[13px] sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                    عدل الاسم وأضف رقم الهاتف وكلمة المرور لتفعيل حسابك والانطلاق إلى باقي المنصة.
-                  </p>
-                </div>
-
-                <div className="space-y-2.5 sm:space-y-3">
-                  <div className="flex items-start gap-2.5 sm:gap-3 text-slate-600 dark:text-slate-300 text-[13px] sm:text-sm leading-relaxed">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                    تصميم واضح وسهل الاستخدام على الجوال والكمبيوتر
-                  </div>
-                  <div className="flex items-start gap-2.5 sm:gap-3 text-slate-600 dark:text-slate-300 text-[13px] sm:text-sm leading-relaxed">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                    حفظ آمن ومباشر للبيانات في الملف الشخصي
-                  </div>
-                  <div className="flex items-start gap-2.5 sm:gap-3 text-slate-600 dark:text-slate-300 text-[13px] sm:text-sm leading-relaxed">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                    زر المتابعة يتفعل فقط عند إدخال الرقم وكلمة المرور
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white/90 dark:bg-slate-900/75 border border-emerald-100/80 dark:border-emerald-900/40 rounded-2xl p-4 sm:p-5 md:p-6 space-y-3.5 sm:space-y-4 order-1 lg:order-2">
+            <Card className="bg-[#020b22]/80 border border-[#1f3564] rounded-3xl shadow-[0_18px_40px_rgba(0,0,0,0.35)]">
+              <CardContent className="p-4 sm:p-5 space-y-4">
                 <Input
                   label="الاسم"
                   placeholder="الاسم الكامل"
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
                   icon={User}
+                  className="bg-[#031231] border-[#1f3564] text-white placeholder:text-slate-500"
                 />
 
                 <Input
@@ -161,20 +132,21 @@ export default function CompleteProfilePage() {
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   icon={Phone}
                   dir="ltr"
+                  className="bg-[#031231] border-[#1f3564] text-white placeholder:text-slate-500"
                 />
 
                 <div className="space-y-2.5 w-full text-right">
-                  <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest px-1">
+                  <label className="text-xs font-bold text-blue-100/80 uppercase tracking-widest px-1">
                     كلمة المرور
                   </label>
                   <div className="relative group">
-                    <div className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-emerald-600 transition-colors">
+                    <div className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-emerald-500 transition-colors">
                       <Lock size={20} />
                     </div>
                     <button
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-600 transition-colors"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-500 transition-colors"
                     >
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
@@ -184,32 +156,83 @@ export default function CompleteProfilePage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       dir="ltr"
-                      className="w-full h-11 text-sm px-4 pr-14 pl-12 font-medium bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-emerald-600/15 focus:border-emerald-600/80 focus:outline-none transition-colors"
+                      className="w-full h-11 text-sm px-4 pr-14 pl-12 font-medium bg-[#031231] text-white border border-[#1f3564] rounded-lg focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600/80 focus:outline-none transition-colors placeholder:text-slate-500"
                     />
                   </div>
                 </div>
 
                 {errorMsg && (
-                  <p className="text-sm font-semibold text-red-600 dark:text-red-400 text-right">{errorMsg}</p>
+                  <p className="text-sm font-semibold text-red-300 bg-red-900/20 border border-red-500/30 rounded-xl p-3 text-right">
+                    {errorMsg}
+                  </p>
                 )}
 
                 <Button
                   onClick={handleContinue}
                   isLoading={isSaving || isLoadingProfile}
                   disabled={!canContinue}
-                  className="w-full h-12 sm:h-12 rounded-xl text-sm sm:text-base font-bold gap-2"
+                  className="w-full h-12 rounded-xl text-sm sm:text-base font-bold gap-2"
                 >
                   متابعة
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
 
-                <p className="text-[11px] text-slate-400 dark:text-slate-500 text-center">
-                  بتعبئة البيانات أنت توافق على إكمال تهيئة حسابك للوصول إلى النظام.
+                <div className="pt-1 text-center">
+                  <button
+                    type="button"
+                    onClick={() => router.push('/login')}
+                    className="inline-flex items-center gap-2 text-xs font-bold text-[#8ca2cf] hover:text-white transition-colors"
+                  >
+                    الرجوع لصفحة تسجيل الدخول
+                    <ArrowLeft className="w-4 h-4" />
+                  </button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        <section className="hidden lg:flex relative overflow-hidden bg-[#0a1433] border-r border-[#1f3564]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(59,130,246,0.20),transparent_45%)]" />
+          <div className="relative z-10 flex flex-col justify-between p-10 w-full">
+            <div className="flex items-center justify-end gap-3">
+              <img src="/images/logo/logo.png" alt="Logo" className="w-10 h-10 object-contain rounded-lg" />
+              <div className="text-right">
+                <p className="text-white font-black text-2xl">منصة المتابعة</p>
+                <p className="text-blue-100/70 text-sm">تهيئة الحساب</p>
+              </div>
+            </div>
+
+            <div className="max-w-lg self-end text-right space-y-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-100 text-xs font-bold">
+                <Sparkles className="w-4 h-4 text-blue-400" />
+                خطوة أخيرة قبل الدخول
+              </div>
+              <h2 className="text-5xl font-black leading-[1.25]">
+                عُد إلى مأرز <span className="text-[#3B82F6]">الإيمان</span> واليقين
+              </h2>
+              <div className="space-y-2 text-blue-100/75 text-lg">
+                <p className="flex items-center justify-end gap-2">
+                  تصميم واضح وسهل الاستخدام
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                </p>
+                <p className="flex items-center justify-end gap-2">
+                  جلب تلقائي للبيانات المحفوظة
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                </p>
+                <p className="flex items-center justify-end gap-2">
+                  زر المتابعة يتفعل عند اكتمال البيانات
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400" />
                 </p>
               </div>
             </div>
-          </CardContent>
-        </Card>
+
+            <div className="text-right text-sm text-blue-100/60">© 2026 منصة المتابعة</div>
+          </div>
+        </section>
+      </div>
+      <div className="lg:hidden text-center pb-4 text-[10px] font-bold text-blue-100/70 uppercase tracking-[0.45em]">
+        ALMOSAWA • v2.5
       </div>
     </div>
   );
