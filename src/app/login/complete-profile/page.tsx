@@ -2,9 +2,10 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
-import { User, Phone, Lock, ArrowLeft, CheckCircle2, Sparkles } from 'lucide-react';
-import { db } from '@/lib/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { User, Phone, Lock, ArrowLeft, CheckCircle2, Sparkles, Eye, EyeOff } from 'lucide-react';
+import { auth, db } from '@/lib/firebase';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -25,25 +26,42 @@ export default function CompleteProfilePage() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
-    const rawData = localStorage.getItem('userData');
-    if (!rawData) {
-      router.replace('/login');
-      return;
-    }
+    const unsubscribe = onAuthStateChanged(auth, async (sessionUser) => {
+      if (!sessionUser) {
+        router.replace('/login');
+        return;
+      }
 
-    const parsed = JSON.parse(rawData) as UserData;
-    if (!parsed?.uid) {
-      router.replace('/login');
-      return;
-    }
+      try {
+        const userRef = doc(db, 'users', sessionUser.uid);
+        const snap = await getDoc(userRef);
 
-    setUserData(parsed);
-    setDisplayName(String(parsed.displayName ?? ''));
-    setPhoneNumber(String(parsed.phoneNumber ?? ''));
-    setPassword(String(parsed.password ?? ''));
+        const cloudData = snap.exists()
+          ? ({ uid: sessionUser.uid, ...snap.data() } as UserData)
+          : ({
+              uid: sessionUser.uid,
+              displayName: sessionUser.displayName || '',
+              email: sessionUser.email || '',
+            } as UserData);
+
+        setUserData(cloudData);
+        setDisplayName(String(cloudData.displayName ?? ''));
+        setPhoneNumber(String(cloudData.phoneNumber ?? ''));
+        setPassword(String(cloudData.password ?? ''));
+        localStorage.setItem('userData', JSON.stringify(cloudData));
+      } catch {
+        setErrorMsg('تعذر تحميل بياناتك الحالية من قاعدة البيانات.');
+      } finally {
+        setIsLoadingProfile(false);
+      }
+    });
+
+    return () => unsubscribe();
   }, [router]);
 
   const canContinue = useMemo(() => {
@@ -145,15 +163,31 @@ export default function CompleteProfilePage() {
                   dir="ltr"
                 />
 
-                <Input
-                  label="كلمة المرور"
-                  type="password"
-                  placeholder="********"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  icon={Lock}
-                  dir="ltr"
-                />
+                <div className="space-y-2.5 w-full text-right">
+                  <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest px-1">
+                    كلمة المرور
+                  </label>
+                  <div className="relative group">
+                    <div className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-emerald-600 transition-colors">
+                      <Lock size={20} />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-600 transition-colors"
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="********"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      dir="ltr"
+                      className="w-full h-11 text-sm px-4 pr-14 pl-12 font-medium bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-emerald-600/15 focus:border-emerald-600/80 focus:outline-none transition-colors"
+                    />
+                  </div>
+                </div>
 
                 {errorMsg && (
                   <p className="text-sm font-semibold text-red-600 dark:text-red-400 text-right">{errorMsg}</p>
@@ -161,7 +195,7 @@ export default function CompleteProfilePage() {
 
                 <Button
                   onClick={handleContinue}
-                  isLoading={isSaving}
+                  isLoading={isSaving || isLoadingProfile}
                   disabled={!canContinue}
                   className="w-full h-12 sm:h-12 rounded-xl text-sm sm:text-base font-bold gap-2"
                 >
