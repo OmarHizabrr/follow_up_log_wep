@@ -39,7 +39,7 @@ interface ActivityRecord {
   timeLabel: string;
   timestamp: any;
   icon: React.ComponentType<{ className?: string }>;
-  color: 'blue' | 'indigo' | 'amber';
+  color: 'emerald' | 'indigo' | 'amber';
 }
 
 const quickActions = [
@@ -112,7 +112,7 @@ export default function DashboardPage() {
           timeLabel: 'تسميع',
           timestamp: item.createdAt,
           icon: BookOpen,
-          color: 'blue',
+          color: 'emerald',
         });
       });
 
@@ -199,8 +199,8 @@ export default function DashboardPage() {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               {quickActions.map((action) => (
                 <Link key={action.href} href={action.href}>
-                  <button className="w-full p-4 rounded-xl border border-slate-200/70 dark:border-slate-800 hover:border-blue-200 hover:bg-blue-50/50 dark:hover:bg-slate-800 transition-colors text-right">
-                    <action.icon className="w-5 h-5 text-blue-600 mb-2" />
+                  <button className="w-full p-4 rounded-xl border border-slate-200/70 dark:border-slate-800 hover:border-emerald-200 hover:bg-emerald-50/50 dark:hover:bg-slate-800 transition-colors text-right">
+                    <action.icon className="w-5 h-5 text-emerald-600 mb-2" />
                     <p className="text-sm font-bold text-slate-800 dark:text-slate-100">{action.label}</p>
                   </button>
                 </Link>
@@ -239,7 +239,7 @@ function MetricCard({ label, value, icon: Icon }: { label: string; value: number
           <p className="text-sm font-bold text-slate-500 dark:text-slate-400">{label}</p>
           <p className="text-3xl font-black text-slate-900 dark:text-white mt-2">{value}</p>
         </div>
-        <div className="w-11 h-11 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 flex items-center justify-center">
+        <div className="w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 flex items-center justify-center">
           <Icon className="w-5 h-5" />
         </div>
       </div>
@@ -258,10 +258,10 @@ function ActivityItem({
   desc: string;
   label: string;
   icon: React.ComponentType<{ className?: string }>;
-  color: 'blue' | 'indigo' | 'amber';
+  color: 'emerald' | 'indigo' | 'amber';
 }) {
   const colorMap = {
-    blue: 'text-blue-600 bg-blue-50 dark:bg-blue-900/20',
+    emerald: 'text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20',
     indigo: 'text-indigo-600 bg-indigo-50 dark:bg-indigo-900/20',
     amber: 'text-amber-600 bg-amber-50 dark:bg-amber-900/20',
   };

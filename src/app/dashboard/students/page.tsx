@@ -103,11 +103,11 @@ export default function StudentsPage() {
         
         {/* Modern Header Section */}
         <div className="relative overflow-hidden bg-white dark:bg-[#0f172a] p-5 sm:p-8 md:p-10 rounded-xl border border-slate-200/70 dark:border-slate-800 shadow-sm">
-          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
+          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-emerald-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
           
           <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6 sm:gap-10 lg:gap-16 text-right">
             <div className="space-y-4">
-              <Badge variant="info" className="px-3 py-1 rounded-lg border-blue-100/50 text-[10px] font-black uppercase tracking-widest">
+              <Badge variant="info" className="px-3 py-1 rounded-lg border-emerald-100/50 text-[10px] font-black uppercase tracking-widest">
                 <Users className="w-3.5 h-3.5" />
                 قاعدة البيانات المؤسسية الموحدة
               </Badge>
@@ -188,7 +188,7 @@ export default function StudentsPage() {
                               <Database size={48} className="text-slate-200" />
                            </div>
                            <p className="text-lg font-black text-slate-400 family-cairo">لا توجد سجلات مطابقة للمعايير</p>
-                           <Button variant="ghost" onClick={() => { setSearchQuery(''); setSelectedHalaqaId(null); }} className="text-blue-600 font-bold">إعادة تعيين الفلاتر</Button>
+                           <Button variant="ghost" onClick={() => { setSearchQuery(''); setSelectedHalaqaId(null); }} className="text-emerald-600 font-bold">إعادة تعيين الفلاتر</Button>
                         </div>
                       </td>
                     </tr>
@@ -198,7 +198,7 @@ export default function StudentsPage() {
                         key={student.id} 
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="group hover:bg-slate-50 dark:hover:bg-white/[0.01] transition-colors cursor-pointer border-r-4 border-transparent hover:border-blue-600/40"
+                        className="group hover:bg-slate-50 dark:hover:bg-white/[0.01] transition-colors cursor-pointer border-r-4 border-transparent hover:border-emerald-600/40"
                       >
                         <td className="px-3 sm:px-6 py-3 sm:py-4" onClick={() => router.push(`/dashboard/students/${student.id}`)}>
                           <div className="flex items-center gap-5">
@@ -250,7 +250,7 @@ export default function StudentsPage() {
                                 variant="ghost" 
                                 size="icon"
                                 onClick={() => router.push(`/dashboard/students/${student.id}/edit`)}
-                                className="w-10 h-10 rounded-2xl text-slate-400 hover:text-blue-600 hover:bg-blue-50"
+                                className="w-10 h-10 rounded-2xl text-slate-400 hover:text-emerald-600 hover:bg-emerald-50"
                               >
                                 <Edit3 size={16} />
                               </Button>
@@ -278,7 +278,7 @@ export default function StudentsPage() {
           {/* Pagination */}
           <div className="px-6 py-4 bg-slate-50/50 dark:bg-slate-900/40 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-600 text-white rounded-2xl flex items-center justify-center font-black text-sm shadow-lg shadow-blue-500/20">
+                <div className="w-10 h-10 bg-emerald-600 text-white rounded-2xl flex items-center justify-center font-black text-sm shadow-lg shadow-emerald-500/20">
                    {filteredStudents.length}
                 </div>
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{selectedHalaqaId ? 'طالب من الحلقة المختارة' : 'إجمالي السجلات النشطة'}</span>

@@ -104,12 +104,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const navLinks = allNavLinks.filter((link) => allowedRoutes.includes(link.href));
 
   const navItemActive =
-    'bg-blue-50 dark:bg-blue-950/35 text-blue-700 dark:text-blue-200 ring-1 ring-inset ring-blue-200/80 dark:ring-blue-800/50 shadow-sm';
+    'bg-emerald-50 dark:bg-emerald-950/35 text-emerald-700 dark:text-emerald-200 ring-1 ring-inset ring-emerald-200/80 dark:ring-emerald-800/50 shadow-sm';
   const navItemInactive =
     'text-slate-600 dark:text-slate-400 hover:bg-slate-100/90 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white';
 
   return (
-    <div className="web-density min-h-screen min-h-[100dvh] bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-slate-100 font-['Cairo'] antialiased selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden" dir="rtl">
+    <div className="web-density min-h-screen min-h-[100dvh] bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-slate-100 font-['Cairo'] antialiased selection:bg-emerald-100 selection:text-emerald-900 overflow-x-hidden" dir="rtl">
       
       {/* Sidebar - Desktop */}
       <motion.aside 
@@ -121,7 +121,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         {/* Toggle Button */}
         <button 
           onClick={toggleCollapse}
-          className="absolute -left-3.5 top-10 w-7 h-7 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full flex items-center justify-center text-slate-400 hover:text-blue-500 hover:border-blue-500 z-[60] transition-colors"
+          className="absolute -left-3.5 top-10 w-7 h-7 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full flex items-center justify-center text-slate-400 hover:text-emerald-600 hover:border-emerald-500 z-[60] transition-colors"
         >
           {isCollapsed ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
         </button>
@@ -129,7 +129,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         {/* Logo Area */}
         <div className={`h-24 flex items-center shrink-0 relative overflow-hidden transition-all duration-300 ${isCollapsed ? 'px-0 justify-center' : 'px-8'}`}>
           <div className="flex items-center gap-4">
-             <div className="w-11 h-11 rounded-xl bg-blue-600 flex items-center justify-center p-2.5 transition-transform shrink-0">
+             <div className="w-11 h-11 rounded-xl bg-emerald-600 flex items-center justify-center p-2.5 transition-transform shrink-0">
                <img src="/images/logo/logo.png" alt="Logo" className="w-full h-full object-contain filter brightness-0 invert" />
              </div>
              {!isCollapsed && (
@@ -168,8 +168,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                       isCollapsed ? 'w-full h-full' : 'w-9 h-9 ml-3 rounded-xl'
                     } ${
                       isActive
-                        ? 'text-blue-600 dark:text-blue-300'
-                        : 'text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400'
+                        ? 'text-emerald-600 dark:text-emerald-300'
+                        : 'text-slate-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400'
                     }`}
                   >
                     <Icon className={isCollapsed ? 'w-5 h-5' : 'w-[18px] h-[18px]'} />
@@ -178,7 +178,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   {!isCollapsed && <span className="text-sm font-semibold tracking-tight whitespace-nowrap">{link.name}</span>}
                   
                   {isActive && !isCollapsed && (
-                    <div className="w-1 h-4 rounded-full bg-blue-500/70 mr-auto shrink-0" aria-hidden />
+                    <div className="w-1 h-4 rounded-full bg-emerald-500/70 mr-auto shrink-0" aria-hidden />
                   )}
 
                   {/* Tooltip for collapsed mode */}
@@ -198,7 +198,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className={`p-3 rounded-[1.5rem] border ${isCollapsed ? 'border-transparent bg-transparent' : 'border-slate-100 dark:border-slate-800/50 bg-slate-50/50 dark:bg-slate-900/30'}`}>
             <div className={`flex items-center ${isCollapsed ? 'flex-col gap-4' : 'gap-3.5 mb-4'}`}>
               <div className="relative shrink-0">
-                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 text-white flex items-center justify-center font-black text-sm overflow-hidden">
+                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center font-black text-sm overflow-hidden">
                   {user?.photoURL ? (
                     <img src={user.photoURL} alt={user.displayName} className="w-full h-full object-cover" />
                   ) : (
@@ -257,11 +257,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               
               {/* Global Search Platform */}
               <div className="hidden md:flex items-center relative w-full max-w-md group">
-                <Search className="w-4 h-4 absolute right-4 text-slate-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
+                <Search className="w-4 h-4 absolute right-4 text-slate-400 group-focus-within:text-emerald-600 transition-colors pointer-events-none" />
                 <input 
                   type="text" 
                   placeholder="ابحث عن التقارير والطلاب..." 
-                className="w-full h-11 bg-slate-100/50 dark:bg-slate-900/40 border border-transparent focus:border-blue-500/20 rounded-xl pr-11 pl-12 text-sm font-medium focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:text-white transition-all shadow-inner"
+                className="w-full h-11 bg-slate-100/50 dark:bg-slate-900/40 border border-transparent focus:border-emerald-500/20 rounded-xl pr-11 pl-12 text-sm font-medium focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none dark:text-white transition-all shadow-inner"
                 />
                 <div className="absolute left-3.5 flex items-center gap-1 px-1.5 py-1 rounded-lg border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-800/80 text-[10px] font-bold text-slate-400 tracking-widest shadow-sm">
                    <Command size={10} />
@@ -281,7 +281,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <div className="flex items-center gap-3">
                 <button className="w-10 h-10 flex items-center justify-center text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl relative transition-all active:scale-95 group">
                    <Bell className="w-5.5 h-5.5" />
-                   <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-blue-500 border-2 border-white dark:border-[#020617] rounded-full shadow-sm" aria-hidden />
+                   <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-emerald-500 border-2 border-white dark:border-[#020617] rounded-full shadow-sm" aria-hidden />
                 </button>
                 
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-300 font-bold text-sm border border-slate-200 dark:border-slate-800 cursor-pointer hover:shadow-md transition-all active:scale-95">
@@ -330,7 +330,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 {/* Mobile Drawer Header */}
                  <div className="min-h-16 h-20 flex items-center justify-between px-5 sm:px-6 border-b border-slate-100 dark:border-slate-800 shrink-0">
                    <div className="flex items-center gap-3.5">
-                      <div className="w-10 h-10 rounded-2xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                      <div className="w-10 h-10 rounded-2xl bg-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
                         <img src="/images/logo/logo.png" alt="Logo" className="w-5.5 h-5.5 object-contain filter brightness-0 invert" />
                       </div>
                       <h1 className="text-xl font-bold text-slate-900 dark:text-white tracking-tighter">نظام المتابعة</h1>
@@ -354,7 +354,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                              isActive ? navItemActive : `${navItemInactive} active:scale-[0.99]`
                            }`}
                          >
-                           <Icon size={20} className={isActive ? 'text-blue-600 dark:text-blue-300' : 'text-slate-400'} />
+                          <Icon size={20} className={isActive ? 'text-emerald-600 dark:text-emerald-300' : 'text-slate-400'} />
                            <span className="text-[15px] font-semibold tracking-tight">{link.name}</span>
                          </div>
                        </Link>

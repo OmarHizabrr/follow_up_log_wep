@@ -45,7 +45,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
         <div className="relative group">
           {Icon && (
-            <div className={`absolute ${iconRight[sizeVariant]} top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors`}>
+            <div className={`absolute ${iconRight[sizeVariant]} top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-emerald-600 transition-colors`}>
               <Icon size={iconSizes[sizeVariant]} />
             </div>
           )}
@@ -58,7 +58,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               ${sizes[sizeVariant]}
               ${iconPadding[sizeVariant]}
               font-medium
-              focus:ring-2 focus:ring-blue-500/15 focus:border-blue-500/80 focus:outline-none
+              focus:ring-2 focus:ring-emerald-600/15 focus:border-emerald-600/80 focus:outline-none
               disabled:opacity-50 disabled:bg-slate-50
               ${error ? 'border-red-500 focus:ring-red-500/5 focus:border-red-500' : ''}
               ${className}
