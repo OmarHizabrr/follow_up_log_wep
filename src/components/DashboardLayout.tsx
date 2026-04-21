@@ -25,6 +25,7 @@ import {
   ChevronRight,
   RefreshCw,
   Command,
+  User,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
@@ -50,6 +51,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   });
   const [isSyncing, setIsSyncing] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -73,6 +75,18 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
     return () => clearInterval(interval);
   }, [user]);
+
+  useEffect(() => {
+    const handleClickOutside = () => {
+      setIsProfileMenuOpen(false);
+    };
+
+    if (isProfileMenuOpen) {
+      window.addEventListener('click', handleClickOutside);
+    }
+
+    return () => window.removeEventListener('click', handleClickOutside);
+  }, [isProfileMenuOpen]);
 
   const toggleCollapse = () => {
     const newState = !isCollapsed;
@@ -214,24 +228,43 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 </div>
               )}
               {isCollapsed && (
-                <button
-                  onClick={() => setIsLogoutModalOpen(true)}
-                  className="w-11 h-11 flex items-center justify-center rounded-2xl bg-red-50 dark:bg-red-900/10 text-red-500 hover:bg-red-100 transition-colors shadow-sm"
-                  title="تسجيل الخروج"
-                >
-                  <LogOut size={18} />
-                </button>
+                <div className="flex flex-col gap-2">
+                  <button
+                    onClick={() => router.push('/login/complete-profile')}
+                    className="w-11 h-11 flex items-center justify-center rounded-2xl bg-emerald-50 dark:bg-emerald-900/10 text-emerald-600 hover:bg-emerald-100 transition-colors shadow-sm"
+                    title="الملف الشخصي"
+                  >
+                    <User size={18} />
+                  </button>
+                  <button
+                    onClick={() => setIsLogoutModalOpen(true)}
+                    className="w-11 h-11 flex items-center justify-center rounded-2xl bg-red-50 dark:bg-red-900/10 text-red-500 hover:bg-red-100 transition-colors shadow-sm"
+                    title="تسجيل الخروج"
+                  >
+                    <LogOut size={18} />
+                  </button>
+                </div>
               )}
             </div>
             {!isCollapsed && (
-              <Button 
-                onClick={() => setIsLogoutModalOpen(true)}
-                variant="danger"
-                className="w-full h-11 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] gap-2.5 opacity-90 hover:opacity-100 shadow-md shadow-red-500/5"
-              >
-                 <LogOut size={14} />
-                 خروج
-              </Button>
+              <div className="space-y-2">
+                <Button
+                  onClick={() => router.push('/login/complete-profile')}
+                  variant="outline"
+                  className="w-full h-11 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] gap-2.5"
+                >
+                  <User size={14} />
+                  الملف الشخصي
+                </Button>
+                <Button 
+                  onClick={() => setIsLogoutModalOpen(true)}
+                  variant="danger"
+                  className="w-full h-11 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] gap-2.5 opacity-90 hover:opacity-100 shadow-md shadow-red-500/5"
+                >
+                  <LogOut size={14} />
+                  خروج
+                </Button>
+              </div>
             )}
           </div>
         </div>
@@ -284,8 +317,40 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                    <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-emerald-500 border-2 border-white dark:border-[#020617] rounded-full shadow-sm" aria-hidden />
                 </button>
                 
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-300 font-bold text-sm border border-slate-200 dark:border-slate-800 cursor-pointer hover:shadow-md transition-all active:scale-95">
-                   {user?.displayName ? user.displayName[0] : 'U'}
+                <div className="relative">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsProfileMenuOpen((prev) => !prev);
+                    }}
+                    className="w-10 h-10 rounded-xl bg-gradient-to-tr from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-300 font-bold text-sm border border-slate-200 dark:border-slate-800 cursor-pointer hover:shadow-md transition-all active:scale-95"
+                  >
+                    {user?.displayName ? user.displayName[0] : 'U'}
+                  </button>
+
+                  <AnimatePresence>
+                    {isProfileMenuOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                        transition={{ duration: 0.15 }}
+                        onClick={(e) => e.stopPropagation()}
+                        className="absolute left-0 mt-2 w-44 p-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl z-50"
+                      >
+                        <button
+                          onClick={() => {
+                            setIsProfileMenuOpen(false);
+                            router.push('/login/complete-profile');
+                          }}
+                          className="w-full h-10 px-3 rounded-lg text-right text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between"
+                        >
+                          <span>الملف الشخصي</span>
+                          <User className="w-4 h-4 text-emerald-600" />
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
            </div>
@@ -362,11 +427,22 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                    })}
                  </div>
 
-                 <div className="p-4 sm:p-5 border-t border-slate-100 dark:border-slate-800 pb-[max(1rem,env(safe-area-inset-bottom,0px))]">
+                 <div className="p-4 sm:p-5 border-t border-slate-100 dark:border-slate-800 pb-[max(1rem,env(safe-area-inset-bottom,0px))] space-y-2.5">
+                    <Button
+                      onClick={() => {
+                        setIsSidebarOpen(false);
+                        router.push('/login/complete-profile');
+                      }}
+                      variant="outline"
+                      className="w-full h-12 rounded-2xl font-bold text-sm gap-3"
+                    >
+                      <User size={18} />
+                      الملف الشخصي
+                    </Button>
                     <Button 
                       onClick={handleLogout}
                       variant="danger"
-                      className="w-full h-14 rounded-2xl font-bold text-sm tracking-widest gap-3"
+                      className="w-full h-12 rounded-2xl font-bold text-sm tracking-widest gap-3"
                     >
                        <LogOut size={20} />
                        تسجيل الخروج
