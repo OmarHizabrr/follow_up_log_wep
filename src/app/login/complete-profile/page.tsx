@@ -30,6 +30,23 @@ export default function CompleteProfilePage() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  const resolvePhoneNumber = (data: UserData) => {
+    const direct = data.phoneNumber;
+    if (direct !== undefined && direct !== null && String(direct).trim()) {
+      return String(direct);
+    }
+
+    const fallbackKey = Object.keys(data).find((key) => key.toLowerCase().includes('phone'));
+    if (fallbackKey) {
+      const fallbackValue = data[fallbackKey];
+      if (fallbackValue !== undefined && fallbackValue !== null) {
+        return String(fallbackValue);
+      }
+    }
+
+    return '';
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (sessionUser) => {
       if (!sessionUser) {
@@ -51,9 +68,10 @@ export default function CompleteProfilePage() {
 
         setUserData(cloudData);
         setDisplayName(String(cloudData.displayName ?? ''));
-        setPhoneNumber(String(cloudData.phoneNumber ?? ''));
+        const resolvedPhoneNumber = resolvePhoneNumber(cloudData);
+        setPhoneNumber(resolvedPhoneNumber);
         setPassword(String(cloudData.password ?? ''));
-        localStorage.setItem('userData', JSON.stringify(cloudData));
+        localStorage.setItem('userData', JSON.stringify({ ...cloudData, phoneNumber: resolvedPhoneNumber }));
       } catch {
         setErrorMsg('تعذر تحميل بياناتك الحالية من قاعدة البيانات.');
       } finally {
