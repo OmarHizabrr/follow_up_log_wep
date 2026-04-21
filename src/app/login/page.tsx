@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { signInWithPopup, onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db, googleProvider } from '@/lib/firebase';
-import { Phone, Mail, ArrowLeft, ShieldCheck, Zap } from 'lucide-react';
+import { ArrowLeft, ShieldCheck, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
@@ -124,37 +124,15 @@ export default function LoginPage() {
                 <Button
                   onClick={signInWithGoogle}
                   isLoading={isLoading}
-                  variant="outline"
-                  className="w-full h-12 rounded-xl border-[#1f3564] bg-[#031231] text-white hover:bg-[#0a1a40]"
+                  className="w-full h-12 rounded-xl bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] hover:from-[#1d4ed8] hover:to-[#1e40af] text-white border-0 shadow-lg shadow-blue-900/30"
                 >
-                  <ShieldCheck className="w-4 h-4 text-[#3B82F6]" />
+                  <ShieldCheck className="w-4 h-4 text-white" />
                   المتابعة بحساب Google
                 </Button>
 
-                <div className="flex items-center gap-2 text-[#8ca2cf] text-xs font-bold">
-                  <div className="h-px flex-1 bg-[#1f3564]" />
-                  أو
-                  <div className="h-px flex-1 bg-[#1f3564]" />
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <Button
-                    onClick={() => router.push('/login/phone')}
-                    variant="outline"
-                    className="h-20 rounded-xl border-[#1f3564] bg-[#031231] text-white hover:bg-[#0a1a40] flex-col gap-2"
-                  >
-                    <Phone className="w-5 h-5 text-[#3B82F6]" />
-                    رقم الجوال
-                  </Button>
-                  <Button
-                    onClick={signInWithGoogle}
-                    variant="outline"
-                    className="h-20 rounded-xl border-[#1f3564] bg-[#031231] text-white hover:bg-[#0a1a40] flex-col gap-2"
-                  >
-                    <Mail className="w-5 h-5 text-[#3B82F6]" />
-                    البريد الإلكتروني
-                  </Button>
-                </div>
+                <p className="text-center text-xs text-blue-100/70 leading-relaxed">
+                  تسجيل الدخول متاح فقط عبر حساب Google لضمان أمان أعلى وربط موحد للحسابات.
+                </p>
 
                 <div className="pt-2 text-center space-y-2">
                   <Link href="/" className="inline-flex items-center gap-2 text-xs font-bold text-[#8ca2cf] hover:text-white transition-colors">

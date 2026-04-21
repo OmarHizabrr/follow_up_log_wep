@@ -116,6 +116,9 @@ export default function CompleteProfilePage() {
 
             <Card className="bg-[#020b22]/80 border border-[#1f3564] rounded-3xl shadow-[0_18px_40px_rgba(0,0,0,0.35)]">
               <CardContent className="p-4 sm:p-5 space-y-4">
+                <div className="rounded-xl bg-[#031231] border border-[#1f3564] px-3 py-2 text-center text-xs font-bold text-blue-100/75">
+                  أكمل البيانات التالية لمرة واحدة فقط ثم تابع مباشرة إلى المنصة.
+                </div>
                 <Input
                   label="الاسم"
                   placeholder="الاسم الكامل"
@@ -171,7 +174,7 @@ export default function CompleteProfilePage() {
                   onClick={handleContinue}
                   isLoading={isSaving || isLoadingProfile}
                   disabled={!canContinue}
-                  className="w-full h-12 rounded-xl text-sm sm:text-base font-bold gap-2"
+                  className="w-full h-12 rounded-xl text-sm sm:text-base font-bold gap-2 bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] hover:from-[#1d4ed8] hover:to-[#1e40af] text-white border-0 shadow-lg shadow-blue-900/30"
                 >
                   متابعة
                   <ArrowLeft className="w-4 h-4" />
